@@ -57,7 +57,7 @@ public final class ScrollMycology extends ItemScrollNative implements Listener {
             interactingItemStack.subtract();
         }
         interactingPlayer.setCooldown(interactingItemStack, 200);
-        interactingPlayer.addPotionEffect(new PotionEffect(potionEffectType, 200, 0));
+        interactingPlayer.addPotionEffect(new PotionEffect(potionEffectType, 200, 0, false));
         interactingPlayer.getWorld().playSound(interactingPlayer, Sound.ENTITY_GENERIC_EAT, 1.0F, 1.0F);
     }
 }

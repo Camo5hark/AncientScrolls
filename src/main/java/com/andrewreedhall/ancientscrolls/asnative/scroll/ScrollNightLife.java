@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class ScrollNightLife extends ItemScrollNative implements Listener {
+public final class ScrollNightLife extends ItemScrollNative implements Listener {
     public ScrollNightLife() {
         super("nightlife", "Nightlife", new String[] {
                 "Night vision at night",

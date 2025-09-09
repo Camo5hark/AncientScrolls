@@ -1,6 +1,7 @@
 package com.andrewreedhall.ancientscrolls.asnative.scroll;
 
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
+import com.google.common.base.CaseFormat;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 import static org.bukkit.ChatColor.*;
 
-public class ScrollVigilance extends ItemScrollNative {
+public final class ScrollVigilance extends ItemScrollNative {
     public ScrollVigilance() {
         super("vigilance", "Vigilance", new String[] {
                 "Notifies user of the most dangerous monster within 30 blocks"
@@ -40,7 +41,7 @@ public class ScrollVigilance extends ItemScrollNative {
             equippingPlayer.spigot().sendMessage(
                     ChatMessageType.ACTION_BAR,
                     new TextComponent(
-                            RED + highestDamagingNearbyMonster.getType().getName()
+                            RED + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, highestDamagingNearbyMonster.getType().toString())
                             + GOLD + " detected "
                             + RED + (int) Math.round(highestDamagingNearbyMonster.getLocation().distance(equippingPlayerLocation))
                             + GOLD + " blocks away"

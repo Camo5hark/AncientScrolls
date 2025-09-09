@@ -126,7 +126,7 @@ public abstract class ItemScroll extends AncientScrollsItem {
             if ((equippingPlayerNightVisionPotionEffect != null && equippingPlayerNightVisionPotionEffect.getDuration() > 220) || !condition.test(equippingPlayer)) {
                 return;
             }
-            equippingPlayer.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0));
+            equippingPlayer.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, false));
         }, 20L);
     }
 

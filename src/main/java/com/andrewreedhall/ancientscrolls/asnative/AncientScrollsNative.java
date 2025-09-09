@@ -35,6 +35,7 @@ public final class AncientScrollsNative {
                 // effect negation
                 ScrollPestControl.class,
                 ScrollArchaicSkincareRoutine.class, // BOSS: WITHER
+                ScrollToxicology.class,
 
                 // night vision
                 ScrollAquaticLensing.class,

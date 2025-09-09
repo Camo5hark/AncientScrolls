@@ -6,7 +6,7 @@ import oshi.util.tuples.Pair;
 
 import java.util.Set;
 
-public class ScrollDurability extends ItemScrollNative {
+public final class ScrollDurability extends ItemScrollNative {
     public ScrollDurability() {
         super("durability", "Durability", new String[] {
                 "+8 max health"

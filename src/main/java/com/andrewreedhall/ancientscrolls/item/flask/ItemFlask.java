@@ -33,8 +33,8 @@ public abstract class ItemFlask extends AncientScrollsItem {
             this.cachedLore.add(GRAY + ITALIC.toString() + loreElem);
         }
         this.color = color;
-        this.buffPotionEffect = new PotionEffect(buffPotionEffectType, 1200, 1);
-        this.debuffPotionEffect = new PotionEffect(debuffPotionEffectType, 300, 0);
+        this.buffPotionEffect = new PotionEffect(buffPotionEffectType, 1200, 1, false);
+        this.debuffPotionEffect = new PotionEffect(debuffPotionEffectType, 300, 0, false);
         this.putMCLootTableGenProb("blocks/trial_spawner", 0.05);
         this.putMCLootTableGenProb("blocks/vault", 0.24);
     }

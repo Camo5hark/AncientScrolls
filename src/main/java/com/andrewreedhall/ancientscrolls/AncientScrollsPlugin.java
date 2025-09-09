@@ -25,6 +25,7 @@ import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
 import com.andrewreedhall.ancientscrolls.asnative.AncientScrollsNative;
 import com.andrewreedhall.ancientscrolls.item.scroll.EquippedScrollsInventoryHandler;
 import com.andrewreedhall.ancientscrolls.npc.AncientScrollsNPC;
+import com.andrewreedhall.ancientscrolls.util.MonsterPoisonSimulator;
 import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -46,6 +47,7 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     private AncientScrollsRegistry<AncientScrollsItem> itemRegistry = null;
     private AncientScrollsRegistry<AncientScrollsNPC> npcRegistry = null;
     private EquippedScrollsInventoryHandler equippedScrollsInventoryHandler = null;
+    private MonsterPoisonSimulator monsterPoisonSimulator = null;
 
     public AncientScrollsPlugin() {}
 
@@ -58,7 +60,9 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         this.itemRegistry = new AncientScrollsRegistry<>();
         this.npcRegistry = new AncientScrollsRegistry<>();
         this.equippedScrollsInventoryHandler = new EquippedScrollsInventoryHandler();
+        this.monsterPoisonSimulator = new MonsterPoisonSimulator();
         this.defaultCachedConfig.load(false);
+        this.monsterPoisonSimulator.scheduleRepeatingTask();
         AncientScrollsNative.registerAll();
     }
 
@@ -115,6 +119,10 @@ public final class AncientScrollsPlugin extends JavaPlugin {
 
     public EquippedScrollsInventoryHandler getEquippedScrollsInventoryHandler() {
         return this.equippedScrollsInventoryHandler;
+    }
+
+    public MonsterPoisonSimulator getMonsterPoisonSimulator() {
+        return this.monsterPoisonSimulator;
     }
 
     public static AncientScrollsPlugin plugin() {

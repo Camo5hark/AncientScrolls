@@ -9,7 +9,7 @@ import java.util.Set;
 
 import static org.bukkit.Material.*;
 
-public class ScrollNetherSustainability extends ItemScrollNative implements Listener {
+public final class ScrollNetherSustainability extends ItemScrollNative implements Listener {
     private static final Set<Material> BLOCK_TYPES = Set.of(
             CRIMSON_STEM,
             CRIMSON_HYPHAE,

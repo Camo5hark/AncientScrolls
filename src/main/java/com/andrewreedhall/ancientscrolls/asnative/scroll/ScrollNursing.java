@@ -9,7 +9,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class ScrollNursing extends ItemScrollNative {
+public final class ScrollNursing extends ItemScrollNative {
     private static final double RADIUS = 5.0;
     private static final double RADIUS_SQUARED = RADIUS * RADIUS;
     private static final int N_PARTICLES = 12;
@@ -37,7 +37,7 @@ public class ScrollNursing extends ItemScrollNative {
                     )
                     .forEach(
                             (final LivingEntity nearbyLivingEntity) ->
-                                    nearbyLivingEntity.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 25, 0))
+                                    nearbyLivingEntity.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 25, 0, false))
                     );
             final double particleX = equippingPlayerLocation.getX();
             final double particleY = equippingPlayerLocation.getY() + 0.75;
