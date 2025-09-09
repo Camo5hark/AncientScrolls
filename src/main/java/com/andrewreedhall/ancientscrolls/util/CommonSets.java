@@ -2,26 +2,13 @@ package com.andrewreedhall.ancientscrolls.util;
 
 import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
+import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.bukkit.block.Biome.*;
-import static org.bukkit.block.Biome.BEACH;
-import static org.bukkit.block.Biome.COLD_OCEAN;
-import static org.bukkit.block.Biome.DEEP_COLD_OCEAN;
-import static org.bukkit.block.Biome.DEEP_FROZEN_OCEAN;
-import static org.bukkit.block.Biome.DEEP_LUKEWARM_OCEAN;
-import static org.bukkit.block.Biome.FROZEN_OCEAN;
-import static org.bukkit.block.Biome.FROZEN_RIVER;
-import static org.bukkit.block.Biome.LUKEWARM_OCEAN;
-import static org.bukkit.block.Biome.MANGROVE_SWAMP;
-import static org.bukkit.block.Biome.MUSHROOM_FIELDS;
-import static org.bukkit.block.Biome.RIVER;
-import static org.bukkit.block.Biome.SNOWY_BEACH;
-import static org.bukkit.block.Biome.STONY_SHORE;
-import static org.bukkit.block.Biome.SWAMP;
 import static org.bukkit.entity.EntityType.*;
+import static org.bukkit.potion.PotionEffectType.*;
 
 public final class CommonSets {
     public static final Set<EntityType> NETHER_MONSTERS = Set.of(
@@ -116,5 +103,22 @@ public final class CommonSets {
             WINDSWEPT_HILLS,
             WINDSWEPT_GRAVELLY_HILLS,
             WINDSWEPT_FOREST
+    );
+    public static final Set<PotionEffectType> BAD_POTION_EFFECT_TYPES = Set.of(
+            SLOWNESS,
+            MINING_FATIGUE,
+            INSTANT_DAMAGE,
+            NAUSEA,
+            BLINDNESS,
+            HUNGER,
+            WEAKNESS,
+            POISON,
+            PotionEffectType.WITHER,
+            LEVITATION,
+            WIND_CHARGED,
+            WEAVING,
+            OOZING,
+            INFESTED,
+            UNLUCK
     );
 }

@@ -58,7 +58,7 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value {
         plugin().getLogger().info(this.key + " generating in " + event.getLootTable().getKey());
         // TODO --------
         final List<ItemStack> generatedLoot = event.getLoot();
-        generatedLoot.removeLast();
+        generatedLoot.removeFirst();
         event.getLoot().add(this.createItemStack(1));
     }
 
@@ -70,7 +70,7 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value {
             return;
         }
         final List<ItemStack> dispensedLoot = event.getDispensedLoot();
-        dispensedLoot.removeLast();
+        dispensedLoot.removeFirst();
         dispensedLoot.add(this.createItemStack(1));
     }
 
