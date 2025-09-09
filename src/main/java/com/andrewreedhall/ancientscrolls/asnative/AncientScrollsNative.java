@@ -38,6 +38,7 @@ public final class AncientScrollsNative {
                 ScrollToxicology.class, // poison
                 ScrollAdvancedPhysics.class, // levitation
                 ScrollEndurance.class, // mining fatigue // BOSS: ELDER GUARDIAN
+                ScrollRetinalResearch.class, // darkness
 
                 // effect/night vision
                 ScrollAquaticLensing.class,
