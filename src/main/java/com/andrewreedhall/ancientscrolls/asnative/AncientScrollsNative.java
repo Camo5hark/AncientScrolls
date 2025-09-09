@@ -46,6 +46,7 @@ public final class AncientScrollsNative {
                 // bonus
                 ScrollHymnal.class,
                 ScrollHellsBlessing.class,
+                ScrollCounterinsurgency.class,
 
                 // powers
                 ScrollAcrobatics.class,

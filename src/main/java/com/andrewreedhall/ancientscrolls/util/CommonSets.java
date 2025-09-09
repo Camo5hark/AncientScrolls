@@ -77,6 +77,14 @@ public final class CommonSets {
             WITCH,
             ZOMBIE
     );
+    public static final Set<EntityType> ILLAGERS = Set.of(
+            EVOKER,
+            PILLAGER,
+            VINDICATOR,
+            RAVAGER,
+            VEX,
+            WITCH
+    );
     public static final Set<Biome> AQUATIC_BIOMES = Set.of(
             OCEAN,
             DEEP_OCEAN,
