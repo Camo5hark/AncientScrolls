@@ -67,6 +67,7 @@ public final class AncientScrollsNative {
                 ScrollNocturnal.class,
                 ScrollNetherLife.class, // BOSS: WITHER
                 ScrollVigilance.class,
+                ScrollStealth.class, // BOSS: WARDEN
 
                 // end city
                 ScrollSniping.class,
