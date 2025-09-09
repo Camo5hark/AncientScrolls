@@ -33,9 +33,10 @@ public final class AncientScrollsNative {
                 ScrollCrossCountry.class,
 
                 // effect negation
-                ScrollPestControl.class,
-                ScrollArchaicSkincareRoutine.class, // BOSS: WITHER
-                ScrollToxicology.class,
+                ScrollPestControl.class, // infested
+                ScrollArchaicSkincareRoutine.class, // wither // BOSS: WITHER
+                ScrollToxicology.class, // poison
+                ScrollAdvancedPhysics.class, // levitation
 
                 // effect/night vision
                 ScrollAquaticLensing.class,
