@@ -37,6 +37,7 @@ public final class AncientScrollsNative {
                 ScrollArchaicSkincareRoutine.class, // wither // BOSS: WITHER
                 ScrollToxicology.class, // poison
                 ScrollAdvancedPhysics.class, // levitation
+                ScrollEndurance.class, // mining fatigue // BOSS: ELDER GUARDIAN
 
                 // effect/night vision
                 ScrollAquaticLensing.class,
@@ -44,7 +45,7 @@ public final class AncientScrollsNative {
                 ScrollCanineStudies.class,
                 ScrollSpelunking.class,
                 ScrollHillclimbing.class,
-                ScrollWhalelore.class,
+                ScrollWhalelore.class, // BOSS: ELDER GUARDIAN
 
                 // bonus
                 ScrollHymnal.class,
