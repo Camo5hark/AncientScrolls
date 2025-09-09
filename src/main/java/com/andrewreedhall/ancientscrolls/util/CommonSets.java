@@ -105,4 +105,16 @@ public final class CommonSets {
             SNOWY_BEACH,
             STONY_SHORE
     );
+    public static final Set<Biome> HIGHLAND_BIOMES = Set.of(
+            JAGGED_PEAKS,
+            FROZEN_PEAKS,
+            STONY_PEAKS,
+            MEADOW,
+            CHERRY_GROVE,
+            GROVE,
+            SNOWY_SLOPES,
+            WINDSWEPT_HILLS,
+            WINDSWEPT_GRAVELLY_HILLS,
+            WINDSWEPT_FOREST
+    );
 }

@@ -14,9 +14,7 @@ public final class ScrollNetherLife extends ItemScrollNative implements Listener
                 "+20% damage towards and -20% damage from nether monsters"
         });
         this.putMCLootTableGenProb("entities/wither", 1.0);
-        this.addNightVisionEffectToEquippingPlayers((final Player equippingPlayer) ->
-                equippingPlayer.getWorld().getEnvironment().equals(World.Environment.NETHER)
-        );
+        this.addPotionEffectToEquippingPlayers(NIGHT_VISION_POTION_EFFECT, (final Player equippingPlayer) -> equippingPlayer.getWorld().getEnvironment().equals(World.Environment.NETHER));
     }
 
     @EventHandler

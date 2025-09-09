@@ -10,6 +10,6 @@ public final class ScrollMeteorology extends ItemScrollNative {
         this.putMCLootTableGenProb("chests/ruined_portal", 0.073);
         this.putMCLootTableGenProb("chests/jungle_temple", 0.127);
         this.putMCLootTableGenProb("entities/bogged", 0.005);
-        this.addNightVisionEffectToEquippingPlayers((final Player equippingPlayer) -> equippingPlayer.getWorld().hasStorm());
+        this.addPotionEffectToEquippingPlayers(NIGHT_VISION_POTION_EFFECT, (final Player equippingPlayer) -> equippingPlayer.getWorld().hasStorm());
     }
 }

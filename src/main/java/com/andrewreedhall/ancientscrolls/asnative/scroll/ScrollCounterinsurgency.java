@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class ScrollCounterinsurgency extends ItemScrollNative implements Listener {
+public final class ScrollCounterinsurgency extends ItemScrollNative implements Listener {
     public ScrollCounterinsurgency() {
         super("counterinsurgency", "Counterinsurgency", new String[] {
                 "+15% damage towards and -15% damage from illagers"

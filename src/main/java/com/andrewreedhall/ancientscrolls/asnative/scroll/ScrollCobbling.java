@@ -28,7 +28,7 @@ public final class ScrollCobbling extends ItemScrollNative {
                                 )
                         )
                 ),
-                PLAYER_CONDITION_ALWAYS_TRUE,
+                CONDITION_BYPASS,
                 (final Player player) -> {
                     if (player.isSneaking() || player.getForwardsMovement() <= 0.0F || !BukkitUtil.isPlayerOnGround(player)) {
                         return;

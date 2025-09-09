@@ -11,6 +11,6 @@ public final class ScrollAquaticLensing extends ItemScrollNative {
         this.putMCLootTableGenProb("chests/shipwreck_treasure", 0.167);
         this.putMCLootTableGenProb("chests/buried_treasure", 0.25);
         this.putMCLootTableGenProb("entities/drowned", 0.01);
-        this.addNightVisionEffectToEquippingPlayers((final Player equippingPlayer) -> CommonSets.AQUATIC_BIOMES.contains(equippingPlayer.getLocation().getBlock().getBiome()));
+        this.addPotionEffectToEquippingPlayers(NIGHT_VISION_POTION_EFFECT, (final Player equippingPlayer) -> CommonSets.AQUATIC_BIOMES.contains(equippingPlayer.getLocation().getBlock().getBiome()));
     }
 }

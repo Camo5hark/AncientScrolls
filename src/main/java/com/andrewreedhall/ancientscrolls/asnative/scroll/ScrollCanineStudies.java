@@ -18,7 +18,7 @@ public final class ScrollCanineStudies extends ItemScrollNative implements Liste
         this.putMCLootTableGenProb("entities/stray", 0.005);
         this.putMCLootTableGenProb("entities/bogged", 0.005);
         this.putMCLootTableGenProb("entities/wither_skeleton", 0.01);
-        this.addNightVisionEffectToEquippingPlayers((final Player equippingPlayer) -> !equippingPlayer.getWorld().isDayTime());
+        this.addPotionEffectToEquippingPlayers(NIGHT_VISION_POTION_EFFECT, (final Player equippingPlayer) -> !equippingPlayer.getWorld().isDayTime());
     }
 
     @EventHandler

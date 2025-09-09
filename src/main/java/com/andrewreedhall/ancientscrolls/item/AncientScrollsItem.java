@@ -13,6 +13,7 @@ import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -56,6 +57,8 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value {
         // TODO debugger
         plugin().getLogger().info(this.key + " generating in " + event.getLootTable().getKey());
         // TODO --------
+        final List<ItemStack> generatedLoot = event.getLoot();
+        generatedLoot.removeLast();
         event.getLoot().add(this.createItemStack(1));
     }
 
@@ -66,7 +69,9 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value {
         if (this.createLocationBasedRandom(vault.getLocation()).nextDouble() > genProb) {
             return;
         }
-        event.getDispensedLoot().add(this.createItemStack(1));
+        final List<ItemStack> dispensedLoot = event.getDispensedLoot();
+        dispensedLoot.removeLast();
+        dispensedLoot.add(this.createItemStack(1));
     }
 
     public void generateByVault(final BlockDispenseLootEvent event) {

@@ -13,7 +13,7 @@ public final class ScrollNightLife extends ItemScrollNative implements Listener 
                 "+20% damage towards and -20% damage from overworld monsters"
         });
         this.putMCLootTableGenProb("chests/end_city_treasure", 0.131);
-        this.addNightVisionEffectToEquippingPlayers((final Player equippingPlayer) -> !equippingPlayer.getWorld().isDayTime());
+        this.addPotionEffectToEquippingPlayers(NIGHT_VISION_POTION_EFFECT, (final Player equippingPlayer) -> !equippingPlayer.getWorld().isDayTime());
     }
 
     @EventHandler

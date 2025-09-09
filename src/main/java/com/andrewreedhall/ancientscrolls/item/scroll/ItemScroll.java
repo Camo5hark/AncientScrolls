@@ -38,7 +38,8 @@ import static org.bukkit.ChatColor.*;
 public abstract class ItemScroll extends AncientScrollsItem {
     private static final List<Boolean> CACHED_FLAGS = List.of(true);
     private static final String CACHED_DISPLAY_NAME = GOLD + "Ancient Scroll";
-    protected static final Predicate<Player> PLAYER_CONDITION_ALWAYS_TRUE = (final Player player) -> true;
+    protected static final PotionEffect NIGHT_VISION_POTION_EFFECT = new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, false);
+    protected static final Predicate<Player> CONDITION_BYPASS = (final Player player) -> true;
 
     private final List<String> cachedKey;
     private final List<String> cachedLore;
@@ -120,13 +121,12 @@ public abstract class ItemScroll extends AncientScrollsItem {
         );
     }
 
-    protected void addNightVisionEffectToEquippingPlayers(final Predicate<Player> condition) {
+    protected void addPotionEffectToEquippingPlayers(final PotionEffect potionEffect, final Predicate<Player> condition) {
         this.scheduleRepeatingTaskPerEquippingPlayer((final Player equippingPlayer) -> {
-            final PotionEffect equippingPlayerNightVisionPotionEffect = equippingPlayer.getPotionEffect(PotionEffectType.NIGHT_VISION);
-            if ((equippingPlayerNightVisionPotionEffect != null && equippingPlayerNightVisionPotionEffect.getDuration() > 220) || !condition.test(equippingPlayer)) {
+            if (!condition.test(equippingPlayer)) {
                 return;
             }
-            equippingPlayer.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, false));
+            equippingPlayer.addPotionEffect(potionEffect);
         }, 20L);
     }
 

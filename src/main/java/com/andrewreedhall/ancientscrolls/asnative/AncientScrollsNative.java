@@ -37,11 +37,12 @@ public final class AncientScrollsNative {
                 ScrollArchaicSkincareRoutine.class, // BOSS: WITHER
                 ScrollToxicology.class,
 
-                // night vision
+                // effect/night vision
                 ScrollAquaticLensing.class,
                 ScrollMeteorology.class,
                 ScrollCanineStudies.class,
                 ScrollSpelunking.class,
+                ScrollHillclimbing.class,
 
                 // bonus
                 ScrollHymnal.class,

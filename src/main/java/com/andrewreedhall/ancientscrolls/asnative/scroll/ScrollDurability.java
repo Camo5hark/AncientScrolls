@@ -24,7 +24,7 @@ public final class ScrollDurability extends ItemScrollNative {
                                 )
                         )
                 ),
-                PLAYER_CONDITION_ALWAYS_TRUE,
+                CONDITION_BYPASS,
                 null
         );
     }
