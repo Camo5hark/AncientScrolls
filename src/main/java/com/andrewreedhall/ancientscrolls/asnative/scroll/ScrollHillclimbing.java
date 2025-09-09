@@ -14,7 +14,7 @@ public final class ScrollHillclimbing extends ItemScrollNative {
         this.putMCLootTableGenProb("entities/spider", 0.005);
         this.putMCLootTableGenProb("entities/cave_spider", 0.01);
         this.addPotionEffectToEquippingPlayers(
-                new PotionEffect(PotionEffectType.JUMP_BOOST, 21, 0, false),
+                new PotionEffect(PotionEffectType.JUMP_BOOST, 25, 2, false),
                 (final Player equippingPlayer) -> CommonSets.HIGHLAND_BIOMES.contains(equippingPlayer.getLocation().getBlock().getBiome())
         );
     }
