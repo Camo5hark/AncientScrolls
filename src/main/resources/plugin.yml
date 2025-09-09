@@ -1,0 +1,64 @@
+# AncientScrolls SpigotMC plugin
+# Copyright (C) 2025  Andrew Hall
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# License file: COPYING
+# Email for contact: camo5hark10@gmail.com
+
+main: "com.andrewreedhall.ancientscrolls.AncientScrollsPlugin"
+name: "AncientScrolls"
+version: "1.0.0-SNAPSHOT"
+description: "Completely server-side mod that adds a lot of content to vanilla SMP MC such as an equipment system"
+api-version: "1.21.8"
+load: "STARTUP"
+author: "Camo5hark"
+website: "www.github.com/Camo5hark/AncientScrolls"
+commands:
+  asreload:
+    description: "Reloads Ancient Scrolls plugin configuration and resets all caches"
+    permission: "ancientscrolls.admin"
+    permission-message: "\u00A7cYou do not have permission to use this command."
+    usage: "\u00A7eUsage: /asreload"
+  asgive:
+    description: "Gives a player an Ancient Scrolls item"
+    permission: "ancientscrolls.admin"
+    permission-message: "\u00A7cYou do not have permission to use this command."
+    usage: "\u00A7eUsage: /asgive <player> <item_key> <item_amount>"
+  clearequippedscrolls:
+    description: "Clears a player's equipped scrolls"
+    permission: "ancientscrolls.admin"
+    permission-message: "\u00A7cYou do not have permission to use this command."
+    usage: "\u00A7Usage: /asclear <player>"
+  ancientknowledge:
+    description: "Opens a player's ancient knowledge inventory"
+    permission: "ancientscrolls.ancientknowledge"
+    permission-message: "\u00A7cYou do not have permission to use this command."
+    usage: "\u00A7Usage: /ancientknowledge [player]"
+    aliases: ["ak"]
+  addequippedscroll:
+    description: "Forces a player to equip a scroll"
+    permission: "ancientscrolls.admin"
+    permission-message: "\u00A7cYou do not have permission to use this command."
+    usage: "\u00A7Usage: /ancientknowledge <player> <scroll_item_key>"
+permissions:
+  ancientscrolls.admin:
+    description: "Allows player to use Ancient Scrolls administrative commands"
+    default: "op"
+  ancientscrolls.ancientknowledge:
+    description: "Allows player to use /ancientknowledge"
+    default: true
+  ancientscrolls.ancientknowledge.others:
+    description: "Allows player to use /ancientknowledge for other players"
+    default: "op"

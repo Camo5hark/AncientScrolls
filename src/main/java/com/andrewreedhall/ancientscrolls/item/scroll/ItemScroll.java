@@ -1,0 +1,198 @@
+package com.andrewreedhall.ancientscrolls.item.scroll;
+
+import com.andrewreedhall.ancientscrolls.util.PlayerDataHandler;
+import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
+import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
+import oshi.util.tuples.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
+import static org.bukkit.ChatColor.*;
+
+public abstract class ItemScroll extends AncientScrollsItem {
+    private static final List<Boolean> CACHED_FLAGS = List.of(true);
+    private static final String CACHED_DISPLAY_NAME = GOLD + "Ancient Scroll";
+    protected static final Predicate<Player> PLAYER_CONDITION_ALWAYS_TRUE = (final Player player) -> true;
+
+    private final List<String> cachedKey;
+    private final List<String> cachedLore;
+
+    public ItemScroll(final NamespacedKey key, final String name, final String[] lore) {
+        super(key);
+        this.cachedKey = List.of(this.key.toString());
+        this.cachedLore = new ArrayList<>(lore.length + 1);
+        this.cachedLore.add(LIGHT_PURPLE + name);
+        for (String loreElem : lore) {
+            this.cachedLore.add(GRAY + ITALIC.toString() + loreElem);
+        }
+    }
+
+    @Override
+    public ItemStack createItemStack(int amount) {
+        final ItemStack itemStack = new ItemStack(Material.PAPER, amount);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) {
+            plugin().getLogger().warning("ItemMeta is null for ItemScroll ItemStack");
+            return itemStack;
+        }
+        final CustomModelDataComponent modelData = itemMeta.getCustomModelDataComponent();
+        modelData.setFlags(CACHED_FLAGS);
+        modelData.setStrings(this.cachedKey);
+        itemMeta.setCustomModelDataComponent(modelData);
+        itemMeta.setMaxStackSize(1);
+        itemMeta.setDisplayName(CACHED_DISPLAY_NAME);
+        itemMeta.setLore(this.cachedLore);
+        itemMeta.setEnchantmentGlintOverride(true);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    public boolean isEquipping(final Player player) {
+        return PlayerDataHandler.hasEquippedScroll(player, this);
+    }
+
+    protected void scheduleRepeatingTaskPerEquippingPlayer(final Consumer<Player> task, final long period) {
+        plugin().scheduleTask(
+                (final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(
+                        plugin(),
+                        () -> plugin()
+                                .getServer()
+                                .getOnlinePlayers()
+                                .stream()
+                                .filter(this::isEquipping)
+                                .forEach(task),
+                        0L,
+                        period
+                )
+        );
+    }
+
+    protected void modifyAttributesOfEquippingPlayers(final Set<Pair<Attribute, AttributeModifier>> attributeModifierDescriptors, final Predicate<Player> condition, final Consumer<Player> extraTaskPerEquippingPlayer) {
+        plugin().scheduleTask((final BukkitScheduler scheduler) ->
+                scheduler.scheduleSyncRepeatingTask(plugin(), () ->
+                        plugin().getServer().getOnlinePlayers().forEach((final Player onlinePlayer) -> {
+                            if (this.isEquipping(onlinePlayer) && condition.test(onlinePlayer)) {
+                                attributeModifierDescriptors.forEach((final Pair<Attribute, AttributeModifier> attributeModifierDescriptor) -> {
+                                    final AttributeInstance attributeInstance = BukkitUtil.getAttributeInstance(onlinePlayer, attributeModifierDescriptor.getA());
+                                    final AttributeModifier attributeModifier = attributeModifierDescriptor.getB();
+                                    if (!BukkitUtil.hasAttributeModifier(attributeInstance, attributeModifier.getKey())) {
+                                        attributeInstance.addTransientModifier(attributeModifier);
+                                    }
+                                    if (extraTaskPerEquippingPlayer != null) {
+                                        extraTaskPerEquippingPlayer.accept(onlinePlayer);
+                                    }
+                                });
+                            } else {
+                                attributeModifierDescriptors.forEach((final Pair<Attribute, AttributeModifier> attributeModifierDescriptor) ->
+                                        BukkitUtil.getAttributeInstance(onlinePlayer, attributeModifierDescriptor.getA()).removeModifier(attributeModifierDescriptor.getB())
+                                );
+                            }
+                        }),
+                        0L,
+                        1L
+                )
+        );
+    }
+
+    protected void addNightVisionEffectToEquippingPlayers(final Predicate<Player> condition) {
+        this.scheduleRepeatingTaskPerEquippingPlayer((final Player equippingPlayer) -> {
+            final PotionEffect equippingPlayerNightVisionPotionEffect = equippingPlayer.getPotionEffect(PotionEffectType.NIGHT_VISION);
+            if ((equippingPlayerNightVisionPotionEffect != null && equippingPlayerNightVisionPotionEffect.getDuration() > 220) || !condition.test(equippingPlayer)) {
+                return;
+            }
+            equippingPlayer.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0));
+        }, 20L);
+    }
+
+    protected void reduceConsumedPlacedBlocks(final BlockPlaceEvent event, final Set<Material> blockTypes, final double prob) {
+        final Player placingPlayer = event.getPlayer();
+        if (
+                placingPlayer.getGameMode().equals(GameMode.CREATIVE) ||
+                !this.isEquipping(placingPlayer) ||
+                !blockTypes.contains(event.getBlock().getType()) ||
+                plugin().getUniversalRandom().nextDouble() > prob
+        ) {
+            return;
+        }
+        event.getItemInHand().add();
+    }
+
+    protected void applyBonusAgainstEntityTypes(final EntityDamageByEntityEvent event, final Set<EntityType> entityTypes, final double bonus) {
+        final Entity damaged = event.getEntity();
+        final Entity damager = event.getDamager();
+        if (entityTypes.contains(damaged.getType()) && (damager instanceof Player damagerPlayer)) {
+            if (!this.isEquipping(damagerPlayer)) {
+                return;
+            }
+            event.setDamage(event.getDamage() + (event.getOriginalDamage(EntityDamageEvent.DamageModifier.BASE) * bonus));
+            damaged.getWorld().spawnParticle(Particle.ENCHANTED_HIT, ((LivingEntity) damaged).getEyeLocation(), 10, 0.5, 0.5, 0.5, 0.1);
+        } else if (entityTypes.contains(damager.getType()) && (damaged instanceof Player damagedPlayer)) {
+            if (!this.isEquipping(damagedPlayer)) {
+                return;
+            }
+            event.setDamage(event.getDamage() - (event.getOriginalDamage(EntityDamageEvent.DamageModifier.BASE) * bonus));
+        }
+    }
+
+    protected void negatePotionEffectType(final EntityPotionEffectEvent event, final PotionEffectType potionEffectType) {
+        if (!(event.getEntity() instanceof Player affectedPlayer)) {
+            return;
+        }
+        final PotionEffect newPotionEffect = event.getNewEffect();
+        if (newPotionEffect == null || !newPotionEffect.getType().equals(potionEffectType) || !this.isEquipping(affectedPlayer)) {
+            return;
+        }
+        event.setCancelled(true);
+    }
+
+    protected NamespacedKey createSubkey(final String id) {
+        return fromAncientScrollsNamespace(this.key.getKey() + "/" + id);
+    }
+
+    public static boolean is(final ItemStack itemStack) {
+        if (!itemStack.getType().equals(Material.PAPER)) {
+            return false;
+        }
+        final ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null || !itemMeta.hasCustomModelDataComponent()) {
+            return false;
+        }
+        final List<Boolean> modelDataFlags = itemMeta.getCustomModelDataComponent().getFlags();
+        return !modelDataFlags.isEmpty() && modelDataFlags.getFirst();
+    }
+
+    public static NamespacedKey getKey(final ItemStack scrollItemStack) {
+        final ItemMeta scrollItemMeta = scrollItemStack.getItemMeta();
+        if (scrollItemMeta == null) {
+            return null;
+        }
+        final List<String> scrollModelDataStrings = scrollItemMeta.getCustomModelDataComponent().getStrings();
+        return scrollModelDataStrings.isEmpty() ? null : NamespacedKey.fromString(scrollModelDataStrings.getFirst());
+    }
+}
