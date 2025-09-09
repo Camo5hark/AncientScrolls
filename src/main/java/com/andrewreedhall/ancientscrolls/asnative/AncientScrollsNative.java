@@ -39,6 +39,7 @@ public final class AncientScrollsNative {
                 ScrollAdvancedPhysics.class, // levitation
                 ScrollEndurance.class, // mining fatigue // BOSS: ELDER GUARDIAN
                 ScrollRetinalResearch.class, // darkness
+                ScrollArchaicEyeChart.class, // blindness
 
                 // effect/night vision
                 ScrollAquaticLensing.class,
