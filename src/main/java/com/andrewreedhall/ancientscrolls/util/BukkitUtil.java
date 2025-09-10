@@ -29,6 +29,8 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Objects;
@@ -65,5 +67,12 @@ public final class BukkitUtil {
 
     public static boolean hasAttributeModifier(final AttributeInstance attributeInstance, final NamespacedKey attributeModifierKey) {
         return attributeInstance.getModifiers().stream().anyMatch((final AttributeModifier attributeModifier) -> attributeModifier.getKey().equals(attributeModifierKey));
+    }
+
+    public static void addItem(final Inventory inventory, final ItemStack itemStack) {
+        if (inventory.addItem(itemStack).isEmpty() || !(inventory.getHolder() instanceof Player inventoryHolderPlayer)) {
+            return;
+        }
+        inventoryHolderPlayer.getWorld().dropItem(inventoryHolderPlayer.getEyeLocation(), itemStack);
     }
 }

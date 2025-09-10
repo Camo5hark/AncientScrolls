@@ -43,6 +43,8 @@ public abstract class ItemScroll extends AncientScrollsItem {
 
     private final List<String> cachedKey;
     private final List<String> cachedLore;
+    private boolean enderDragonReward = false;
+    private boolean special = false;
 
     public ItemScroll(final NamespacedKey key, final String name, final String[] lore) {
         super(key);
@@ -173,6 +175,14 @@ public abstract class ItemScroll extends AncientScrollsItem {
 
     protected NamespacedKey createSubkey(final String id) {
         return fromAncientScrollsNamespace(this.key.getKey() + "/" + id);
+    }
+
+    public boolean isEnderDragonReward() {
+        return this.enderDragonReward;
+    }
+
+    public boolean isSpecial() {
+        return this.special;
     }
 
     public static boolean is(final ItemStack itemStack) {

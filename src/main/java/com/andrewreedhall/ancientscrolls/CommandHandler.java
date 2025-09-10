@@ -23,13 +23,11 @@ package com.andrewreedhall.ancientscrolls;
 
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
+import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import com.andrewreedhall.ancientscrolls.util.PlayerDataHandler;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.HashMap;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 import static org.bukkit.ChatColor.*;
@@ -69,12 +67,8 @@ public final class CommandHandler {
                     break;
                 }
                 // execute
-                final HashMap<Integer, ItemStack> notGivenItemStacks = player.getInventory().addItem(item.createItemStack(argItemAmount));
-                if (notGivenItemStacks.isEmpty()) {
-                    sender.sendMessage(GREEN + "Gave " + player.getName() + " x" + argItemAmount + " " + argItemKey);
-                } else {
-                    sender.sendMessage(RED + "Item not given because " + player.getName() + "'s inventory does not have enough space");
-                }
+                BukkitUtil.addItem(player.getInventory(), item.createItemStack(argItemAmount));
+                sender.sendMessage(GREEN + "Gave " + player.getName() + " x" + argItemAmount + " " + argItemKey);
                 return true;
             }
             case "clearequippedscrolls" -> {

@@ -75,10 +75,7 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
         if (clickedInventory.equals(equippedScrollInventory)) {
             equippedScrollInventory.setItem(clickedSlot, null);
             PlayerDataHandler.removeEquippedScroll(equippedScrollPlayer, clickedSlot);
-            final HashMap<Integer, ItemStack> notGivenItemStacks = clickerInventory.addItem(scrollItemStack);
-            if (!notGivenItemStacks.isEmpty()) {
-                clickerPlayer.getWorld().dropItem(clickerPlayer.getLocation(), notGivenItemStacks.get(0));
-            }
+            BukkitUtil.addItem(clickerInventory, scrollItemStack);
         } else if (clickedInventory.equals(clickerInventory) && PlayerDataHandler.insertEquippedScroll(equippedScrollPlayer, (ItemScroll) plugin().getItemRegistry().get(ItemScroll.getKey(scrollItemStack)))) {
             clickerInventory.setItem(clickedSlot, null);
         }
