@@ -101,7 +101,7 @@ public final class ItemScrollListener implements Listener {
             return;
         }
         final List<MerchantRecipe> spawnedWanderingTraderRecipes = new ArrayList<>(spawnedWanderingTrader.getRecipes());
-        final List<AncientScrollsItem> allRegisteredScrolls = new ArrayList<>(
+        final List<AncientScrollsItem> registeredNonSpecialScrolls = new ArrayList<>(
                 plugin()
                         .getItemRegistry()
                         .getAll()
@@ -109,12 +109,16 @@ public final class ItemScrollListener implements Listener {
                         .filter((final AncientScrollsItem item) -> item instanceof ItemScroll scroll && !scroll.isSpecial())
                         .toList()
         );
-        allRegisteredScrolls.sort(
+        registeredNonSpecialScrolls.sort(
                 (final AncientScrollsItem item0, final AncientScrollsItem item2) ->
                         plugin().getUniversalRandom().nextInt(-1, 2)
         );
         final MerchantRecipe scrollRecipe = new MerchantRecipe(
-                allRegisteredScrolls.get(plugin().getUniversalRandom().nextInt(allRegisteredScrolls.size())).createItemStack(1),
+                registeredNonSpecialScrolls.get(
+                        plugin()
+                                .getUniversalRandom()
+                                .nextInt(registeredNonSpecialScrolls.size())
+                ).createItemStack(1),
                 1
         );
         scrollRecipe.addIngredient(new ItemStack(Material.PAPER));

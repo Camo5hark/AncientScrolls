@@ -42,6 +42,7 @@ public final class ScrollQuantumTunnelling extends ItemScrollNative implements L
         super("quantum_tunnelling", "Quantum Tunnelling", new String[] {
                 "Teleport to blocks instantly with ender pearls"
         });
+        this.special = true;
         this.putMCLootTableGenProb("chests/end_city_treasure", 0.21);
     }
 

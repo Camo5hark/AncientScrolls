@@ -40,6 +40,7 @@ public final class ScrollSniping extends ItemScrollNative implements Listener {
         super("sniping", "Sniping", new String[] {
                 "Arrow hitscan"
         });
+        this.special = true;
         this.putMCLootTableGenProb("chests/end_city_treasure", 0.21);
     }
 

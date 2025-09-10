@@ -38,6 +38,7 @@ public final class ScrollAirBending extends ItemScrollNative implements Listener
         super("air_bending", "Air Bending", new String[] {
                 "50% chance to cast wind charge explosion on targets attacked with projectiles"
         });
+        this.ominousVaultGenProb = 0.075;
         this.putMCLootTableGenProb("entities/breeze", 0.01);
     }
 

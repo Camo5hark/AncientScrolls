@@ -147,7 +147,7 @@ public final class ScrollScrollOfTheDragonFang extends ItemScrollNative implemen
                             0.5,
                             0.5,
                             0.5,
-                            new Particle.DustOptions(Color.fromRGB(plugin().getUniversalRandom().nextInt() & 0xFFFFFF), 1.0F)
+                            new Particle.DustOptions(Color.fromRGB(plugin().getUniversalRandom().nextInt(0x1000000)), 1.0F)
                     );
                     this.scheduleEvokerFangTrailNext(player);
                 },

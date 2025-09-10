@@ -32,6 +32,7 @@ public final class ScrollDurability extends ItemScrollNative {
         super("durability", "Durability", new String[] {
                 "+8 max health"
         });
+        this.special = true;
         this.putMCLootTableGenProb("chests/stronghold_corridor", 0.025);
         this.putMCLootTableGenProb("chests/end_city_treasure", 0.21);
         this.modifyAttributesOfEquippingPlayers(
