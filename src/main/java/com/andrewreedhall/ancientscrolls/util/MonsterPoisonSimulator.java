@@ -55,7 +55,7 @@ public final class MonsterPoisonSimulator {
                                                 0.5,
                                                 0.5,
                                                 0.5,
-                                                Color.fromRGB(0x00FF00)
+                                                Color.fromRGB(0x87A363)
                                         );
                                     });
                                 },

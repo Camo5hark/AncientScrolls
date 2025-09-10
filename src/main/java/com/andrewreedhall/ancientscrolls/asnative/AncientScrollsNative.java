@@ -75,6 +75,7 @@ public final class AncientScrollsNative {
                 ScrollVigilance.class,
                 ScrollStealth.class, // BOSS: WARDEN
                 ScrollImmunityResearch.class,
+                ScrollScrollOfTheDragonFang.class, // BOSS: ENDER DRAGON
 
                 // end city
                 ScrollSniping.class,
