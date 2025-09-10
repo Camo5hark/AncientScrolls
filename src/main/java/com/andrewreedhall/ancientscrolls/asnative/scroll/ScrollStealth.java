@@ -11,6 +11,7 @@ public final class ScrollStealth extends ItemScrollNative implements Listener {
         super("stealth", "Stealth", new String[] {
                 "Prevents sculk sensor activation"
         });
+        this.special = true;
         this.putMCLootTableGenProb("entities/warden", 1.0);
     }
 

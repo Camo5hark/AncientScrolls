@@ -81,7 +81,7 @@ public final class AncientScrollsNative {
                 ScrollSniping.class,
                 ScrollQuantumTunnelling.class,
                 ScrollDurability.class,
-                ScrollNightLife.class, // TODO ender dragon drop?
+                ScrollNightLife.class, // BOSS: ENDER DRAGON
 
                 // flasks
                 FlaskDragonsBlood.class,

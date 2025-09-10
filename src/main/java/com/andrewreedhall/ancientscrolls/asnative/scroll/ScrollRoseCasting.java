@@ -16,6 +16,7 @@ public final class ScrollRoseCasting extends ItemScrollNative implements Listene
                 "Consume wither roses to launch wither skulls",
                 "Slain monsters drop wither roses"
         });
+        this.special = true;
         this.putMCLootTableGenProb("entities/wither", 1.0);
     }
 

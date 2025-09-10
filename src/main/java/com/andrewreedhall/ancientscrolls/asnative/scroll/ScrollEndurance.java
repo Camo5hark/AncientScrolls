@@ -10,6 +10,7 @@ public final class ScrollEndurance extends ItemScrollNative implements Listener 
         super("endurance", "Endurance", new String[] {
                 "Negates mining fatigue"
         });
+        this.special = true;
         this.putMCLootTableGenProb("entities/elder_guardian", 1.0);
         this.putMCLootTableGenProb("entities/guardian", 0.005);
     }

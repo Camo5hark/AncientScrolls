@@ -42,7 +42,8 @@ public final class ScrollScrollOfTheDragonFang extends ItemScrollNative implemen
         super("scroll_of_the_dragon_fang", "Scroll of the Dragon Fang", new String[] {
                 "Conjure evoker fangs with sword, axe, or mace"
         });
-        // TODO ender dragon drop
+        this.enderDragonReward = true;
+        this.special = true;
     }
 
     @EventHandler

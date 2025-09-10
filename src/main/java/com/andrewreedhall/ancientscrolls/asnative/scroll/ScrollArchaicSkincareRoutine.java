@@ -10,6 +10,7 @@ public final class ScrollArchaicSkincareRoutine extends ItemScrollNative impleme
         super("archaic_skincare_routine", "Archaic Skincare Routine", new String[] {
                 "Negates wither effect"
         });
+        this.special = true;
         this.putMCLootTableGenProb("entities/wither", 1.0);
     }
 

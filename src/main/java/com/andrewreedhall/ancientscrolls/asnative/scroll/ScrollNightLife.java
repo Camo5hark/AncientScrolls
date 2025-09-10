@@ -12,6 +12,8 @@ public final class ScrollNightLife extends ItemScrollNative implements Listener 
                 "Night vision at night",
                 "+20% damage towards and -20% damage from overworld monsters"
         });
+        this.enderDragonReward = true;
+        this.special = true;
         this.putMCLootTableGenProb("chests/end_city_treasure", 0.131);
         this.addPotionEffectToEquippingPlayers(NIGHT_VISION_POTION_EFFECT, (final Player equippingPlayer) -> !equippingPlayer.getWorld().isDayTime());
     }
