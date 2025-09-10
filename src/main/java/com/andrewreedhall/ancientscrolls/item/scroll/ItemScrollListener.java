@@ -27,13 +27,19 @@ import com.andrewreedhall.ancientscrolls.util.PlayerDataHandler;
 import org.bukkit.*;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.WanderingTrader;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.PlayerInventory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -87,5 +93,33 @@ public final class ItemScrollListener implements Listener {
                 BukkitUtil.addItem(playerInventory, scroll.createItemStack(1));
             });
         });
+    }
+
+    @EventHandler
+    public void onEntitySpawn(final EntitySpawnEvent event) {
+        if (!(event.getEntity() instanceof WanderingTrader spawnedWanderingTrader)) {
+            return;
+        }
+        final List<MerchantRecipe> spawnedWanderingTraderRecipes = new ArrayList<>(spawnedWanderingTrader.getRecipes());
+        final List<AncientScrollsItem> allRegisteredScrolls = new ArrayList<>(
+                plugin()
+                        .getItemRegistry()
+                        .getAll()
+                        .parallelStream()
+                        .filter((final AncientScrollsItem item) -> item instanceof ItemScroll scroll && !scroll.isSpecial())
+                        .toList()
+        );
+        allRegisteredScrolls.sort(
+                (final AncientScrollsItem item0, final AncientScrollsItem item2) ->
+                        plugin().getUniversalRandom().nextInt(-1, 2)
+        );
+        final MerchantRecipe scrollRecipe = new MerchantRecipe(
+                allRegisteredScrolls.get(plugin().getUniversalRandom().nextInt(allRegisteredScrolls.size())).createItemStack(1),
+                1
+        );
+        scrollRecipe.addIngredient(new ItemStack(Material.PAPER));
+        scrollRecipe.addIngredient(new ItemStack(Material.EMERALD, plugin().getUniversalRandom().nextInt(20, 46)));
+        spawnedWanderingTraderRecipes.add(scrollRecipe);
+        spawnedWanderingTrader.setRecipes(spawnedWanderingTraderRecipes);
     }
 }
