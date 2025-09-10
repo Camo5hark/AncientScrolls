@@ -42,6 +42,7 @@ public final class AncientScrollsNative {
                 ScrollArchaicEyeChart.class, // blindness
                 ScrollArchaicWorkoutRoutine.class, // slowness
                 ScrollMicrobiology.class, // nausea
+                ScrollAutotrophy.class, // hunger
 
                 // effect/night vision
                 ScrollAquaticLensing.class,
