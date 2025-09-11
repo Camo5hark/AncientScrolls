@@ -107,6 +107,7 @@ public final class AncientScrollsNative {
                 ScrollSniping.class,
                 ScrollQuantumTunnelling.class,
                 ScrollDurability.class,
+                ScrollAeronautics.class,
 
                 // flasks
                 FlaskDragonsBlood.class,
