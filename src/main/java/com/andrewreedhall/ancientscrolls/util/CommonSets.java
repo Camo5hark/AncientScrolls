@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.util;
 
+import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
 import org.bukkit.potion.PotionEffectType;
@@ -30,6 +31,7 @@ import java.util.Set;
 import static org.bukkit.block.Biome.*;
 import static org.bukkit.entity.EntityType.*;
 import static org.bukkit.potion.PotionEffectType.*;
+import static org.bukkit.Material.*;
 
 public final class CommonSets {
     public static final Set<EntityType> NETHER_MONSTERS = Set.of(
@@ -141,5 +143,22 @@ public final class CommonSets {
             OOZING,
             INFESTED,
             UNLUCK
+    );
+    public static final Set<Material> MELEE_WEAPON_TYPES = Set.of(
+            WOODEN_SWORD,
+            STONE_SWORD,
+            IRON_SWORD,
+            GOLDEN_SWORD,
+            DIAMOND_SWORD,
+            NETHERITE_SWORD,
+
+            WOODEN_AXE,
+            STONE_AXE,
+            IRON_AXE,
+            GOLDEN_AXE,
+            DIAMOND_AXE,
+            NETHERITE_AXE,
+
+            MACE
     );
 }
