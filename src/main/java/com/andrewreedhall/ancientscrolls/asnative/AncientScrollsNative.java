@@ -101,6 +101,7 @@ public final class AncientScrollsNative {
                 ScrollNightLife.class, // BOSS: ENDER DRAGON
                 ScrollVolcanology.class,
                 ScrollSolace.class,
+                ScrollEtherealSolace.class, // BOSS: ENDER DRAGON
 
                 // end city
                 ScrollSniping.class,

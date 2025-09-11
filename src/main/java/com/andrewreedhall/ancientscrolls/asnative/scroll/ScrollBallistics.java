@@ -39,6 +39,7 @@ public final class ScrollBallistics extends ItemScrollNative implements Listener
         this.putMCLootTableGenProb("entities/stray", 0.005);
         this.putMCLootTableGenProb("entities/bogged", 0.005);
         this.putMCLootTableGenProb("chests/trial_chambers/entrance", 0.31);
+        this.putMCLootTableGenProb("chests/pillager_outpost", 0.11);
     }
 
     @EventHandler
