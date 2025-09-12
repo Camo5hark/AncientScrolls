@@ -103,6 +103,7 @@ public final class AncientScrollsNative {
                 ScrollSolace.class,
                 ScrollEtherealSolace.class, // BOSS: ENDER DRAGON
                 ScrollWardenTaming.class, // BOSS: WARDEN
+                ScrollScrollOfPoseidon.class, // BOSS: ELDER GUARDIAN
 
                 // end city
                 ScrollSniping.class,

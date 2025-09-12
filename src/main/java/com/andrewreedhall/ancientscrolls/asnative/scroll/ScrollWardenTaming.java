@@ -1,6 +1,7 @@
 package com.andrewreedhall.ancientscrolls.asnative.scroll;
 
 import io.papermc.paper.event.entity.WardenAngerChangeEvent;
+import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -54,12 +55,22 @@ public final class ScrollWardenTaming extends ItemScrollNative implements Listen
             damagedPlayer.setMetadata(PDK_PET_WARDEN, new FixedMetadataValue(plugin(), damagedPlayerPetWarden));
             damagedPlayerPetWarden.setPersistent(false);
             damagedPlayerPetWarden.setMetadata(PDK_PET_WARDEN, new FixedMetadataValue(plugin(), true));
+            final World damagedPlayerPetWardenWorld = damagedPlayerPetWarden.getWorld();
+            damagedPlayerPetWardenWorld.playSound(damagedPlayerPetWarden, Sound.ENTITY_WARDEN_EMERGE, 1.0F, 0.75F);
+            damagedPlayerPetWardenWorld.spawnParticle(
+                    Particle.DUST,
+                    damagedPlayerPetWarden.getEyeLocation(),
+                    50,
+                    1.0,
+                    1.0,
+                    1.0,
+                    new Particle.DustOptions(Color.NAVY, 1.25F)
+            );
             plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncDelayedTask(
                     plugin(),
                     () -> {
                         damagedPlayer.removeMetadata(PDK_PET_WARDEN, plugin());
                         damagedPlayerPetWarden.remove();
-                        final World damagedPlayerPetWardenWorld = damagedPlayerPetWarden.getWorld();
                         damagedPlayerPetWardenWorld.playSound(damagedPlayerPetWarden, Sound.BLOCK_BEACON_DEACTIVATE, 1.0F, 0.75F);
                         damagedPlayerPetWardenWorld.spawnParticle(
                                 Particle.SOUL_FIRE_FLAME,
