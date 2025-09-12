@@ -64,13 +64,16 @@ public final class ItemScrollListener implements Listener {
         final Player deadPlayer = event.getPlayer();
         final World deadPlayerWorld = deadPlayer.getWorld();
         final Boolean keepInventory = deadPlayerWorld.getGameRuleValue(GameRule.KEEP_INVENTORY);
-        if (keepInventory == null || !keepInventory) {
+        if (keepInventory != null && keepInventory) {
             return;
         }
         final ItemScroll[] deadPlayerEquippedScrolls = PlayerDataHandler.getEquippedScrolls(deadPlayer);
         PlayerDataHandler.clearEquippedScrolls(deadPlayer);
         final Location deadPlayerLocation = deadPlayer.getLocation();
         for (final ItemScroll deadPlayerEquippedScroll : deadPlayerEquippedScrolls) {
+            if (deadPlayerEquippedScroll == null) {
+                continue;
+            }
             deadPlayerWorld.dropItemNaturally(deadPlayerLocation, deadPlayerEquippedScroll.createItemStack(1));
         }
     }
