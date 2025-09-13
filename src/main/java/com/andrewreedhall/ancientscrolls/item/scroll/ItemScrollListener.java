@@ -104,16 +104,14 @@ public final class ItemScrollListener implements Listener {
             return;
         }
         final List<MerchantRecipe> spawnedWanderingTraderRecipes = new ArrayList<>(spawnedWanderingTrader.getRecipes());
-        final List<AncientScrollsItem> registeredNonSpecialScrolls = new ArrayList<>(
-                plugin()
-                        .getItemRegistry()
-                        .getAll()
+        final List<ItemScroll> registeredNonSpecialScrolls = new ArrayList<>(
+                ItemScroll.createListOfAllRegistered()
                         .parallelStream()
-                        .filter((final AncientScrollsItem item) -> item instanceof ItemScroll scroll && !scroll.isSpecial())
+                        .filter((final ItemScroll scroll) -> !scroll.isSpecial())
                         .toList()
         );
         registeredNonSpecialScrolls.sort(
-                (final AncientScrollsItem item0, final AncientScrollsItem item2) ->
+                (final ItemScroll scroll0, final ItemScroll scroll1) ->
                         plugin().getUniversalRandom().nextInt(-1, 2)
         );
         final MerchantRecipe scrollRecipe = new MerchantRecipe(

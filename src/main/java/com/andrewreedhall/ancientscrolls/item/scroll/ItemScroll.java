@@ -226,4 +226,14 @@ public abstract class ItemScroll extends AncientScrollsItem {
         final List<String> scrollModelDataStrings = scrollItemMeta.getCustomModelDataComponent().getStrings();
         return scrollModelDataStrings.isEmpty() ? null : NamespacedKey.fromString(scrollModelDataStrings.getFirst());
     }
+
+    public static List<ItemScroll> createListOfAllRegistered() {
+        return plugin()
+                .getItemRegistry()
+                .getAll()
+                .parallelStream()
+                .filter((final AncientScrollsItem item) -> item instanceof ItemScroll)
+                .map((final AncientScrollsItem item) -> (ItemScroll) item)
+                .toList();
+    }
 }
