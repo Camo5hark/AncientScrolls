@@ -52,6 +52,11 @@ commands:
     permission: "ancientscrolls.admin"
     permission-message: "\u00A7cYou do not have permission to use this command."
     usage: "\u00A7Usage: /ancientknowledge <player> <scroll_item_key>"
+  asgui:
+    description: "Opens the Ancient Scrolls GUI inventory"
+    permission: "ancientscrolls.asgui"
+    permission-message: "\u00A7cYou do not have permission to use this command."
+    usage: "\u00A7Usage: /asgui"
 permissions:
   ancientscrolls.admin:
     description: "Allows player to use Ancient Scrolls administrative commands"
@@ -62,3 +67,6 @@ permissions:
   ancientscrolls.ancientknowledge.others:
     description: "Allows player to use /ancientknowledge for other players"
     default: "op"
+  ancientscrolls.asgui:
+    description: "Allows player to use /asgui"
+    default: true

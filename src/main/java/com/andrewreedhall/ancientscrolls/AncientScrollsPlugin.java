@@ -65,8 +65,9 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         this.monsterPoisonSimulator = new MonsterPoisonSimulator();
         this.defaultCachedConfig.load(false);
         this.monsterPoisonSimulator.scheduleRepeatingTask();
-        AncientScrollsNative.registerAll();
         this.guiInventoryHandler = new GUIInventoryHandler();
+        AncientScrollsNative.registerAll();
+        this.guiInventoryHandler.createPageInventories();
     }
 
     @Override

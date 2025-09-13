@@ -127,6 +127,14 @@ public final class CommandHandler {
                 }
                 return true;
             }
+            case "asgui" -> {
+                if (!(sender instanceof Player playerSender)) {
+                    sender.sendMessage(RED + "This command can only be executed by players");
+                    return true;
+                }
+                plugin().getGUIInventoryHandler().open(playerSender);
+                return true;
+            }
             default -> {}
         }
         return false;

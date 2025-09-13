@@ -35,7 +35,7 @@ public final class AncientScrollsNative {
                 new ItemListener(),
                 new ItemScrollListener(),
                 plugin().getEquippedScrollsInventoryHandler(),
-                plugin().getGUIInventoryHandler(),
+                plugin().getGUIInventoryHandler()
         );
         plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(plugin(), plugin().getEquippedScrollsInventoryHandler(), 0L, 1L));
     }
