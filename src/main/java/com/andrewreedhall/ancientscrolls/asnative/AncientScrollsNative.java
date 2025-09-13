@@ -24,7 +24,6 @@ package com.andrewreedhall.ancientscrolls.asnative;
 import com.andrewreedhall.ancientscrolls.item.ItemListener;
 import com.andrewreedhall.ancientscrolls.asnative.flask.*;
 import com.andrewreedhall.ancientscrolls.asnative.scroll.*;
-import com.andrewreedhall.ancientscrolls.item.scroll.GUIInventoryHandler;
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScrollListener;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -36,7 +35,7 @@ public final class AncientScrollsNative {
                 new ItemListener(),
                 new ItemScrollListener(),
                 plugin().getEquippedScrollsInventoryHandler(),
-                new GUIInventoryHandler()
+                plugin().getGUIInventoryHandler(),
         );
         plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(plugin(), plugin().getEquippedScrollsInventoryHandler(), 0L, 1L));
     }
