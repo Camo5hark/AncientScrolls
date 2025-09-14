@@ -39,6 +39,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 import java.util.function.Function;
 
+/**
+ * Main class for AncientScrolls plugin
+ */
 public final class AncientScrollsPlugin extends JavaPlugin {
     private static AncientScrollsPlugin plugin = null;
 
@@ -75,6 +78,9 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         return CommandHandler.handle(sender, command.getName(), args);
     }
 
+    /**
+     * Reloads the default cached config
+     */
     public void reload() {
         final long startTime = System.currentTimeMillis();
         this.getLogger().info("Reloading");
@@ -82,15 +88,30 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         this.getLogger().info("Reloaded in " + (System.currentTimeMillis() - startTime) + " ms");
     }
 
+    /**
+     * Registers a single Bukkit event listener
+     * @param listener a Bukkit event listener
+     */
     public void registerListener(final Listener listener) {
         this.getServer().getPluginManager().registerEvents(listener, this);
     }
+
+    /**
+     * Registers multiple Bukkit event listeners
+     * @param listeners Bukkit event listeners
+     */
     public void registerListeners(final Listener... listeners) {
         for (final Listener listener : listeners) {
             this.registerListener(listener);
         }
     }
 
+    /**
+     * Utility method that wraps the scheduling of a Bukkit task to check if the task was successfully scheduled
+     * @param taskSchedulingFunction use the BukkitScheduler provided by this function to schedule the task and return the task ID to this function
+     * @return the Bukkit task ID
+     * @throws RuntimeException if the task was not successfully scheduled (taskSchedulingFunction returned -1)
+     */
     public int scheduleTask(final Function<BukkitScheduler, Integer> taskSchedulingFunction) {
         final int taskID = taskSchedulingFunction.apply(this.getServer().getScheduler());
         if (taskID == -1) {
@@ -101,6 +122,10 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         return taskID;
     }
 
+    /**
+     *
+     * @return the universal RNG to be used globally by the plugin to reduce the creation of Random objects
+     */
     public Random getUniversalRandom() {
         return this.universalRandom;
     }
@@ -133,6 +158,10 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         return this.guiInventoryHandler;
     }
 
+    /**
+     *
+     * @return the plugin singleton instance for global reference
+     */
     public static AncientScrollsPlugin plugin() {
         return plugin;
     }
