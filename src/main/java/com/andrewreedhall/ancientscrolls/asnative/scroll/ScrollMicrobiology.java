@@ -28,7 +28,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class ScrollMicrobiology extends ItemScrollNative implements Listener {
     public ScrollMicrobiology() {
-        super("microbiology", "microbiology", new String[] {
+        super("microbiology", "Microbiology", new String[] {
                 "Negates nausea"
         });
         this.putMCLootTableGenProb("chests/shipwreck_supply", 0.421);

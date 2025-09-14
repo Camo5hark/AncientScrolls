@@ -37,6 +37,10 @@ public final class ScrollToxicology extends ItemScrollNative implements Listener
                 "Negates poison damage",
                 "Poison melee targets when poisoned"
         });
+        this.putMCLootTableGenProb("entities/cave_spider", 0.005);
+        this.putMCLootTableGenProb("entities/bogged", 0.005);
+        this.putMCLootTableGenProb("entities/witch", 0.01);
+        this.putMCLootTableGenProb("chests/jungle_temple", 0.127);
     }
 
     @EventHandler

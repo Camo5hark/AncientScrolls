@@ -213,10 +213,12 @@ public abstract class ItemScroll extends AncientScrollsItem {
         if (this.special) {
             lore.add(YELLOW + "Special");
         }
-        lore.add(GREEN + "Basic generation:");
-        this.lootTableGenProbs.forEach((final NamespacedKey key, final Double prob) ->
-                lore.add(DARK_GREEN + "- " + key.toString() + WHITE + " = " + formatGenerationProb(prob))
-        );
+        if (!this.lootTableGenProbs.isEmpty()) {
+            lore.add(GREEN + "Basic generation:");
+            this.lootTableGenProbs.forEach((final NamespacedKey key, final Double prob) ->
+                    lore.add(DARK_GREEN + "- " + key.toString() + WHITE + " = " + formatGenerationProb(prob))
+            );
+        }
         if (this.vaultGenProb != null) {
             lore.add(GOLD + "Vaults" + WHITE + " = " + formatGenerationProb(this.vaultGenProb));
         }
@@ -268,6 +270,6 @@ public abstract class ItemScroll extends AncientScrollsItem {
     }
 
     private static String formatGenerationProb(final double prob) {
-        return String.format("%.2f", prob * 100.0);
+        return String.format("%.1f%%", prob * 100.0);
     }
 }
