@@ -34,7 +34,15 @@ import java.util.stream.Stream;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
+/**
+ * An alternative way of accessing Bukkit FileConfiguration fields<br>
+ * YAML config fields are discretely cached in memory as fields of this class instead of being stored and accessed through a Map as FileConfiguration does it
+ */
 public abstract class CachedConfig {
+    /**
+     * Config field metadata<br>
+     * Specifies the YAML path and default value of the field
+     */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
     protected @interface Meta {
@@ -46,18 +54,41 @@ public abstract class CachedConfig {
         double defaultDouble() default 0.0;
         String defaultString() default "";
         boolean isStringList() default false;
+
+        /**
+         *
+         * @return true if the field should not be re-cached when the config is reloaded
+         */
         boolean fixed() default false;
     }
 
+    /**
+     * The FileConfiguration to cache the fields of
+     */
     public final FileConfiguration config;
 
+    /**
+     *
+     * @param config the FileConfiguration to cache the fields of
+     */
     public CachedConfig(final FileConfiguration config) {
         this.config = config;
     }
 
+    /**
+     * Saves the default FileConfiguration file if it does not exist yet
+     */
     protected abstract void saveDefaultConfig();
+
+    /**
+     * Reloads the FileConfiguration of this CachedConfig
+     */
     protected abstract void reloadConfig();
 
+    /**
+     * Reloads the FileConfiguration and caches all its values to each corresponding @Meta field of this CachedConfig
+     * @param reload true if this is a reload, false if this is the initial load
+     */
     public void load(final boolean reload) {
         this.saveDefaultConfig();
         this.reloadConfig();
