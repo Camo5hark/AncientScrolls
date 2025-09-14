@@ -135,6 +135,10 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         return this.nmsServer;
     }
 
+    /**
+     *
+     * @return CachedConfig for <code>#getConfig()</code>
+     */
     public CachedConfigDefault getDefaultCachedConfig() {
         return this.defaultCachedConfig;
     }

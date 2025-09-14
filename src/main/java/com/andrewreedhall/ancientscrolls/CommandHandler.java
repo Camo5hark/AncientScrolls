@@ -32,6 +32,9 @@ import org.bukkit.entity.Player;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 import static org.bukkit.ChatColor.*;
 
+/**
+ * Handles all AncientScrolls commands
+ */
 public final class CommandHandler {
     public static boolean handle(final CommandSender sender, final String name, final String[] args) {
         switch (name) {

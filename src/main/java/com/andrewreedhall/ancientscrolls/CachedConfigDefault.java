@@ -23,6 +23,9 @@ package com.andrewreedhall.ancientscrolls;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
+/**
+ * CachedConfig for <code>plugin().getConfig()</code>
+ */
 public final class CachedConfigDefault extends CachedConfig {
     @Meta(path = "entity-damage-cache-capacity", defaultInt = 1000)
     public int entityDamageCacheCapacity;
