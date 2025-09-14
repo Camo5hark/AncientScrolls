@@ -21,7 +21,6 @@ public final class ScrollAeronautics extends ItemScrollNative implements Listene
             return;
         }
         event.setDamage(event.getDamage() - (event.getOriginalDamage(EntityDamageEvent.DamageModifier.BASE) * 0.75));
-        System.out.println(event.getDamage() + " " + event.getOriginalDamage(EntityDamageEvent.DamageModifier.BASE));
         damagedPlayer.spawnParticle(Particle.HEART, damagedPlayer.getLocation(), 5, 1.0, 0.5, 1.0, 0.1);
     }
 }

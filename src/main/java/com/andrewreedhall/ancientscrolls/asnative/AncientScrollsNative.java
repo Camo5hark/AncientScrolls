@@ -114,6 +114,7 @@ public final class AncientScrollsNative {
                 ScrollDurability.class,
                 ScrollAeronautics.class,
                 ScrollHypermobility.class,
+                ScrollRocketScience.class,
 
                 // flasks
                 FlaskDragonsBlood.class,
