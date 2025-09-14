@@ -32,14 +32,29 @@ import java.util.Map;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
+/**
+ * Simple registry that maps a NamespacedKey to a specific type of value/resource
+ * @param <T> the keyed value/resource to map
+ */
 public final class AncientScrollsRegistry<T extends AncientScrollsRegistry.Value> {
+    /**
+     * Represents a keyed resource to be stored and mapped by a registry
+     */
     public static abstract class Value {
+        /**
+         * The (per-registry) unique key of this resource
+         */
         public final NamespacedKey key;
 
         public Value(final NamespacedKey key) {
             this.key = key;
         }
 
+        /**
+         *
+         * @param id identifier component of the key
+         * @return <code>NamespacedKey.fromString("ancientscrolls:" + id)</code>
+         */
         public static NamespacedKey fromAncientScrollsNamespace(final String id) {
             return NamespacedKey.fromString(id, plugin());
         }
@@ -49,6 +64,14 @@ public final class AncientScrollsRegistry<T extends AncientScrollsRegistry.Value
 
     public AncientScrollsRegistry() {}
 
+    /**
+     * Attempts to register a resource to this registry<br>
+     * If this registry already contains a resource with <code>value.key</code>, then <code>value</code> is not registered to this registry,
+     * a warning is printed to the log, and false is returned<br>
+     * If <code>value</code> is a Bukkit listener, then it is registered as an event listener
+     * @param value the resource to register
+     * @return true if successfully registered, false if already registered
+     */
     public boolean register(final T value) {
         if (this.registry.containsKey(value.key)) {
             plugin().getLogger().warning("Attempted to register duplicate value " + value.key);
@@ -61,6 +84,15 @@ public final class AncientScrollsRegistry<T extends AncientScrollsRegistry.Value
         return true;
     }
 
+    /**
+     * Instantiates a singleton instance of a resource using reflection and attempts to register it to this registry<br>
+     * <code>valueType</code> is searched for a zero-argument constructor, which is then instantiated and passed into <code>#register(Value)</code><br>
+     * This method has the same restrictions and return values specified by <code>#register(Value)</code>
+     * @param valueType the class of the resource to register (must contain a zero-argument constructor)
+     * @return true if successfully registered, false if already registered
+     * @throws RuntimeException if no zero-argument constructor was found in <code>valueType</code> or if <code>valueType</code> could not be instantiated
+     * @see #register(Value)
+     */
     public boolean register(final Class<? extends T> valueType) {
         try {
             final Constructor<? extends T> zeroArgConstructor = valueType.getConstructor();
@@ -76,6 +108,13 @@ public final class AncientScrollsRegistry<T extends AncientScrollsRegistry.Value
         }
     }
 
+    /**
+     * Attempts to register all the resources in <code>values</code> using <code>#register(Value)</code><br>
+     * If a value fails to register, all subsequent values are tried and false is returned
+     * @param values all the resources to register
+     * @return true if all resources were successfully registered, false if not
+     * @see #register(Value)
+     */
     @SafeVarargs
     public final boolean registerAll(final T... values) {
         boolean registeredAll = true;
@@ -87,6 +126,13 @@ public final class AncientScrollsRegistry<T extends AncientScrollsRegistry.Value
         return registeredAll;
     }
 
+    /**
+     * Attempts to register all the resources in <code>valueTypes</code> using <code>#register(Class)</code><br>
+     * If a value fails to register, all subsequent values are tried and false is returned
+     * @param valueTypes all the resource types to register
+     * @return true if all resources were successfully registered, false if not
+     * @see #register(Class)
+     */
     @SafeVarargs
     public final boolean registerAll(final Class<? extends T>... valueTypes) {
         boolean registeredAll = true;
@@ -98,10 +144,19 @@ public final class AncientScrollsRegistry<T extends AncientScrollsRegistry.Value
         return registeredAll;
     }
 
+    /**
+     *
+     * @param key a key
+     * @return the value mapped by this key or null if no value is mapped
+     */
     public T get(final NamespacedKey key) {
         return this.registry.get(key);
     }
 
+    /**
+     *
+     * @return a collection of all values mapped by this registry
+     */
     public Collection<T> getAll() {
         return this.registry.values();
     }

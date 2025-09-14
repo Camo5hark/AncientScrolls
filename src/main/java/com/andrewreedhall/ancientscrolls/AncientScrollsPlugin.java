@@ -99,6 +99,7 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     /**
      * Registers multiple Bukkit event listeners
      * @param listeners Bukkit event listeners
+     * @see #registerListener(Listener)
      */
     public void registerListeners(final Listener... listeners) {
         for (final Listener listener : listeners) {
