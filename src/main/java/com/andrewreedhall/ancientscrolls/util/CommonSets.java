@@ -33,6 +33,9 @@ import static org.bukkit.entity.EntityType.*;
 import static org.bukkit.potion.PotionEffectType.*;
 import static org.bukkit.Material.*;
 
+/**
+ * Sets of related objects for global reference
+ */
 public final class CommonSets {
     public static final Set<EntityType> NETHER_MONSTERS = Set.of(
             BLAZE,
