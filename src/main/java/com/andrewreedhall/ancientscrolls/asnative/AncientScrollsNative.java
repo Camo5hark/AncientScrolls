@@ -106,6 +106,7 @@ public final class AncientScrollsNative {
                 ScrollWardenTaming.class, // BOSS: WARDEN
                 ScrollScrollOfPoseidon.class, // BOSS: ELDER GUARDIAN
                 ScrollBioluminescence.class,
+                ScrollFlexibility.class,
 
                 // end city
                 ScrollSniping.class,
