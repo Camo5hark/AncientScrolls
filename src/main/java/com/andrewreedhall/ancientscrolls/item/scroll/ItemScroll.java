@@ -49,6 +49,7 @@ import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -198,6 +199,35 @@ public abstract class ItemScroll extends AncientScrollsItem {
         return fromAncientScrollsNamespace(this.key.getKey() + "/" + id);
     }
 
+    public ItemStack createItemStackWithGenerationInfo(final int amount) {
+        final ItemStack itemStack = this.createItemStack(amount);
+        final ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) {
+            plugin().getLogger().warning("ItemMeta is null for AncientScrollsItem ItemStack");
+            return null;
+        }
+        final List<String> lore = itemMeta.hasLore() ? new ArrayList<>(Objects.requireNonNull(itemMeta.getLore())) : new ArrayList<>();
+        if (this.enderDragonReward) {
+            lore.add(DARK_PURPLE + "Ender Dragon reward");
+        }
+        if (this.special) {
+            lore.add(YELLOW + "Special");
+        }
+        lore.add(GREEN + "Basic generation:");
+        this.lootTableGenProbs.forEach((final NamespacedKey key, final Double prob) ->
+                lore.add(DARK_GREEN + "- " + key.toString() + WHITE + " = " + formatGenerationProb(prob))
+        );
+        if (this.vaultGenProb != null) {
+            lore.add(GOLD + "Vaults" + WHITE + " = " + formatGenerationProb(this.vaultGenProb));
+        }
+        if (this.ominousVaultGenProb != null) {
+            lore.add(AQUA + "Ominous Vaults" + WHITE + " = " + formatGenerationProb(this.ominousVaultGenProb));
+        }
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
     public boolean isEnderDragonReward() {
         return this.enderDragonReward;
     }
@@ -235,5 +265,9 @@ public abstract class ItemScroll extends AncientScrollsItem {
                 .filter((final AncientScrollsItem item) -> item instanceof ItemScroll)
                 .map((final AncientScrollsItem item) -> (ItemScroll) item)
                 .toList();
+    }
+
+    private static String formatGenerationProb(final double prob) {
+        return String.format("%.2f", prob * 100.0);
     }
 }

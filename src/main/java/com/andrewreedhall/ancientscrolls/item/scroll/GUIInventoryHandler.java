@@ -55,7 +55,7 @@ public final class GUIInventoryHandler implements Listener {
             guiPageInventory.addItem(
                     scrolls
                             .stream()
-                            .map((final ItemScroll scroll) -> scroll.createItemStack(1)) // TODO maybe add generation info to scroll item
+                            .map((final ItemScroll scroll) -> scroll.createItemStackWithGenerationInfo(1))
                             .toArray(ItemStack[]::new)
             );
             putNavigationButtonItemStack(guiPageInventory, PREVIOUS_PAGE_BUTTON_SLOT, RED + "Previous Page");
@@ -65,7 +65,6 @@ public final class GUIInventoryHandler implements Listener {
     }
 
     public void open(final Player player, final int pageIndex) {
-        //player.closeInventory();
         Inventory pageInventory;
         try {
             pageInventory = this.guiPageInventories.get(pageIndex);

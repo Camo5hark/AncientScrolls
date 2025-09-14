@@ -33,16 +33,13 @@ import org.bukkit.event.world.LootGenerateEvent;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value {
     private final long entropy;
-    private final Map<NamespacedKey, Double> lootTableGenProbs = new HashMap<>();
+    protected final Map<NamespacedKey, Double> lootTableGenProbs = new HashMap<>();
     protected Double dungeonChestGenProb = null;
     protected Double vaultGenProb = null;
     protected Double ominousVaultGenProb = null;
