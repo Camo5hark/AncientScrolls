@@ -22,17 +22,29 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.item.scroll;
 
 import com.google.common.collect.Lists;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
+import static org.bukkit.ChatColor.*;
 
 public final class GUIInventoryHandler implements Listener {
+    private static final int PREVIOUS_PAGE_BUTTON_SLOT = 45;
+    private static final int NEXT_PAGE_BUTTON_SLOT = 53;
+    private static final String PMK_GUI_PAGE_INVENTORY_INDEX = "gui_page_inventory_index";
+
     private final List<Inventory> guiPageInventories = new ArrayList<>();
 
     public GUIInventoryHandler() {}
@@ -46,12 +58,66 @@ public final class GUIInventoryHandler implements Listener {
                             .map((final ItemScroll scroll) -> scroll.createItemStack(1)) // TODO maybe add generation info to scroll item
                             .toArray(ItemStack[]::new)
             );
-            // TODO add control items
+            putNavigationButtonItemStack(guiPageInventory, PREVIOUS_PAGE_BUTTON_SLOT, RED + "Previous Page");
+            putNavigationButtonItemStack(guiPageInventory, NEXT_PAGE_BUTTON_SLOT, GREEN + "Next Page");
             this.guiPageInventories.add(guiPageInventory);
         });
     }
 
-    public void open(final Player player) {
-        player.openInventory(this.guiPageInventories.getFirst());
+    public void open(final Player player, final int pageIndex) {
+        //player.closeInventory();
+        Inventory pageInventory;
+        try {
+            pageInventory = this.guiPageInventories.get(pageIndex);
+        } catch (final IndexOutOfBoundsException e) {
+            return;
+        }
+        player.openInventory(pageInventory);
+        player.setMetadata(PMK_GUI_PAGE_INVENTORY_INDEX, new FixedMetadataValue(plugin(), pageIndex));
+    }
+
+    private void navigate(final Player player, final int pageIndexIncrement) {
+        final List<MetadataValue> playerGUIPageInventoryIndex = player.getMetadata(PMK_GUI_PAGE_INVENTORY_INDEX);
+        if (playerGUIPageInventoryIndex.isEmpty()) {
+            return;
+        }
+        this.open(player, playerGUIPageInventoryIndex.getFirst().asInt() + pageIndexIncrement);
+    }
+
+    @EventHandler
+    public void onInventoryClick(final InventoryClickEvent event) {
+        final Inventory clickedInventory = event.getClickedInventory();
+        if (clickedInventory == null || !this.guiPageInventories.contains(clickedInventory)) {
+            return;
+        }
+        event.setCancelled(true);
+        if (!(event.getWhoClicked() instanceof Player clickingPlayer)) {
+            return;
+        }
+        switch (event.getSlot()) {
+            case PREVIOUS_PAGE_BUTTON_SLOT -> this.navigate(clickingPlayer, -1);
+            case NEXT_PAGE_BUTTON_SLOT -> this.navigate(clickingPlayer, 1);
+            default -> {}
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(final InventoryCloseEvent event) {
+        if (!this.guiPageInventories.contains(event.getInventory())) {
+            return;
+        }
+        event.getPlayer().removeMetadata(PMK_GUI_PAGE_INVENTORY_INDEX, plugin());
+    }
+
+    private static void putNavigationButtonItemStack(final Inventory guiPageInventory, final int slot, final String displayName) {
+        final ItemStack navigationButtonItemStack = new ItemStack(Material.SPECTRAL_ARROW);
+        final ItemMeta navigationButtonItemMeta = navigationButtonItemStack.getItemMeta();
+        if (navigationButtonItemMeta == null) {
+            plugin().getLogger().warning("ItemMeta is null for GUI navigation button ItemStack");
+            return;
+        }
+        navigationButtonItemMeta.setDisplayName(displayName);
+        navigationButtonItemStack.setItemMeta(navigationButtonItemMeta);
+        guiPageInventory.setItem(slot, navigationButtonItemStack);
     }
 }

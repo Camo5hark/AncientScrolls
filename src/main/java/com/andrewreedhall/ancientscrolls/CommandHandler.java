@@ -132,7 +132,7 @@ public final class CommandHandler {
                     sender.sendMessage(RED + "This command can only be executed by players");
                     return true;
                 }
-                plugin().getGUIInventoryHandler().open(playerSender);
+                plugin().getGUIInventoryHandler().open(playerSender, 0);
                 return true;
             }
             default -> {}
