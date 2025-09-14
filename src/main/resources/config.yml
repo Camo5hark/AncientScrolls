@@ -1,6 +1,11 @@
 # --- AncientScrolls plugin configuration ---
+# Fields marked with "FIXED" will not be discretely reloaded using /asreload and require a restart to reload
 
 entity-damage-cache-capacity: 1000
 item:
   scroll:
+    # FIXED
     max-equipped-scrolls: 9
+  generation:
+    enabled: true
+    probability-scalar: 1.0

@@ -31,6 +31,10 @@ public final class CachedConfigDefault extends CachedConfig {
     public int entityDamageCacheCapacity;
     @Meta(path = "item.scroll.max-equipped-scrolls", defaultInt = 9, fixed = true)
     public int item_scroll_maxEquippedScrolls;
+    @Meta(path = "item.generation.enabled", defaultBoolean = true)
+    public boolean item_generation_enabled;
+    @Meta(path = "item.generation.probability-scalar", defaultDouble = 1.0)
+    public double item_generation_probabilityScalar;
 
     public CachedConfigDefault() {
         super(plugin().getConfig());

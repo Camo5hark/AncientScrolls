@@ -31,6 +31,7 @@ import org.bukkit.block.data.type.Vault;
 import org.bukkit.event.block.BlockDispenseLootEvent;
 import org.bukkit.event.world.LootGenerateEvent;
 import org.bukkit.inventory.BlockInventoryHolder;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -60,23 +61,23 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value {
         if (lootTableGenProb == null) {
             return;
         }
-        // TODO debugger
-        plugin().getLogger().info(this.key + " attempting generation in " + event.getLootTable().getKey());
-        // TODO --------
         Random random;
+        Inventory inventory = null;
         if (event.getInventoryHolder() instanceof final BlockInventoryHolder blockInventoryHolder) {
             random = this.createLocationBasedRandom(blockInventoryHolder.getBlock().getLocation());
+            inventory = blockInventoryHolder.getInventory();
         } else {
             random = plugin().getUniversalRandom();
         }
-        if (random.nextDouble() > lootTableGenProb) {
+        if (random.nextDouble() > lootTableGenProb * plugin().getDefaultCachedConfig().item_generation_probabilityScalar) {
             return;
         }
-        // TODO debugger
-        plugin().getLogger().info(this.key + " generating in " + event.getLootTable().getKey());
-        // TODO --------
         final List<ItemStack> generatedLoot = event.getLoot();
-        generatedLoot.removeFirst();
+        if (inventory != null) {
+            while (generatedLoot.size() >= inventory.getSize()) {
+                generatedLoot.removeFirst();
+            }
+        }
         event.getLoot().add(this.createItemStack(1));
     }
 
@@ -84,11 +85,10 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value {
     }
 
     private void generateByVault(final Block vault, final double genProb, final BlockDispenseLootEvent event) {
-        if (this.createLocationBasedRandom(vault.getLocation()).nextDouble() > genProb) {
+        if (this.createLocationBasedRandom(vault.getLocation()).nextDouble() > genProb * plugin().getDefaultCachedConfig().item_generation_probabilityScalar) {
             return;
         }
         final List<ItemStack> dispensedLoot = event.getDispensedLoot();
-        dispensedLoot.removeFirst();
         dispensedLoot.add(this.createItemStack(1));
     }
 

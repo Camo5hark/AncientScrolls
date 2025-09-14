@@ -33,17 +33,17 @@ public final class ItemListener implements Listener {
 
     @EventHandler
     public void onLootGenerate(final LootGenerateEvent event) {
-        // TODO debugging statement
-        plugin().getLogger().info("Loot generated: " + event.getLootTable().getKey());
-        // TODO -------------------
+        if (!plugin().getDefaultCachedConfig().item_generation_enabled) {
+            return;
+        }
         plugin().getItemRegistry().getAll().forEach((final AncientScrollsItem item) -> item.generateByLootTable(event));
     }
 
     @EventHandler
     public void onBlockDispenseLoot(final BlockDispenseLootEvent event) {
-        // TODO debugging statement
-        plugin().getLogger().info("Block dispense: " + event.getBlock());
-        // TODO -------------------
+        if (!plugin().getDefaultCachedConfig().item_generation_enabled) {
+            return;
+        }
         plugin().getItemRegistry().getAll().forEach((final AncientScrollsItem item) -> item.generateByVault(event));
     }
 }

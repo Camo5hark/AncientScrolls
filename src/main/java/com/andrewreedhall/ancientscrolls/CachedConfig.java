@@ -134,7 +134,7 @@ public abstract class CachedConfig {
             try {
                 field.set(this, value);
             } catch (IllegalAccessException e) {
-                plugin().getLogger().severe("Could not write to CachedConfig value");
+                plugin().getLogger().severe("Could not write to CachedConfig field: " + field.getName() + ", config file: " + this.config.getName());
                 throw new RuntimeException(e);
             }
         });
