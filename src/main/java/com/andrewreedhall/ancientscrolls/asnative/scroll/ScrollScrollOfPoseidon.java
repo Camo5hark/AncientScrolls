@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Trident;
 import org.bukkit.event.EventHandler;
@@ -21,7 +22,8 @@ public final class ScrollScrollOfPoseidon extends ItemScrollNative implements Li
 
     public ScrollScrollOfPoseidon() {
         super("scroll_of_poseidon", "Scroll of Poseidon", new String[] {
-                "Launching trident causes raining tridents"
+                "Launching trident causes raining tridents",
+                "Raining tridents poison target"
         });
         this.special = true;
         this.putMCLootTableGenProb("entities/elder_guardian", 1.0);
@@ -63,6 +65,8 @@ public final class ScrollScrollOfPoseidon extends ItemScrollNative implements Li
         }
         if (event.getHitBlock() != null) {
             hittingTrident.remove();
+        } else if (event.getHitEntity() instanceof LivingEntity hitLivingEntity) {
+            plugin().getMonsterPoisonSimulator().add(hitLivingEntity, 60);
         }
         hittingTrident.getWorld().spawnParticle(Particle.BUBBLE, hittingTrident.getLocation(), 25, 0.5, 1.0, 0.5, 0.1);
     }
