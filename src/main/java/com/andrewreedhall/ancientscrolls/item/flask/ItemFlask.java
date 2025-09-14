@@ -72,8 +72,8 @@ public abstract class ItemFlask extends AncientScrollsItem {
         potionMeta.setDisplayName(this.displayName);
         potionMeta.setLore(this.cachedLore);
         potionMeta.setColor(this.color);
-        potionMeta.addEnchant(Enchantment.UNBREAKING, 1, false);
-        potionMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+        potionMeta.setEnchantmentGlintOverride(true);
+        potionMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
         potionMeta.addCustomEffect(this.buffPotionEffect, false);
         potionMeta.addCustomEffect(this.debuffPotionEffect, false);
         itemStack.setItemMeta(potionMeta);

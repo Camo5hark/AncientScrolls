@@ -22,6 +22,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.item.scroll;
 
 import com.google.common.collect.Lists;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,8 +30,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
@@ -58,8 +60,8 @@ public final class GUIInventoryHandler implements Listener {
                             .map((final ItemScroll scroll) -> scroll.createItemStackWithGenerationInfo(1))
                             .toArray(ItemStack[]::new)
             );
-            putNavigationButtonItemStack(guiPageInventory, PREVIOUS_PAGE_BUTTON_SLOT, RED + "Previous Page");
-            putNavigationButtonItemStack(guiPageInventory, NEXT_PAGE_BUTTON_SLOT, GREEN + "Next Page");
+            putNavigationButtonItemStack(guiPageInventory, PREVIOUS_PAGE_BUTTON_SLOT, Color.RED, RED + "Previous Page");
+            putNavigationButtonItemStack(guiPageInventory, NEXT_PAGE_BUTTON_SLOT, Color.GREEN, GREEN + "Next Page");
             this.guiPageInventories.add(guiPageInventory);
         });
     }
@@ -108,14 +110,16 @@ public final class GUIInventoryHandler implements Listener {
         event.getPlayer().removeMetadata(PMK_GUI_PAGE_INVENTORY_INDEX, plugin());
     }
 
-    private static void putNavigationButtonItemStack(final Inventory guiPageInventory, final int slot, final String displayName) {
-        final ItemStack navigationButtonItemStack = new ItemStack(Material.SPECTRAL_ARROW);
-        final ItemMeta navigationButtonItemMeta = navigationButtonItemStack.getItemMeta();
+    private static void putNavigationButtonItemStack(final Inventory guiPageInventory, final int slot, final Color arrowColor, final String displayName) {
+        final ItemStack navigationButtonItemStack = new ItemStack(Material.TIPPED_ARROW);
+        final PotionMeta navigationButtonItemMeta = (PotionMeta) navigationButtonItemStack.getItemMeta();
         if (navigationButtonItemMeta == null) {
             plugin().getLogger().warning("ItemMeta is null for GUI navigation button ItemStack");
             return;
         }
         navigationButtonItemMeta.setDisplayName(displayName);
+        navigationButtonItemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+        navigationButtonItemMeta.setColor(arrowColor);
         navigationButtonItemStack.setItemMeta(navigationButtonItemMeta);
         guiPageInventory.setItem(slot, navigationButtonItemStack);
     }
