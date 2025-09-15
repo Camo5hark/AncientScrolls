@@ -25,7 +25,6 @@ import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.entity.WindCharge;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -44,7 +43,7 @@ public final class ScrollAirBending extends ItemScrollNative implements Listener
 
     @EventHandler
     public void onEntityDamageByEntity(final EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Projectile)) {
+        if (!BukkitUtil.isRangedDamage(event)) {
             return;
         }
         final Entity damager = BukkitUtil.getDamager(event);

@@ -53,7 +53,7 @@ public final class ScrollHypermobility extends ItemScrollNative {
                                 )
                         )
                 ),
-                CONDITION_BYPASS,
+                null,
                 null
         );
     }

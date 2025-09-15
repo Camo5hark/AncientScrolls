@@ -61,7 +61,6 @@ public abstract class ItemScroll extends AncientScrollsItem {
     private static final List<Boolean> CACHED_FLAGS = List.of(true);
     private static final String CACHED_DISPLAY_NAME = GOLD + "Ancient Scroll";
     protected static final PotionEffect NIGHT_VISION_POTION_EFFECT = new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, false);
-    protected static final Predicate<Player> CONDITION_BYPASS = (final Player player) -> true;
 
     private final List<String> cachedKey;
     private final List<String> cachedLore;
@@ -122,9 +121,12 @@ public abstract class ItemScroll extends AncientScrollsItem {
         plugin().scheduleTask((final BukkitScheduler scheduler) ->
                 scheduler.scheduleSyncRepeatingTask(plugin(), () ->
                         plugin().getServer().getOnlinePlayers().forEach((final Player onlinePlayer) -> {
-                            if (this.isEquipping(onlinePlayer) && condition.test(onlinePlayer)) {
+                            if (this.isEquipping(onlinePlayer) && (condition != null && condition.test(onlinePlayer))) {
                                 attributeModifierDescriptors.forEach((final Pair<Attribute, AttributeModifier> attributeModifierDescriptor) -> {
-                                    final AttributeInstance attributeInstance = BukkitUtil.getAttributeInstance(onlinePlayer, attributeModifierDescriptor.getA());
+                                    final AttributeInstance attributeInstance = BukkitUtil.getAttributeInstance(
+                                            onlinePlayer,
+                                            attributeModifierDescriptor.getA()
+                                    );
                                     final AttributeModifier attributeModifier = attributeModifierDescriptor.getB();
                                     if (!BukkitUtil.hasAttributeModifier(attributeInstance, attributeModifier.getKey())) {
                                         attributeInstance.addTransientModifier(attributeModifier);

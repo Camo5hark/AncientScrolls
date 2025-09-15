@@ -54,7 +54,7 @@ public final class ScrollFlexibility extends ItemScrollNative {
                                 )
                         )
                 ),
-                CONDITION_BYPASS,
+                null,
                 null
         );
     }

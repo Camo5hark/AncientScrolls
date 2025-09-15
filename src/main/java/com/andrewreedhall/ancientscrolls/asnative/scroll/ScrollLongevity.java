@@ -43,7 +43,7 @@ public final class ScrollLongevity extends ItemScrollNative {
                                 )
                         )
                 ),
-                CONDITION_BYPASS,
+                null,
                 null
         );
         this.putMCLootTableGenProb("chests/stronghold_corridor", 0.119);
