@@ -11,6 +11,7 @@ import org.bukkit.entity.Warden;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -18,11 +19,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class ScrollWardenTaming extends ItemScrollNative implements Listener {
-    private static final String PDK_PET_WARDEN = "scroll_warden_taming_pet_warden";
+    private static final String PMK_PET_WARDEN = "scroll_warden_taming_pet_warden";
     private static final int PET_WARDEN_TTL = 600;
 
     public ScrollWardenTaming() {
@@ -47,14 +49,14 @@ public final class ScrollWardenTaming extends ItemScrollNative implements Listen
         ) {
             return;
         }
-        final List<MetadataValue> damagedPlayerPetWardenData = damagedPlayer.getMetadata(PDK_PET_WARDEN);
+        final List<MetadataValue> damagedPlayerPetWardenData = damagedPlayer.getMetadata(PMK_PET_WARDEN);
         Warden damagedPlayerPetWarden;
         if (damagedPlayerPetWardenData.isEmpty()) {
             // summon warden
             damagedPlayerPetWarden = damagingLivingEntity.getWorld().spawn(damagingLivingEntity.getLocation(), Warden.class);
-            damagedPlayer.setMetadata(PDK_PET_WARDEN, new FixedMetadataValue(plugin(), damagedPlayerPetWarden));
+            damagedPlayer.setMetadata(PMK_PET_WARDEN, new FixedMetadataValue(plugin(), damagedPlayerPetWarden));
+            damagedPlayerPetWarden.setMetadata(PMK_PET_WARDEN, new FixedMetadataValue(plugin(), damagedPlayer));
             damagedPlayerPetWarden.setPersistent(false);
-            damagedPlayerPetWarden.setMetadata(PDK_PET_WARDEN, new FixedMetadataValue(plugin(), true));
             final World damagedPlayerPetWardenWorld = damagedPlayerPetWarden.getWorld();
             damagedPlayerPetWardenWorld.playSound(damagedPlayerPetWarden, Sound.ENTITY_WARDEN_EMERGE, 1.0F, 0.75F);
             damagedPlayerPetWardenWorld.spawnParticle(
@@ -69,7 +71,10 @@ public final class ScrollWardenTaming extends ItemScrollNative implements Listen
             plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncDelayedTask(
                     plugin(),
                     () -> {
-                        damagedPlayer.removeMetadata(PDK_PET_WARDEN, plugin());
+                        damagedPlayer.removeMetadata(PMK_PET_WARDEN, plugin());
+                        if (damagedPlayerPetWarden.isDead()) {
+                            return;
+                        }
                         damagedPlayerPetWarden.remove();
                         damagedPlayerPetWardenWorld.playSound(damagedPlayerPetWarden, Sound.BLOCK_BEACON_DEACTIVATE, 1.0F, 0.75F);
                         damagedPlayerPetWardenWorld.spawnParticle(
@@ -96,10 +101,22 @@ public final class ScrollWardenTaming extends ItemScrollNative implements Listen
 
     @EventHandler
     public void onWardenAngerChange(final WardenAngerChangeEvent event) {
-        if (!event.getEntity().hasMetadata(PDK_PET_WARDEN) || !(event.getTarget() instanceof Player)) {
+        if (!event.getEntity().hasMetadata(PMK_PET_WARDEN) || !(event.getTarget() instanceof Player)) {
             return;
         }
         event.setCancelled(true);
         event.setNewAnger(0);
+    }
+
+    @EventHandler
+    public void onEntityDeath(final EntityDeathEvent event) {
+        if (!(event.getEntity() instanceof Warden deadWarden)) {
+            return;
+        }
+        final List<MetadataValue> deadWardenPetWardenOwner = deadWarden.getMetadata(PMK_PET_WARDEN);
+        if (deadWardenPetWardenOwner.isEmpty()) {
+            return;
+        }
+        ((Player) Objects.requireNonNull(deadWardenPetWardenOwner.getFirst().value())).removeMetadata(PMK_PET_WARDEN, plugin());
     }
 }

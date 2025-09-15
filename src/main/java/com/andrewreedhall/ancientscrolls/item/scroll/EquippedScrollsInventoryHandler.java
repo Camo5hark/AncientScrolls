@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
-import static org.bukkit.ChatColor.*;
 
 public final class EquippedScrollsInventoryHandler implements Listener, Runnable {
     private final Map<Player, Inventory> equippedScrollInventories = new HashMap<>();
@@ -84,12 +83,6 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
             return;
         }
         final ItemStack scrollItemStack = event.getCurrentItem();
-        if (scrollItemStack == null || !ItemScroll.is(scrollItemStack)) {
-            event.setCancelled(true);
-            clickerPlayer.sendMessage(RED + "You can only interact with scrolls when viewing the Ancient Knowledge inventory");
-            BukkitUtil.playBadSound(clickerPlayer);
-            return;
-        }
         final Inventory clickerInventory = clickerPlayer.getInventory();
         final int clickedSlot = event.getSlot();
         final Player equippedScrollPlayer = (Player) equippedScrollInventory.getHolder();
