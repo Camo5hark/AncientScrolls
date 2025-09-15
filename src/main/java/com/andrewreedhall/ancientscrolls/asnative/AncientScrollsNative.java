@@ -107,6 +107,7 @@ public final class AncientScrollsNative {
                 ScrollScrollOfPoseidon.class, // BOSS: ELDER GUARDIAN
                 ScrollBioluminescence.class,
                 ScrollFlexibility.class,
+                ScrollDexterity.class,
 
                 // end city
                 ScrollSniping.class,
