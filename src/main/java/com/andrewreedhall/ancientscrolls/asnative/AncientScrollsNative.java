@@ -108,6 +108,9 @@ public final class AncientScrollsNative {
                 ScrollBioluminescence.class,
                 ScrollFlexibility.class,
                 ScrollDexterity.class,
+                ScrollResistance.class, // BOSS: WARDEN
+                ScrollPhoenixsAura.class,
+                ScrollJousting.class,
 
                 // end city
                 ScrollSniping.class,
@@ -127,5 +130,8 @@ public final class AncientScrollsNative {
                 FlaskFermentedCarrotJuice.class
         );
         postRegisterAll();
+        plugin().scheduleTask((final BukkitScheduler scheduler) ->
+                scheduler.scheduleSyncDelayedTask(plugin(), AncientScrollsNative::postRegisterAll)
+        );
     }
 }
