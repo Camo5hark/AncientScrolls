@@ -33,10 +33,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -47,16 +48,22 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
 
     @Override
     public void run() {
-        this.equippedScrollInventories.forEach(
-                (final Player player, final Inventory equippedScrollInventory) ->
-                        equippedScrollInventory.setContents(
-                                Arrays.stream(PlayerDataHandler.getEquippedScrolls(player))
-                                        .map((final ItemScroll equippedScroll) ->
-                                                equippedScroll == null ? new ItemStack(Material.AIR) : equippedScroll.createItemStack(1)
-                                        )
-                                        .toArray(ItemStack[]::new)
-                        )
-        );
+        this.equippedScrollInventories.forEach((final Player player, final Inventory equippedScrollInventory) -> {
+            final ItemScroll[] playerEquippedScrolls = PlayerDataHandler.getEquippedScrolls(player);
+            for (int i = 0; i < equippedScrollInventory.getSize(); ++i) {
+                ItemStack itemStack;
+                if (i < playerEquippedScrolls.length) {
+                    final ItemScroll playerEquippedScroll = playerEquippedScrolls[i];
+                    itemStack = playerEquippedScroll == null ? null : playerEquippedScroll.createItemStack(1);
+                } else {
+                    itemStack = new ItemStack(Material.BARRIER);
+                    ItemMeta itemMeta = Objects.requireNonNull(itemStack.getItemMeta());
+                    itemMeta.setDisplayName(" ");
+                    itemStack.setItemMeta(itemMeta);
+                }
+                equippedScrollInventory.setItem(i, itemStack);
+            }
+        });
     }
 
     @EventHandler
@@ -82,7 +89,11 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
         if (!this.equippedScrollInventories.containsValue(equippedScrollInventory)) {
             return;
         }
+        event.setCancelled(true);
         final ItemStack scrollItemStack = event.getCurrentItem();
+        if (scrollItemStack == null || !ItemScroll.is(scrollItemStack)) {
+            return;
+        }
         final Inventory clickerInventory = clickerPlayer.getInventory();
         final int clickedSlot = event.getSlot();
         final Player equippedScrollPlayer = (Player) equippedScrollInventory.getHolder();
