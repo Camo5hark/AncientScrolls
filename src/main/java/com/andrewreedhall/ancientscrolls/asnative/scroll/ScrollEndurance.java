@@ -33,7 +33,6 @@ public final class ScrollEndurance extends ItemScrollNative implements Listener 
         });
         this.special = true;
         this.putMCLootTableGenProb("entities/elder_guardian", 1.0);
-        this.putMCLootTableGenProb("entities/guardian", 0.005);
     }
 
     @EventHandler

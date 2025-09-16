@@ -5,7 +5,10 @@ entity-damage-cache-capacity: 1000
 item:
   scroll:
     # FIXED
+    # Maximum amount of scrolls each player can equip at once
+    # min: 1, max: 54
     max-equipped-scrolls: 9
   generation:
     enabled: true
+    # Scales the generation probability for loot tables, vaults, and ominous vaults
     probability-scalar: 1.0

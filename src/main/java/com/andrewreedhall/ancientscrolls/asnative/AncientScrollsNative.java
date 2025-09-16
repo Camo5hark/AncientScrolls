@@ -72,7 +72,7 @@ public final class AncientScrollsNative {
                 ScrollCanineStudies.class,
                 ScrollSpelunking.class,
                 ScrollHillclimbing.class,
-                ScrollWhalelore.class, // BOSS: ELDER GUARDIAN
+                ScrollWhalelore.class,
 
                 // bonus
                 ScrollHymnal.class,
