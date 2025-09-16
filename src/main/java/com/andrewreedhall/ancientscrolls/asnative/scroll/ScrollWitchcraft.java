@@ -22,10 +22,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.asnative.scroll;
 
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
-import org.bukkit.Keyed;
-import org.bukkit.Location;
-import org.bukkit.Registry;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Witch;
@@ -58,10 +55,19 @@ public final class ScrollWitchcraft extends ItemScrollNative implements Listener
         }
         damagedWitch.remove();
         final World damagedWitchWorld = damagedWitch.getWorld();
-        final Location damagedWitchLocation = damagedWitch.getLocation();
-        final Villager villager = damagedWitchWorld.spawn(damagedWitchLocation, Villager.class);
+        final Villager villager = damagedWitchWorld.spawn(damagedWitch.getLocation(), Villager.class);
         villager.setVillagerType(getRandomRegistryValue(Registry.VILLAGER_TYPE));
         villager.setProfession(getRandomRegistryValue(Registry.VILLAGER_PROFESSION));
+        damagedWitchWorld.playSound(damagedWitch, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.5F);
+        damagedWitchWorld.spawnParticle(
+                Particle.HAPPY_VILLAGER,
+                damagedWitch.getEyeLocation(),
+                10,
+                0.5,
+                0.5,
+                0.5,
+                0.1
+        );
     }
 
     private static <T extends Keyed> T getRandomRegistryValue(final Registry<@NotNull T> registry) {

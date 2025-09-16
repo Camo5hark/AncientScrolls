@@ -112,6 +112,7 @@ public final class AncientScrollsNative {
                 ScrollPhoenixsAura.class,
                 ScrollJousting.class,
                 ScrollWitchcraft.class,
+                ScrollScrollOfTheDead.class, // BOSS: WITHER
 
                 // end city
                 ScrollSniping.class,

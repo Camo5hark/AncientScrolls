@@ -95,7 +95,7 @@ public final class ScrollWardenTaming extends ItemScrollNative implements Listen
                 return;
             }
             damagedPlayerPetWarden.setTarget(damagingLivingEntity);
-            damagedPlayerPetWarden.setAnger(damagingLivingEntity, 100);
+            damagedPlayerPetWarden.setAnger(damagingLivingEntity, Integer.MAX_VALUE);
         }
     }
 
