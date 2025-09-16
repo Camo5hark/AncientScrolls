@@ -33,6 +33,9 @@ public final class ScrollJousting extends ItemScrollNative {
         super("jousting", "Jousting", new String[] {
                 "Double melee damage and knockback in vehicles"
         });
+        this.putMCLootTableGenProb("chests/bastion_hoglin_stable", 0.228);
+        this.putMCLootTableGenProb("entities/hoglin", 0.01);
+        this.putMCLootTableGenProb("entities/ravager", 0.01);
         this.modifyAttributesOfEquippingPlayers(
                 Set.of(
                         new Pair<>(
