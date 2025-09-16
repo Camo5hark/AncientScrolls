@@ -30,11 +30,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
@@ -56,8 +57,7 @@ public final class ScrollScrollOfTheDragonFang extends ItemScrollNative implemen
             Material.MACE
     );
     private static final int N_EVOKER_FANGS_IN_TRAIL = 10;
-
-    private final Map<Player, Integer> evokerFangTrailTTLs = new HashMap<>();
+    private static final String PMK_EVOKER_FANG_TRAIL_TTL = "scroll_scroll_of_the_dragon_fang_evoker_trail_ttl";
 
     public ScrollScrollOfTheDragonFang() {
         super("scroll_of_the_dragon_fang", "Scroll of the Dragon Fang", new String[] {
@@ -111,7 +111,7 @@ public final class ScrollScrollOfTheDragonFang extends ItemScrollNative implemen
                 10.0,
                 new Particle.DustOptions(Color.FUCHSIA, 1.25F)
         );
-        this.evokerFangTrailTTLs.put(interactingPlayer, N_EVOKER_FANGS_IN_TRAIL);
+        interactingPlayer.setMetadata(PMK_EVOKER_FANG_TRAIL_TTL, new FixedMetadataValue(plugin(), N_EVOKER_FANGS_IN_TRAIL));
         this.scheduleEvokerFangTrailNext(interactingPlayer);
     }
 
@@ -119,11 +119,15 @@ public final class ScrollScrollOfTheDragonFang extends ItemScrollNative implemen
         plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncDelayedTask(
                 plugin(),
                 () -> {
-                    final Integer evokerFangTrailTTL = this.evokerFangTrailTTLs.get(player);
-                    if (evokerFangTrailTTL == null || evokerFangTrailTTL == 0) {
+                    final List<MetadataValue> playerEvokerFangTrailTTLData = player.getMetadata(PMK_EVOKER_FANG_TRAIL_TTL);
+                    if (playerEvokerFangTrailTTLData.isEmpty()) {
                         return;
                     }
-                    this.evokerFangTrailTTLs.put(player, evokerFangTrailTTL - 1);
+                    final int playerEvokerFangTrailTTL = playerEvokerFangTrailTTLData.getFirst().asInt();
+                    if (playerEvokerFangTrailTTL <= 0) {
+                        return;
+                    }
+                    player.setMetadata(PMK_EVOKER_FANG_TRAIL_TTL, new FixedMetadataValue(plugin(), playerEvokerFangTrailTTL - 1));
                     final World playerWorld = player.getWorld();
                     final Location playerLocation = player.getLocation();
                     final Vector playerDirectionXZ = playerLocation.getDirection().setY(0.0).normalize();
@@ -131,13 +135,13 @@ public final class ScrollScrollOfTheDragonFang extends ItemScrollNative implemen
                             .add(
                                     playerDirectionXZ
                                             .clone()
-                                            .multiply(N_EVOKER_FANGS_IN_TRAIL - evokerFangTrailTTL + 1)
+                                            .multiply(N_EVOKER_FANGS_IN_TRAIL - playerEvokerFangTrailTTL + 1)
                             )
                             .add(
                                     playerDirectionXZ
                                             .clone()
                                             .multiply(0.5)
-                                            .rotateAroundY(Math.PI * 0.5 * (evokerFangTrailTTL % 2 == 1 ? -1.0 : 1.0))
+                                            .rotateAroundY(Math.PI * 0.5 * (playerEvokerFangTrailTTL % 2 == 1 ? -1.0 : 1.0))
                             );
                     playerWorld.spawn(evokerFangLocation, EvokerFangs.class);
                     playerWorld.spawnParticle(
