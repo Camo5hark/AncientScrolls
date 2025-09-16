@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative.scroll;
 
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,5 +49,14 @@ public final class ScrollResistance extends ItemScrollNative implements Listener
                 plugin(),
                 () -> damagedPlayer.setVelocity(new Vector(0.0, 0.0, 0.0))
         ));
+        damagedPlayer.getWorld().spawnParticle(
+                Particle.ANGRY_VILLAGER,
+                damagedPlayer.getEyeLocation(),
+                5,
+                0.5,
+                0.5,
+                0.5,
+                0.1
+        );
     }
 }
