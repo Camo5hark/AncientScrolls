@@ -22,10 +22,10 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.item.flask;
 
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
+import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -36,7 +36,6 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 import static org.bukkit.ChatColor.*;
 
 public abstract class ItemFlask extends AncientScrollsItem {
@@ -63,11 +62,7 @@ public abstract class ItemFlask extends AncientScrollsItem {
     @Override
     public ItemStack createItemStack(final int amount) {
         ItemStack itemStack = new ItemStack(Material.POTION);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) {
-            plugin().getLogger().warning("ItemMeta is null for ItemFlask ItemStack");
-            return itemStack;
-        }
+        ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
         PotionMeta potionMeta = (PotionMeta) itemMeta;
         potionMeta.setDisplayName(this.displayName);
         potionMeta.setLore(this.cachedLore);

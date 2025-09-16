@@ -37,7 +37,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -57,7 +56,7 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
                     itemStack = playerEquippedScroll == null ? null : playerEquippedScroll.createItemStack(1);
                 } else {
                     itemStack = new ItemStack(Material.BARRIER);
-                    ItemMeta itemMeta = Objects.requireNonNull(itemStack.getItemMeta());
+                    ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
                     itemMeta.setDisplayName(" ");
                     itemStack.setItemMeta(itemMeta);
                 }

@@ -80,11 +80,7 @@ public abstract class ItemScroll extends AncientScrollsItem {
     @Override
     public ItemStack createItemStack(int amount) {
         final ItemStack itemStack = new ItemStack(Material.PAPER, amount);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) {
-            plugin().getLogger().warning("ItemMeta is null for ItemScroll ItemStack");
-            return itemStack;
-        }
+        ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
         final CustomModelDataComponent modelData = itemMeta.getCustomModelDataComponent();
         modelData.setFlags(CACHED_FLAGS);
         modelData.setStrings(this.cachedKey);
@@ -203,11 +199,7 @@ public abstract class ItemScroll extends AncientScrollsItem {
 
     public ItemStack createItemStackWithGenerationInfo(final int amount) {
         final ItemStack itemStack = this.createItemStack(amount);
-        final ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) {
-            plugin().getLogger().warning("ItemMeta is null for AncientScrollsItem ItemStack");
-            return null;
-        }
+        final ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
         final List<String> lore = itemMeta.hasLore() ? new ArrayList<>(Objects.requireNonNull(itemMeta.getLore())) : new ArrayList<>();
         if (this.enderDragonReward) {
             lore.add(DARK_PURPLE + "Ender Dragon reward");
@@ -244,8 +236,8 @@ public abstract class ItemScroll extends AncientScrollsItem {
         if (!itemStack.getType().equals(Material.PAPER)) {
             return false;
         }
-        final ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null || !itemMeta.hasCustomModelDataComponent()) {
+        final ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
+        if (!itemMeta.hasCustomModelDataComponent()) {
             return false;
         }
         final List<Boolean> modelDataFlags = itemMeta.getCustomModelDataComponent().getFlags();
@@ -253,11 +245,7 @@ public abstract class ItemScroll extends AncientScrollsItem {
     }
 
     public static NamespacedKey getKey(final ItemStack scrollItemStack) {
-        final ItemMeta scrollItemMeta = scrollItemStack.getItemMeta();
-        if (scrollItemMeta == null) {
-            return null;
-        }
-        final List<String> scrollModelDataStrings = scrollItemMeta.getCustomModelDataComponent().getStrings();
+        final List<String> scrollModelDataStrings = BukkitUtil.getItemMeta(scrollItemStack).getCustomModelDataComponent().getStrings();
         return scrollModelDataStrings.isEmpty() ? null : NamespacedKey.fromString(scrollModelDataStrings.getFirst());
     }
 

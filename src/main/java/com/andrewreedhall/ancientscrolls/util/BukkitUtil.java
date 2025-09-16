@@ -31,6 +31,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Objects;
@@ -119,5 +120,15 @@ public final class BukkitUtil {
             return;
         }
         inventoryHolderPlayer.getWorld().dropItem(inventoryHolderPlayer.getEyeLocation(), itemStack);
+    }
+
+    /**
+     * Ignores the possible null ItemMeta returned by <code>ItemStack#getItemMeta()</code>
+     * @param itemStack an item stack
+     * @return a snapshot of the item stack's item meta
+     * @throws NullPointerException if the item stack's item meta is null (is this even possible?)
+     */
+    public static ItemMeta getItemMeta(final ItemStack itemStack) {
+        return Objects.requireNonNull(itemStack.getItemMeta(), "ItemMeta is null for ItemStack " + itemStack);
     }
 }

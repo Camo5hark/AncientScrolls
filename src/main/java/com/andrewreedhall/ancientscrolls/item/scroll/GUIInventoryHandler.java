@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.item.scroll;
 
+import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import com.google.common.collect.Lists;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -112,7 +113,7 @@ public final class GUIInventoryHandler implements Listener {
 
     private static void putNavigationButtonItemStack(final Inventory guiPageInventory, final int slot, final Color arrowColor, final String displayName) {
         final ItemStack navigationButtonItemStack = new ItemStack(Material.TIPPED_ARROW);
-        final PotionMeta navigationButtonItemMeta = (PotionMeta) navigationButtonItemStack.getItemMeta();
+        final PotionMeta navigationButtonItemMeta = (PotionMeta) BukkitUtil.getItemMeta(navigationButtonItemStack);
         if (navigationButtonItemMeta == null) {
             plugin().getLogger().warning("ItemMeta is null for GUI navigation button ItemStack");
             return;
