@@ -22,9 +22,11 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.item.scroll;
 
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
-import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import com.andrewreedhall.ancientscrolls.util.PlayerDataHandler;
 import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.WanderingTrader;
@@ -36,7 +38,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
-import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,15 +88,30 @@ public final class ItemScrollListener implements Listener {
         if (!deadEnderDragonWorld.getEnvironment().equals(World.Environment.THE_END)) {
             return;
         }
-        deadEnderDragonWorld.getPlayers().forEach((final Player player) -> {
-            final PlayerInventory playerInventory = player.getInventory();
-            plugin().getItemRegistry().getAll().forEach((final AncientScrollsItem item) -> {
-                if (!(item instanceof ItemScroll scroll) || !scroll.isEnderDragonReward()) {
-                    return;
-                }
-                BukkitUtil.addItem(playerInventory, scroll.createItemStack(1));
-            });
-        });
+        deadEnderDragonWorld
+                .getPlayers()
+                .stream()
+                .filter((final Player player) -> !player.isDead()).forEach((final Player player) -> {
+                    final Block playerRewardChestBlock = player.getEyeLocation().getBlock().getRelative(BlockFace.UP);
+                    playerRewardChestBlock.setType(Material.CHEST);
+                    ((Chest) playerRewardChestBlock.getState()).getInventory().setContents(plugin()
+                            .getItemRegistry()
+                            .getAll()
+                            .stream()
+                            .filter((final AncientScrollsItem item) -> item instanceof ItemScroll scroll && scroll.enderDragonReward)
+                            .map((final AncientScrollsItem item) -> item.createItemStack(1))
+                            .toArray(ItemStack[]::new)
+                    );
+                    playerRewardChestBlock.getWorld().spawnParticle(
+                            Particle.DUST,
+                            playerRewardChestBlock.getLocation(),
+                            25,
+                            0.5,
+                            0.5,
+                            0.5,
+                            new Particle.DustOptions(Color.FUCHSIA, 1.0F)
+                    );
+                });
     }
 
     @EventHandler
