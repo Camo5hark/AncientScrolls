@@ -113,6 +113,8 @@ public final class AncientScrollsNative {
                 ScrollJousting.class,
                 ScrollWitchcraft.class,
                 ScrollScrollOfTheDead.class, // BOSS: WITHER
+                ScrollMarineBiology.class, // BOSS: ELDER GUARDIAN
+                ScrollDragonRunes.class, // BOSS: ENDER DRAGON
 
                 // end city
                 ScrollSniping.class,
