@@ -26,6 +26,7 @@ import com.andrewreedhall.ancientscrolls.asnative.AncientScrollsNative;
 import com.andrewreedhall.ancientscrolls.item.scroll.EquippedScrollsInventoryHandler;
 import com.andrewreedhall.ancientscrolls.item.scroll.GUIInventoryHandler;
 import com.andrewreedhall.ancientscrolls.npc.AncientScrollsNPC;
+import com.andrewreedhall.ancientscrolls.npc.NPCInstance;
 import com.andrewreedhall.ancientscrolls.util.MonsterPoisonSimulator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -34,7 +35,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -47,6 +50,7 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     private CachedConfigDefault defaultCachedConfig = null;
     private AncientScrollsRegistry<AncientScrollsItem> itemRegistry = null;
     private AncientScrollsRegistry<AncientScrollsNPC> npcRegistry = null;
+    private final Set<NPCInstance> activeNPCInstances = new HashSet<>();
     private EquippedScrollsInventoryHandler equippedScrollsInventoryHandler = null;
     private MonsterPoisonSimulator monsterPoisonSimulator = null;
     private GUIInventoryHandler guiInventoryHandler = null;
@@ -141,6 +145,10 @@ public final class AncientScrollsPlugin extends JavaPlugin {
 
     public AncientScrollsRegistry<AncientScrollsNPC> getNPCRegistry() {
         return this.npcRegistry;
+    }
+
+    public Set<NPCInstance> getActiveNPCInstances() {
+        return this.activeNPCInstances;
     }
 
     public EquippedScrollsInventoryHandler getEquippedScrollsInventoryHandler() {

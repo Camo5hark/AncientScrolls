@@ -27,6 +27,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
 
+import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
+
 public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
     public final String name;
     public final NPCInstance.Skin skin;
@@ -38,6 +40,14 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
     }
 
     public NPCInstance createInstance(final World world, final Location location) {
-        return new NPCInstance(this, ((CraftWorld) world).getHandle(), location.getX(), location.getY(), location.getZ());
+        final NPCInstance npcInstance = new NPCInstance(
+                this,
+                ((CraftWorld) world).getHandle(),
+                location.getX(),
+                location.getY(),
+                location.getZ()
+        );
+        plugin().getActiveNPCInstances().add(npcInstance);
+        return npcInstance;
     }
 }
