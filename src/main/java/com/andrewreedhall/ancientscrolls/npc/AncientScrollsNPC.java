@@ -22,10 +22,22 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.npc;
 
 import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.CraftWorld;
 
 public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
-    public AncientScrollsNPC(final NamespacedKey key) {
+    public final String name;
+    public final NPCInstance.Skin skin;
+
+    public AncientScrollsNPC(final NamespacedKey key, final String name, final NPCInstance.Skin skin) {
         super(key);
+        this.name = name;
+        this.skin = skin;
+    }
+
+    public NPCInstance createInstance(final World world, final Location location) {
+        return new NPCInstance(this, ((CraftWorld) world).getHandle(), location.getX(), location.getY(), location.getZ());
     }
 }

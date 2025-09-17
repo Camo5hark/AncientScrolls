@@ -50,6 +50,16 @@ public final class AncientScrollsRegistry<T extends AncientScrollsRegistry.Value
             this.key = key;
         }
 
+        @Override
+        public int hashCode() {
+            return this.key.hashCode();
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            return obj == this || (obj instanceof Value && obj.hashCode() == this.hashCode());
+        }
+
         /**
          *
          * @param id identifier component of the key

@@ -27,10 +27,8 @@ import com.andrewreedhall.ancientscrolls.item.scroll.EquippedScrollsInventoryHan
 import com.andrewreedhall.ancientscrolls.item.scroll.GUIInventoryHandler;
 import com.andrewreedhall.ancientscrolls.npc.AncientScrollsNPC;
 import com.andrewreedhall.ancientscrolls.util.MonsterPoisonSimulator;
-import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -46,7 +44,6 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     private static AncientScrollsPlugin plugin = null;
 
     private Random universalRandom = null;
-    private DedicatedServer nmsServer = null;
     private CachedConfigDefault defaultCachedConfig = null;
     private AncientScrollsRegistry<AncientScrollsItem> itemRegistry = null;
     private AncientScrollsRegistry<AncientScrollsNPC> npcRegistry = null;
@@ -60,7 +57,6 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         this.universalRandom = new Random();
-        this.nmsServer = ((CraftServer) this.getServer()).getServer();
         this.defaultCachedConfig = new CachedConfigDefault();
         this.itemRegistry = new AncientScrollsRegistry<>();
         this.npcRegistry = new AncientScrollsRegistry<>();
@@ -129,10 +125,6 @@ public final class AncientScrollsPlugin extends JavaPlugin {
      */
     public Random getUniversalRandom() {
         return this.universalRandom;
-    }
-
-    public DedicatedServer getNMSServer() {
-        return this.nmsServer;
     }
 
     /**
