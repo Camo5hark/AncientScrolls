@@ -42,7 +42,18 @@ public final class AncientScrollsNative {
                 // npc
                 plugin().getNPCInstanceHandler()
         );
-        plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(plugin(), plugin().getEquippedScrollsInventoryHandler(), 0L, 1L));
+        plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(
+                plugin(),
+                plugin().getEquippedScrollsInventoryHandler(),
+                0L,
+                1L
+        ));
+        plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(
+                plugin(),
+                plugin().getNPCInstanceHandler(),
+                0L,
+                2L
+        ));
     }
 
     private static void registerItems() {

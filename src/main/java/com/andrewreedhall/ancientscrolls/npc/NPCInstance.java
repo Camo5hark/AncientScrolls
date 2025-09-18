@@ -30,12 +30,16 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
+import net.minecraft.network.protocol.game.ClientboundRotateHeadPacket;
+import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.server.level.*;
 import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.entity.player.ChatVisiblity;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
@@ -146,5 +150,29 @@ public final class NPCInstance {
                 },
                 20L
         ));
+    }
+
+    public void tick() {
+        this.player
+                .level()
+                .getPlayers((final ServerPlayer player) -> this.player.distanceTo(player) < 10.0F)
+                .forEach((final ServerPlayer nearbyPlayer) -> {
+                    final float yRot = (float) -Math.toDegrees(Math.atan2(
+                            nearbyPlayer.getX() - this.player.getX(),
+                            nearbyPlayer.getZ() - this.player.getZ()
+                    ));
+                    nearbyPlayer.connection.send(new ClientboundTeleportEntityPacket(
+                            this.player.getId(),
+                            new PositionMoveRotation(
+                                    this.player.position(),
+                                    new Vec3(0.0, 0.0, 0.0),
+                                    yRot,
+                                    0.0F
+                            ),
+                            Set.of(),
+                            this.player.onGround()
+                    ));
+                    nearbyPlayer.connection.send(new ClientboundRotateHeadPacket(this.player, (byte) ((((yRot + 180.0F) % 360.0F) - 180.0F) * (127.0F / 180.0F))));
+                });
     }
 }

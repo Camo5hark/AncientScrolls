@@ -30,10 +30,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class NPCInstanceHandler implements Listener {
+public final class NPCInstanceHandler implements Runnable, Listener {
     public final Set<NPCInstance> activeNPCInstances = new HashSet<>();
 
     public NPCInstanceHandler() {}
+
+    @Override
+    public void run() {
+        this.activeNPCInstances.forEach(NPCInstance::tick);
+    }
 
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
