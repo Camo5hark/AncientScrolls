@@ -134,8 +134,4 @@ public final class NPCInstance {
         player.connection.send(ClientboundPlayerInfoUpdatePacket.createSinglePlayerInitializing(this.player, false));
         player.connection.send(new ClientboundAddEntityPacket(this.player, this.entity));
     }
-
-    public static boolean is(final ServerPlayer player) {
-        return player.getUUID().getMostSignificantBits() == 0L;
-    }
 }

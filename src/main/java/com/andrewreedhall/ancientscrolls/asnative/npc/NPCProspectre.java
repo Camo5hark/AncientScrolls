@@ -37,9 +37,9 @@ public final class NPCProspectre extends NPCNative implements Listener {
 
     @EventHandler
     public void onPlayerInteractAtEntity(final PlayerInteractAtEntityEvent event) {
-        if (!event.getHand().equals(EquipmentSlot.HAND) || !this.is(event.getRightClicked())) {
+        if (!event.getHand().equals(EquipmentSlot.HAND)) {
             return;
         }
-        System.out.println("interacted");
+        final NPCInstance interactedNPCInstance = this.getInstance(event.getRightClicked());
     }
 }

@@ -37,7 +37,7 @@ import java.util.List;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
-    private static final String PMK_ANCIENT_SCROLLS_NPC = "ancient_scrolls_npc";
+    private static final String PMK_ANCIENT_SCROLLS_NPC_INSTANCE = "ancient_scrolls_npc_instance";
 
     public final String name;
     public final NPCInstance.Skin skin;
@@ -56,17 +56,17 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
                 location.getY(),
                 location.getZ()
         );
-        getPlayer(npcInstance).setMetadata(PMK_ANCIENT_SCROLLS_NPC, new FixedMetadataValue(plugin(), this));
+        getPlayer(npcInstance).setMetadata(PMK_ANCIENT_SCROLLS_NPC_INSTANCE, new FixedMetadataValue(plugin(), npcInstance));
         plugin().getNPCInstanceHandler().activeNPCInstances.add(npcInstance);
         return npcInstance;
     }
 
-    protected boolean is(final Entity entity) {
-        if (!(entity instanceof Player player) || !NPCInstance.is(((CraftPlayer) player).getHandle())) {
-            return false;
+    protected NPCInstance getInstance(final Entity entity) {
+        if (!(entity instanceof Player player) || entity.getUniqueId().getMostSignificantBits() != 0L) {
+            return null;
         }
-        final List<MetadataValue> playerAncientScrollsNPCData = player.getMetadata(PMK_ANCIENT_SCROLLS_NPC);
-        return !playerAncientScrollsNPCData.isEmpty() && playerAncientScrollsNPCData.getFirst().value() == this;
+        final List<MetadataValue> playerAncientScrollsNPCInstanceData = player.getMetadata(PMK_ANCIENT_SCROLLS_NPC_INSTANCE);
+        return playerAncientScrollsNPCInstanceData.isEmpty() ? null : (NPCInstance) playerAncientScrollsNPCInstanceData.getFirst().value();
     }
 
     public static Player getPlayer(final NPCInstance npcInstance) {
