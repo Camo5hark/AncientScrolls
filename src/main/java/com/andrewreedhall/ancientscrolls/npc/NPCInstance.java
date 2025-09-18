@@ -37,6 +37,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.ChatVisiblity;
 import net.minecraft.world.level.GameType;
 import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.SocketAddress;
@@ -136,8 +137,14 @@ public final class NPCInstance {
         if (this.npc.additionalAddInstanceToClientPacketBuilder == null) {
             return;
         }
-        for (final Packet<?> additionalPacket : this.npc.additionalAddInstanceToClientPacketBuilder.apply(this)) {
-            player.connection.send(additionalPacket);
-        }
+        plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncDelayedTask(
+                plugin(),
+                () -> {
+                    for (final Packet<?> additionalPacket : this.npc.additionalAddInstanceToClientPacketBuilder.apply(this)) {
+                        player.connection.send(additionalPacket);
+                    }
+                },
+                20L
+        ));
     }
 }
