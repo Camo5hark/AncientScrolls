@@ -28,6 +28,8 @@ import io.papermc.paper.util.KeepAlive;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
 import net.minecraft.server.level.*;
 import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -129,5 +131,7 @@ public final class NPCInstance {
     }
 
     public void addToPlayersClient(final ServerPlayer player) {
+        player.connection.send(ClientboundPlayerInfoUpdatePacket.createSinglePlayerInitializing(this.player, false));
+        player.connection.send(new ClientboundAddEntityPacket(this.player, this.entity));
     }
 }
