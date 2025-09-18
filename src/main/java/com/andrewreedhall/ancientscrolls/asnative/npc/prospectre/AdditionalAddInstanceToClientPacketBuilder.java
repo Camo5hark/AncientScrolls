@@ -19,21 +19,29 @@ License file: <project-root>/COPYING
 GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
  */
 
-package com.andrewreedhall.ancientscrolls.asnative.npc;
+package com.andrewreedhall.ancientscrolls.asnative.npc.prospectre;
 
-import com.andrewreedhall.ancientscrolls.npc.AncientScrollsNPC;
 import com.andrewreedhall.ancientscrolls.npc.NPCInstance;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
+import java.util.List;
 import java.util.function.Function;
 
-public abstract class NPCNative extends AncientScrollsNPC {
-    public NPCNative(
-            final String id,
-            final String name,
-            final NPCInstance.Skin skin,
-            final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder
-    ) {
-        super(fromAncientScrollsNamespace(id), name, skin, additionalAddInstanceToClientPacketBuilder);
+public final class AdditionalAddInstanceToClientPacketBuilder implements Function<NPCInstance, Packet<?>[]> {
+    public AdditionalAddInstanceToClientPacketBuilder() {}
+
+    @Override
+    public Packet<?>[] apply(final NPCInstance npcInstance) {
+        return new Packet[] {
+                new ClientboundSetEquipmentPacket(
+                        npcInstance.player.getId(),
+                        List.of(new Pair<>(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_PICKAXE)))
+                )
+        };
     }
 }

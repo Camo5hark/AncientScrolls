@@ -21,7 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative;
 
-import com.andrewreedhall.ancientscrolls.asnative.npc.NPCProspectre;
+import com.andrewreedhall.ancientscrolls.asnative.npc.prospectre.NPCProspectre;
 import com.andrewreedhall.ancientscrolls.item.ItemListener;
 import com.andrewreedhall.ancientscrolls.asnative.flask.*;
 import com.andrewreedhall.ancientscrolls.asnative.scroll.*;

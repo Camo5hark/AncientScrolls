@@ -133,5 +133,11 @@ public final class NPCInstance {
     public void addToPlayersClient(final ServerPlayer player) {
         player.connection.send(ClientboundPlayerInfoUpdatePacket.createSinglePlayerInitializing(this.player, false));
         player.connection.send(new ClientboundAddEntityPacket(this.player, this.entity));
+        if (this.npc.additionalAddInstanceToClientPacketBuilder == null) {
+            return;
+        }
+        for (final Packet<?> additionalPacket : this.npc.additionalAddInstanceToClientPacketBuilder.apply(this)) {
+            player.connection.send(additionalPacket);
+        }
     }
 }

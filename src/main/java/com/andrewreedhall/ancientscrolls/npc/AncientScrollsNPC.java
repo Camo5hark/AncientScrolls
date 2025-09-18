@@ -22,17 +22,18 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.npc;
 
 import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
+import net.minecraft.network.protocol.Packet;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -41,11 +42,18 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
 
     public final String name;
     public final NPCInstance.Skin skin;
+    public final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder;
 
-    public AncientScrollsNPC(final NamespacedKey key, final String name, final NPCInstance.Skin skin) {
+    public AncientScrollsNPC(
+            final NamespacedKey key,
+            final String name,
+            final NPCInstance.Skin skin,
+            final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder
+    ) {
         super(key);
         this.name = name;
         this.skin = skin;
+        this.additionalAddInstanceToClientPacketBuilder = additionalAddInstanceToClientPacketBuilder;
     }
 
     public NPCInstance createInstance(final World world, final Location location) {
