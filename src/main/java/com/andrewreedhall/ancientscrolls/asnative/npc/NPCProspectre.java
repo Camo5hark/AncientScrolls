@@ -1,0 +1,12 @@
+package com.andrewreedhall.ancientscrolls.asnative.npc;
+
+import com.andrewreedhall.ancientscrolls.npc.NPCInstance;
+
+public final class NPCProspectre extends NPCNative {
+    public NPCProspectre() {
+        super("prospectre", "Prospectre", new NPCInstance.Skin(
+                "ewogICJ0aW1lc3RhbXAiIDogMTYzMTk5NjIzNTk3OSwKICAicHJvZmlsZUlkIiA6ICJhYTU1YzQ5ODM1ZTA0OGEyODgzYjdkNGU2MmQ2MTc4YyIsCiAgInByb2ZpbGVOYW1lIiA6ICJLb2luZ19NYXJjdXMiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDA0NjZiZTYxYjZmZDllNmY5MWFkNzA4M2FmNDAxOTM1OGYwNjBhZTAzYjRmYzAzMWQ3ZDZiNWU3NmEzNTQzZiIKICAgIH0KICB9Cn0=",
+                "iKEqxFxKE3OCIJkCdZlfUXDOQzMzWFr4hhqUPoLOjkW6DNHQzMmSJvxqb28hzGjAgEBIyXFlOdiGncLgUOhQ2pozsFL2cfsIWcjSELN9bqstl7PaK4PYBwiPhUbWCSRswXl9ehQyBiqk50zm02h6X3okRPEtfl1ij+WFHgsUUrwcEDJEFPVboB1xnO2KWvIWTb0cm3XpIBKrHHtrvP/iogPLJNBT/bhxlvn3sgjhexqQGdAwM49Ltw8MTT0nqCPR62X++u71bOIco4ELtDp8KG2c7tZYFAJsLkHwEFw0u/pmczTOeZ0je29YSqIAaseYxHkRpgOCv/BO588abK3KTBdLD/H+ooOyi3f4/fwsd7x3E53OxTlnfuuKiBsOEvwJUODyoxQZEnX3kIkIqIOpZNspyE/qvrvUzX30RANxAEGDWmzAJolfVS4tVSHf4qWvce6Vg9NNZCXcvvd3ln3KeKovXy2RJRibVBHHqe+dv1Yhl9x6krasbKpHqhD8sLelJ7J4arEK6GnozzUy91h7kRmaFacJwgVz/Lq3b/d01GXyhqxaMOOMBcB2EzLRivXV9NobJchN7rHWJ+FKc19aBGjLuRQS+SzEctTgmdK8SSjviuiXS+9HixwBVilXz2d7Zj8a/AHKovmbp5Zqf2jd/m8e0YgsXT2snmMBgSdvXoI="
+        ));
+    }
+}

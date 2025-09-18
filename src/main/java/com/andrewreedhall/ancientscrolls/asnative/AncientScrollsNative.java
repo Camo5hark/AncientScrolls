@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative;
 
+import com.andrewreedhall.ancientscrolls.asnative.npc.NPCProspectre;
 import com.andrewreedhall.ancientscrolls.item.ItemListener;
 import com.andrewreedhall.ancientscrolls.asnative.flask.*;
 import com.andrewreedhall.ancientscrolls.asnative.scroll.*;
@@ -40,7 +41,7 @@ public final class AncientScrollsNative {
         plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(plugin(), plugin().getEquippedScrollsInventoryHandler(), 0L, 1L));
     }
 
-    public static void registerAll() {
+    private static void registerItems() {
         plugin().getLogger().info("Registering native items");
         plugin().getItemRegistry().registerAll(
                 // consumption reducers
@@ -133,6 +134,18 @@ public final class AncientScrollsNative {
                 FlaskAquavit.class,
                 FlaskFermentedCarrotJuice.class
         );
+    }
+
+    private static void registerNPCs() {
+        plugin().getLogger().info("Registering native NPCs");
+        plugin().getNPCRegistry().registerAll(
+                NPCProspectre.class
+        );
+    }
+
+    public static void registerAll() {
+        registerItems();
+        registerNPCs();
         postRegisterAll();
         plugin().scheduleTask((final BukkitScheduler scheduler) ->
                 scheduler.scheduleSyncDelayedTask(plugin(), AncientScrollsNative::postRegisterAll)
