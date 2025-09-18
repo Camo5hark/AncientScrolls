@@ -47,7 +47,7 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
                 location.getY(),
                 location.getZ()
         );
-        plugin().getActiveNPCInstances().add(npcInstance);
+        plugin().getNPCInstanceHandler().activeNPCInstances.add(npcInstance);
         return npcInstance;
     }
 }

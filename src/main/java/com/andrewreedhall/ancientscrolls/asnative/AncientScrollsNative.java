@@ -33,10 +33,14 @@ import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 public final class AncientScrollsNative {
     private static void postRegisterAll() {
         plugin().registerListeners(
+                // item
                 new ItemListener(),
                 new ItemScrollListener(),
                 plugin().getEquippedScrollsInventoryHandler(),
-                plugin().getGUIInventoryHandler()
+                plugin().getGUIInventoryHandler(),
+
+                // npc
+                plugin().getNPCInstanceHandler()
         );
         plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(plugin(), plugin().getEquippedScrollsInventoryHandler(), 0L, 1L));
     }
