@@ -26,10 +26,19 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+
+import java.util.List;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
+    private static final String PMK_ANCIENT_SCROLLS_NPC = "ancient_scrolls_npc";
+
     public final String name;
     public final NPCInstance.Skin skin;
 
@@ -47,7 +56,20 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
                 location.getY(),
                 location.getZ()
         );
+        getPlayer(npcInstance).setMetadata(PMK_ANCIENT_SCROLLS_NPC, new FixedMetadataValue(plugin(), this));
         plugin().getNPCInstanceHandler().activeNPCInstances.add(npcInstance);
         return npcInstance;
+    }
+
+    protected boolean is(final Entity entity) {
+        if (!(entity instanceof Player player) || !NPCInstance.is(((CraftPlayer) player).getHandle())) {
+            return false;
+        }
+        final List<MetadataValue> playerAncientScrollsNPCData = player.getMetadata(PMK_ANCIENT_SCROLLS_NPC);
+        return !playerAncientScrollsNPCData.isEmpty() && playerAncientScrollsNPCData.getFirst().value() == this;
+    }
+
+    public static Player getPlayer(final NPCInstance npcInstance) {
+        return (Player) plugin().getServer().getEntity(npcInstance.player.getUUID());
     }
 }
