@@ -23,6 +23,7 @@ package com.andrewreedhall.ancientscrolls;
 
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
+import com.andrewreedhall.ancientscrolls.npc.AncientScrollsNPC;
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import com.andrewreedhall.ancientscrolls.util.PlayerDataHandler;
 import org.bukkit.NamespacedKey;
@@ -136,6 +137,28 @@ public final class CommandHandler {
                     return true;
                 }
                 plugin().getGUIInventoryHandler().open(playerSender, 0);
+                return true;
+            }
+            case "spawnnpc" -> {
+                if (args.length < 1) {
+                    break;
+                }
+                if (!(sender instanceof Player playerSender)) {
+                    sender.sendMessage(RED + "This command can only be executed by players");
+                    return true;
+                }
+                // resolve args
+                final NamespacedKey argNPCKey = NamespacedKey.fromString(args[0]);
+                if (argNPCKey == null) {
+                    break;
+                }
+                final AncientScrollsNPC npc = plugin().getNPCRegistry().get(argNPCKey);
+                if (npc == null) {
+                    sender.sendMessage(RED + "NPC not found: " + argNPCKey);
+                    return true;
+                }
+                // execute
+                npc.createInstance(playerSender.getWorld(), playerSender.getLocation());
                 return true;
             }
             default -> {}

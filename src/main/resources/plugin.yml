@@ -57,6 +57,11 @@ commands:
     permission: "ancientscrolls.asgui"
     permission-message: "\u00A7cYou do not have permission to use this command."
     usage: "\u00A7Usage: /asgui"
+  spawnnpc:
+    description: "Spawns a NPC at the sender's location"
+    permission: "ancientscrolls.spawnnpc"
+    permission-message: "\u00A7cYou do not have permission to use this command."
+    usage: "\u00A7Usage: /spawnnpc <npc_key>"
 permissions:
   ancientscrolls.admin:
     description: "Allows player to use Ancient Scrolls administrative commands"
