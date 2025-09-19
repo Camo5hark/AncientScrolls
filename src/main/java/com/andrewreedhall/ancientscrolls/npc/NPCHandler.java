@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.npc;
 
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -54,21 +55,29 @@ public final class NPCHandler implements Runnable, Listener {
                 .getOnlinePlayers()
                 .stream()
                 .filter((final Player onlinePlayer) -> !NPCInstance.is(((CraftEntity) onlinePlayer).getHandle()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
         plugin().getNPCRegistry().getAll().forEach((final AncientScrollsNPC npc) ->
-                npc.generators.forEach((final Pair<Predicate<Player>, Double> generator) -> {
-                    onlinePlayers
-                            .stream()
-                            .filter(generator.getA())
-                            .forEach((final Player onlinePlayer) -> {
-                                if (plugin().getUniversalRandom().nextDouble() > generator.getB()) {
-                                    return;
-                                }
-                                // TODO create thread to search for a place to spawn instance
-                            });
-                }));
+                npc.generators.forEach((final Pair<Predicate<Player>, Double> generator) -> onlinePlayers
+                        .stream()
+                        .filter(generator.getA())
+                        .forEach((final Player onlinePlayer) -> {
+                            if (plugin().getUniversalRandom().nextDouble() > generator.getB()) {
+                                return;
+                            }
+                            // TODO create thread to search for a place to spawn instance
+                        })
+                ));
         Triplet<AncientScrollsNPC, UUID, Triplet<Double, Double, Double>> generation;
         while ((generation = this.generationQueue.poll()) != null) {
+            generation.getA().createInstance(
+                    plugin().getServer().getWorld(generation.getB()),
+                    new Location(
+                            null,
+                            generation.getC().getA(),
+                            generation.getC().getB(),
+                            generation.getC().getC()
+                    )
+            );
         }
     }
 
