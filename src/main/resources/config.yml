@@ -1,7 +1,5 @@
 # --- AncientScrolls plugin configuration ---
 # Fields marked with "FIXED" will not be discretely reloaded using /asreload and require a restart to reload
-
-entity-damage-cache-capacity: 1000
 item:
   scroll:
     # FIXED
@@ -15,4 +13,7 @@ item:
 npc:
   generation:
     enabled: true
+    # Scales the spawning probability of a NPC
     probability-scalar: 1.0
+    # The maximum distance any player must be from an EntitySpawnEvent for a NPC to spawn
+    max-player-distance: 50.0

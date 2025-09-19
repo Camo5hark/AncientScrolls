@@ -27,14 +27,19 @@ import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
  * CachedConfig for <code>plugin().getConfig()</code>
  */
 public final class CachedConfigDefault extends CachedConfig {
-    @Meta(path = "entity-damage-cache-capacity", defaultInt = 1000)
-    public int entityDamageCacheCapacity;
     @Meta(path = "item.scroll.max-equipped-scrolls", defaultInt = 9, fixed = true)
     public int item_scroll_maxEquippedScrolls;
     @Meta(path = "item.generation.enabled", defaultBoolean = true)
     public boolean item_generation_enabled;
     @Meta(path = "item.generation.probability-scalar", defaultDouble = 1.0)
     public double item_generation_probabilityScalar;
+
+    @Meta(path = "npc.generation.enabled", defaultBoolean = true)
+    public boolean npc_generation_enabled;
+    @Meta(path = "npc.generation.probability-scalar", defaultDouble = 1.0)
+    public double npc_generation_probabilityScalar;
+    @Meta(path = "npc.generation.max-player-distance", defaultDouble = 50.0)
+    public double npc_generation_maxPlayerDistance;
 
     public CachedConfigDefault() {
         super(plugin().getConfig());

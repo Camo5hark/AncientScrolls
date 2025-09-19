@@ -21,64 +21,26 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.npc;
 
-import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import oshi.util.tuples.Pair;
-import oshi.util.tuples.Triplet;
 
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.*;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class NPCHandler implements Runnable, Listener {
     public final Set<NPCInstance> activeNPCInstances = new HashSet<>();
-    private final Queue<Triplet<AncientScrollsNPC, UUID, Triplet<Double, Double, Double>>> generationQueue = new ConcurrentLinkedQueue<>();
 
     public NPCHandler() {}
 
     @Override
     public void run() {
         this.activeNPCInstances.forEach(NPCInstance::tick);
-        final Set<Player> onlinePlayers = plugin()
-                .getServer()
-                .getOnlinePlayers()
-                .stream()
-                .filter((final Player onlinePlayer) -> !NPCInstance.is(((CraftEntity) onlinePlayer).getHandle()))
-                .collect(Collectors.toUnmodifiableSet());
-        plugin().getNPCRegistry().getAll().forEach((final AncientScrollsNPC npc) ->
-                npc.generators.forEach((final Pair<Predicate<Player>, Double> generator) -> onlinePlayers
-                        .stream()
-                        .filter(generator.getA())
-                        .forEach((final Player onlinePlayer) -> {
-                            if (plugin().getUniversalRandom().nextDouble() > generator.getB()) {
-                                return;
-                            }
-                            // TODO create thread to search for a place to spawn instance
-                        })
-                ));
-        Triplet<AncientScrollsNPC, UUID, Triplet<Double, Double, Double>> generation;
-        while ((generation = this.generationQueue.poll()) != null) {
-            generation.getA().createInstance(
-                    plugin().getServer().getWorld(generation.getB()),
-                    new Location(
-                            null,
-                            generation.getC().getA(),
-                            generation.getC().getB(),
-                            generation.getC().getC()
-                    )
-            );
-        }
     }
 
     @EventHandler
@@ -87,5 +49,22 @@ public final class NPCHandler implements Runnable, Listener {
         this.activeNPCInstances.forEach((final NPCInstance npcInstance) ->
                 npcInstance.addToPlayersClient(((CraftPlayer) joiningPlayer).getHandle())
         );
+    }
+
+    @EventHandler
+    public void onEntitySpawn(final EntitySpawnEvent event) {
+        if (!plugin().getDefaultCachedConfig().npc_generation_enabled || !(event.getEntity() instanceof LivingEntity spawnedLivingEntity)) {
+            return;
+        }
+        final List<AncientScrollsNPC> registeredNPCs = new ArrayList<>(plugin().getNPCRegistry().getAll().stream().toList());
+        registeredNPCs.sort((final AncientScrollsNPC npc0, final AncientScrollsNPC npc1) ->
+                plugin().getUniversalRandom().nextInt(-1, 2)
+        );
+        for (final AncientScrollsNPC registeredNPC : registeredNPCs) {
+            if (registeredNPC.generate(spawnedLivingEntity)) {
+                spawnedLivingEntity.remove();
+                break;
+            }
+        }
     }
 }

@@ -29,13 +29,13 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import oshi.util.tuples.Pair;
 
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -47,20 +47,20 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
     public final String name;
     public final NPCInstance.Skin skin;
     public final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder;
-    public final Set<Pair<Predicate<Player>, Double>> generators;
+    public final Pair<Predicate<LivingEntity>, Double> generator;
 
     public AncientScrollsNPC(
             final NamespacedKey key,
             final String name,
             final NPCInstance.Skin skin,
             final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder,
-            final Set<Pair<Predicate<Player>, Double>> generators
+            final Pair<Predicate<LivingEntity>, Double> generator
     ) {
         super(key);
         this.name = name;
         this.skin = skin;
         this.additionalAddInstanceToClientPacketBuilder = additionalAddInstanceToClientPacketBuilder;
-        this.generators = generators;
+        this.generator = generator;
     }
 
     public NPCInstance createInstance(final World world, final Location location) {
@@ -82,6 +82,14 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
         }
         final List<MetadataValue> playerAncientScrollsNPCInstanceData = player.getMetadata(PMK_ANCIENT_SCROLLS_NPC_INSTANCE);
         return playerAncientScrollsNPCInstanceData.isEmpty() ? null : (NPCInstance) playerAncientScrollsNPCInstanceData.getFirst().value();
+    }
+
+    public boolean generate(final LivingEntity spawnedLivingEntity) {
+        if (!this.generator.getA().test(spawnedLivingEntity) || plugin().getUniversalRandom().nextDouble() > this.generator.getB()) {
+            return false;
+        }
+        this.createInstance(spawnedLivingEntity.getWorld(), spawnedLivingEntity.getLocation());
+        return true;
     }
 
     public static Player getPlayer(final NPCInstance npcInstance) {
