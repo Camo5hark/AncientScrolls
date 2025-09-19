@@ -27,13 +27,17 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import oshi.util.tuples.Pair;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -43,17 +47,20 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
     public final String name;
     public final NPCInstance.Skin skin;
     public final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder;
+    public final Set<Pair<Predicate<Player>, Double>> generators;
 
     public AncientScrollsNPC(
             final NamespacedKey key,
             final String name,
             final NPCInstance.Skin skin,
-            final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder
+            final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder,
+            final Set<Pair<Predicate<Player>, Double>> generators
     ) {
         super(key);
         this.name = name;
         this.skin = skin;
         this.additionalAddInstanceToClientPacketBuilder = additionalAddInstanceToClientPacketBuilder;
+        this.generators = generators;
     }
 
     public NPCInstance createInstance(final World world, final Location location) {
@@ -65,12 +72,12 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
                 location.getZ()
         );
         getPlayer(npcInstance).setMetadata(PMK_ANCIENT_SCROLLS_NPC_INSTANCE, new FixedMetadataValue(plugin(), npcInstance));
-        plugin().getNPCInstanceHandler().activeNPCInstances.add(npcInstance);
+        plugin().getNPCHandler().activeNPCInstances.add(npcInstance);
         return npcInstance;
     }
 
     protected NPCInstance getInstance(final Entity entity) {
-        if (!(entity instanceof Player player) || entity.getUniqueId().getMostSignificantBits() != 0L) {
+        if (!(entity instanceof Player player) || !NPCInstance.is(((CraftEntity) entity).getHandle())) {
             return null;
         }
         final List<MetadataValue> playerAncientScrollsNPCInstanceData = player.getMetadata(PMK_ANCIENT_SCROLLS_NPC_INSTANCE);

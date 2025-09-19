@@ -35,6 +35,7 @@ import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.server.level.*;
 import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.entity.player.ChatVisiblity;
@@ -172,7 +173,14 @@ public final class NPCInstance {
                             Set.of(),
                             this.player.onGround()
                     ));
-                    nearbyPlayer.connection.send(new ClientboundRotateHeadPacket(this.player, (byte) ((((yRot + 180.0F) % 360.0F) - 180.0F) * (127.0F / 180.0F))));
+                    nearbyPlayer.connection.send(new ClientboundRotateHeadPacket(
+                            this.player,
+                            (byte) ((((yRot + 180.0F) % 360.0F) - 180.0F) * (127.0F / 180.0F)))
+                    );
                 });
+    }
+
+    public static boolean is(final Entity entity) {
+        return entity.getUUID().getMostSignificantBits() == 0L;
     }
 }

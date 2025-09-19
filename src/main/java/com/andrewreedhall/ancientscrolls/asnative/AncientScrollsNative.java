@@ -40,7 +40,7 @@ public final class AncientScrollsNative {
                 plugin().getGUIInventoryHandler(),
 
                 // npc
-                plugin().getNPCInstanceHandler()
+                plugin().getNPCHandler()
         );
         plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(
                 plugin(),
@@ -50,9 +50,9 @@ public final class AncientScrollsNative {
         ));
         plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(
                 plugin(),
-                plugin().getNPCInstanceHandler(),
+                plugin().getNPCHandler(),
                 0L,
-                2L
+                4L
         ));
     }
 

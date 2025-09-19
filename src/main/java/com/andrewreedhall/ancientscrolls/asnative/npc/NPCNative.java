@@ -24,16 +24,21 @@ package com.andrewreedhall.ancientscrolls.asnative.npc;
 import com.andrewreedhall.ancientscrolls.npc.AncientScrollsNPC;
 import com.andrewreedhall.ancientscrolls.npc.NPCInstance;
 import net.minecraft.network.protocol.Packet;
+import org.bukkit.entity.Player;
+import oshi.util.tuples.Pair;
 
+import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public abstract class NPCNative extends AncientScrollsNPC {
     public NPCNative(
             final String id,
             final String name,
             final NPCInstance.Skin skin,
-            final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder
+            final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder,
+            final Set<Pair<Predicate<Player>, Double>> generators
     ) {
-        super(fromAncientScrollsNamespace(id), name, skin, additionalAddInstanceToClientPacketBuilder);
+        super(fromAncientScrollsNamespace(id), name, skin, additionalAddInstanceToClientPacketBuilder, generators);
     }
 }

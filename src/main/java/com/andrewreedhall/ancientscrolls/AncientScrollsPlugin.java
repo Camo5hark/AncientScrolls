@@ -26,7 +26,7 @@ import com.andrewreedhall.ancientscrolls.asnative.AncientScrollsNative;
 import com.andrewreedhall.ancientscrolls.item.scroll.EquippedScrollsInventoryHandler;
 import com.andrewreedhall.ancientscrolls.item.scroll.GUIInventoryHandler;
 import com.andrewreedhall.ancientscrolls.npc.AncientScrollsNPC;
-import com.andrewreedhall.ancientscrolls.npc.NPCInstanceHandler;
+import com.andrewreedhall.ancientscrolls.npc.NPCHandler;
 import com.andrewreedhall.ancientscrolls.util.MonsterPoisonSimulator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -47,7 +47,7 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     private Random universalRandom = null;
     private CachedConfigDefault defaultCachedConfig = null;
     private AncientScrollsRegistry<AncientScrollsItem> itemRegistry = null;
-    private NPCInstanceHandler npcInstanceHandler = null;
+    private NPCHandler npcHandler = null;
     private AncientScrollsRegistry<AncientScrollsNPC> npcRegistry = null;
     private EquippedScrollsInventoryHandler equippedScrollsInventoryHandler = null;
     private MonsterPoisonSimulator monsterPoisonSimulator = null;
@@ -61,7 +61,7 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         this.universalRandom = new Random();
         this.defaultCachedConfig = new CachedConfigDefault();
         this.itemRegistry = new AncientScrollsRegistry<>();
-        this.npcInstanceHandler = new NPCInstanceHandler();
+        this.npcHandler = new NPCHandler();
         this.npcRegistry = new AncientScrollsRegistry<>();
         this.equippedScrollsInventoryHandler = new EquippedScrollsInventoryHandler();
         this.monsterPoisonSimulator = new MonsterPoisonSimulator();
@@ -142,8 +142,8 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         return this.itemRegistry;
     }
 
-    public NPCInstanceHandler getNPCInstanceHandler() {
-        return this.npcInstanceHandler;
+    public NPCHandler getNPCHandler() {
+        return this.npcHandler;
     }
 
     public AncientScrollsRegistry<AncientScrollsNPC> getNPCRegistry() {

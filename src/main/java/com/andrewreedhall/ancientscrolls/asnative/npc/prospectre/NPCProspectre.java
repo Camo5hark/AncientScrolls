@@ -23,10 +23,14 @@ package com.andrewreedhall.ancientscrolls.asnative.npc.prospectre;
 
 import com.andrewreedhall.ancientscrolls.asnative.npc.NPCNative;
 import com.andrewreedhall.ancientscrolls.npc.NPCInstance;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import oshi.util.tuples.Pair;
+
+import java.util.Set;
 
 public final class NPCProspectre extends NPCNative implements Listener {
     private static final NPCInstance.Skin SKIN = new NPCInstance.Skin(
@@ -35,7 +39,18 @@ public final class NPCProspectre extends NPCNative implements Listener {
     );
 
     public NPCProspectre() {
-        super("prospectre", "Prospectre", SKIN, new AdditionalAddInstanceToClientPacketBuilder());
+        super(
+                "prospectre",
+                "Prospectre",
+                SKIN,
+                new AdditionalAddInstanceToClientPacketBuilder(),
+                Set.of(
+                        new Pair<>(
+                                (final Player player) -> false,
+                                0.01
+                        )
+                )
+        );
     }
 
     @EventHandler

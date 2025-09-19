@@ -32,8 +32,8 @@ import net.minecraft.world.item.Items;
 import java.util.List;
 import java.util.function.Function;
 
-public final class AdditionalAddInstanceToClientPacketBuilder implements Function<NPCInstance, Packet<?>[]> {
-    public AdditionalAddInstanceToClientPacketBuilder() {}
+final class AdditionalAddInstanceToClientPacketBuilder implements Function<NPCInstance, Packet<?>[]> {
+    AdditionalAddInstanceToClientPacketBuilder() {}
 
     @Override
     public Packet<?>[] apply(final NPCInstance npcInstance) {

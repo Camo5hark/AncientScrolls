@@ -12,3 +12,7 @@ item:
     enabled: true
     # Scales the generation probability for loot tables, vaults, and ominous vaults
     probability-scalar: 1.0
+npc:
+  generation:
+    enabled: true
+    probability-scalar: 1.0
