@@ -26,6 +26,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -53,7 +54,10 @@ public final class NPCHandler implements Runnable, Listener {
 
     @EventHandler
     public void onEntitySpawn(final EntitySpawnEvent event) {
-        if (!plugin().getDefaultCachedConfig().npc_generation_enabled || !(event.getEntity() instanceof LivingEntity spawnedLivingEntity)) {
+        if (!plugin().getDefaultCachedConfig().npc_generation_enabled ||
+                !(event.getEntity() instanceof LivingEntity spawnedLivingEntity) ||
+                !event.getEntity().getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL)
+        ) {
             return;
         }
         final List<AncientScrollsNPC> registeredNPCs = new ArrayList<>(plugin().getNPCRegistry().getAll().stream().toList());
