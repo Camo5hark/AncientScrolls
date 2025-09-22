@@ -42,13 +42,14 @@ public final class NPCHandler implements Runnable, Listener {
     @Override
     public void run() {
         this.activeNPCInstances.forEach(NPCInstance::tick);
+        this.activeNPCInstances.removeIf(NPCInstance::isTTLUp);
     }
 
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player joiningPlayer = event.getPlayer();
         this.activeNPCInstances.forEach((final NPCInstance npcInstance) ->
-                npcInstance.addToPlayersClient(((CraftPlayer) joiningPlayer).getHandle())
+                npcInstance.addToClient(((CraftPlayer) joiningPlayer).getHandle())
         );
     }
 

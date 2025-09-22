@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.npc;
 
+import com.andrewreedhall.ancientscrolls.asnative.AncientScrollsNative;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
@@ -28,10 +29,7 @@ import io.papermc.paper.util.KeepAlive;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.PacketFlow;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
-import net.minecraft.network.protocol.game.ClientboundRotateHeadPacket;
-import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
+import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.*;
 import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -67,6 +65,7 @@ public final class NPCInstance {
 
     public record Skin(String value, String signature) {}
 
+    private long ttl;
     public final AncientScrollsNPC npc;
     public final ServerPlayer player;
     public final ServerEntity entity;
@@ -78,6 +77,7 @@ public final class NPCInstance {
             final double locY,
             final double locZ
     ) {
+        this.ttl = 200L;
         this.npc = npc;
         final GameProfile gameProfile = new GameProfile(new UUID(0, UUID.randomUUID().getLeastSignificantBits()), this.npc.name);
         final PropertyMap gameProfileProperties = gameProfile.getProperties();
@@ -123,7 +123,7 @@ public final class NPCInstance {
         level.addNewPlayer(this.player);
         this.player.setGameMode(GameType.CREATIVE);
         this.player.setPos(locX, locY, locZ);
-        level.getPlayers((final ServerPlayer player) -> true).forEach(this::addToPlayersClient);
+        ((CraftServer) plugin().getServer()).getServer().getPlayerList().getPlayers().forEach(this::addToClient);
     }
 
     @Override
@@ -136,7 +136,7 @@ public final class NPCInstance {
         return obj == this || (obj instanceof NPCInstance && obj.hashCode() == this.hashCode());
     }
 
-    public void addToPlayersClient(final ServerPlayer player) {
+    public void addToClient(final ServerPlayer player) {
         player.connection.send(ClientboundPlayerInfoUpdatePacket.createSinglePlayerInitializing(this.player, false));
         player.connection.send(new ClientboundAddEntityPacket(this.player, this.entity));
         if (this.npc.additionalAddInstanceToClientPacketBuilder == null) {
@@ -151,6 +151,11 @@ public final class NPCInstance {
                 },
                 20L
         ));
+    }
+
+    private void removeFromClient(final ServerPlayer player) {
+        player.connection.send(new ClientboundRemoveEntitiesPacket(this.player.getId()));
+        player.connection.send(new ClientboundPlayerInfoRemovePacket(List.of(this.player.getUUID())));
     }
 
     public void tick() {
@@ -175,9 +180,19 @@ public final class NPCInstance {
                     ));
                     nearbyPlayer.connection.send(new ClientboundRotateHeadPacket(
                             this.player,
-                            (byte) ((((yRot + 180.0F) % 360.0F) - 180.0F) * (127.0F / 180.0F)))
-                    );
+                            (byte) ((((yRot + 180.0F) % 360.0F) - 180.0F) * (127.0F / 180.0F))
+                    ));
                 });
+        this.ttl -= AncientScrollsNative.NPC_HANDLER_PERIOD;
+        if (!this.isTTLUp()) {
+            return;
+        }
+        ((CraftServer) plugin().getServer()).getServer().getPlayerList().getPlayers().forEach(this::removeFromClient);
+        this.player.discard();
+    }
+
+    public boolean isTTLUp() {
+        return this.ttl <= 0L;
     }
 
     public static boolean is(final Entity entity) {

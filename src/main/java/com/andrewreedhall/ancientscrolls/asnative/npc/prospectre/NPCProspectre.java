@@ -23,8 +23,8 @@ package com.andrewreedhall.ancientscrolls.asnative.npc.prospectre;
 
 import com.andrewreedhall.ancientscrolls.asnative.npc.NPCNative;
 import com.andrewreedhall.ancientscrolls.npc.NPCInstance;
+import com.andrewreedhall.ancientscrolls.util.CommonSets;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
@@ -44,7 +44,9 @@ public final class NPCProspectre extends NPCNative implements Listener {
                 SKIN,
                 new AdditionalAddInstanceToClientPacketBuilder(),
                 new Pair<>(
-                        (final LivingEntity livingEntity) -> livingEntity instanceof Monster,
+                        (final LivingEntity livingEntity) ->
+                                CommonSets.UNDEAD_MONSTERS.contains(livingEntity.getType()) &&
+                                        livingEntity.getLocation().getBlockY() <= 30,
                         1.0
                 )
         );

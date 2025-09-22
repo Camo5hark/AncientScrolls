@@ -31,6 +31,8 @@ import org.bukkit.scheduler.BukkitScheduler;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class AncientScrollsNative {
+    public static final long NPC_HANDLER_PERIOD = 4L;
+
     private static void postRegisterAll() {
         plugin().registerListeners(
                 // item
@@ -52,7 +54,7 @@ public final class AncientScrollsNative {
                 plugin(),
                 plugin().getNPCHandler(),
                 0L,
-                4L
+                NPC_HANDLER_PERIOD
         ));
     }
 
