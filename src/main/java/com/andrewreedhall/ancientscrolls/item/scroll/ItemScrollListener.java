@@ -23,6 +23,7 @@ package com.andrewreedhall.ancientscrolls.item.scroll;
 
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
 import com.andrewreedhall.ancientscrolls.util.PlayerDataHandler;
+import com.andrewreedhall.ancientscrolls.util.Randomizer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -40,11 +41,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class ItemScrollListener implements Listener {
+    private static final Comparator<ItemScroll> SCROLL_RANDOMIZER = new Randomizer<>();
+
     public ItemScrollListener() {}
 
     @EventHandler
@@ -126,10 +130,7 @@ public final class ItemScrollListener implements Listener {
                         .filter((final ItemScroll scroll) -> !scroll.isSpecial())
                         .toList()
         );
-        registeredNonSpecialScrolls.sort(
-                (final ItemScroll scroll0, final ItemScroll scroll1) ->
-                        plugin().getUniversalRandom().nextInt(-1, 2)
-        );
+        registeredNonSpecialScrolls.sort(SCROLL_RANDOMIZER);
         final MerchantRecipe scrollRecipe = new MerchantRecipe(
                 registeredNonSpecialScrolls.get(
                         plugin()

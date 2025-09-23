@@ -31,6 +31,7 @@ import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Merchant;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import oshi.util.tuples.Pair;
@@ -62,6 +63,8 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
         this.additionalAddInstanceToClientPacketBuilder = additionalAddInstanceToClientPacketBuilder;
         this.generator = generator;
     }
+
+    public abstract Merchant createInstanceMerchant();
 
     public NPCInstance createInstance(final World world, final Location location) {
         final NPCInstance npcInstance = new NPCInstance(

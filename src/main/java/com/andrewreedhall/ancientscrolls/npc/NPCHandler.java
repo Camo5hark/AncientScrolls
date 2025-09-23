@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.npc;
 
+import com.andrewreedhall.ancientscrolls.util.Randomizer;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -35,6 +36,8 @@ import java.util.*;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class NPCHandler implements Runnable, Listener {
+    private static final Comparator<AncientScrollsNPC> NPC_RANDOMIZER = new Randomizer<>();
+
     public final Set<NPCInstance> activeNPCInstances = new HashSet<>();
 
     public NPCHandler() {}
@@ -62,9 +65,7 @@ public final class NPCHandler implements Runnable, Listener {
             return;
         }
         final List<AncientScrollsNPC> registeredNPCs = new ArrayList<>(plugin().getNPCRegistry().getAll().stream().toList());
-        registeredNPCs.sort((final AncientScrollsNPC npc0, final AncientScrollsNPC npc1) ->
-                plugin().getUniversalRandom().nextInt(-1, 2)
-        );
+        registeredNPCs.sort(NPC_RANDOMIZER);
         for (final AncientScrollsNPC registeredNPC : registeredNPCs) {
             if (registeredNPC.generate(spawnedLivingEntity)) {
                 spawnedLivingEntity.remove();

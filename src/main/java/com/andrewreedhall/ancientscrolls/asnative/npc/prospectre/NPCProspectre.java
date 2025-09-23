@@ -24,12 +24,20 @@ package com.andrewreedhall.ancientscrolls.asnative.npc.prospectre;
 import com.andrewreedhall.ancientscrolls.asnative.npc.NPCNative;
 import com.andrewreedhall.ancientscrolls.npc.NPCInstance;
 import com.andrewreedhall.ancientscrolls.util.CommonSets;
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Merchant;
+import org.bukkit.inventory.MerchantRecipe;
 import oshi.util.tuples.Pair;
+
+import java.util.List;
+
+import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class NPCProspectre extends NPCNative implements Listener {
     private static final NPCInstance.Skin SKIN = new NPCInstance.Skin(
@@ -50,6 +58,15 @@ public final class NPCProspectre extends NPCNative implements Listener {
                         1.0
                 )
         );
+    }
+
+    @Override
+    public Merchant createInstanceMerchant() {
+        final MerchantRecipe recipe = new MerchantRecipe(new ItemStack(Material.DIAMOND), 1);
+        recipe.addIngredient(new ItemStack(Material.DIAMOND));
+        final Merchant instanceMerchant = plugin().getServer().createMerchant();
+        instanceMerchant.setRecipes(List.of(recipe));
+        return instanceMerchant;
     }
 
     @EventHandler

@@ -40,6 +40,7 @@ import net.minecraft.world.entity.player.ChatVisiblity;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.inventory.Merchant;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,6 +70,7 @@ public final class NPCInstance {
     public final AncientScrollsNPC npc;
     public final ServerPlayer player;
     public final ServerEntity entity;
+    public final Merchant merchant;
 
     public NPCInstance(
             final AncientScrollsNPC npc,
@@ -124,6 +126,7 @@ public final class NPCInstance {
         this.player.setGameMode(GameType.CREATIVE);
         this.player.setPos(locX, locY, locZ);
         ((CraftServer) plugin().getServer()).getServer().getPlayerList().getPlayers().forEach(this::addToClient);
+        this.merchant = this.npc.createInstanceMerchant();
     }
 
     @Override
