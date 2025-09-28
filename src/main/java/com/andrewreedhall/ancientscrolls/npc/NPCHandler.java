@@ -29,7 +29,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.*;
 
@@ -72,5 +74,17 @@ public final class NPCHandler implements Runnable, Listener {
                 break;
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerInteractAtEntity(final PlayerInteractAtEntityEvent event) {
+        if (!event.getHand().equals(EquipmentSlot.HAND)) {
+            return;
+        }
+        final NPCInstance interactedNPCInstance = AncientScrollsNPC.getInstance(event.getRightClicked());
+        if (interactedNPCInstance == null) {
+            return;
+        }
+        event.getPlayer().openMerchant(interactedNPCInstance.merchant, true);
     }
 }

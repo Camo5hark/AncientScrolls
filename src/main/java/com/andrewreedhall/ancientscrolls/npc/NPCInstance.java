@@ -192,6 +192,7 @@ public final class NPCInstance {
         }
         ((CraftServer) plugin().getServer()).getServer().getPlayerList().getPlayers().forEach(this::removeFromClient);
         this.player.discard();
+        AncientScrollsNPC.closeAllPossibleInstanceMerchantInventories();
     }
 
     public boolean isTTLUp() {

@@ -31,7 +31,9 @@ import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.Merchant;
+import org.bukkit.inventory.MerchantInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import oshi.util.tuples.Pair;
@@ -79,14 +81,6 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
         return npcInstance;
     }
 
-    protected NPCInstance getInstance(final Entity entity) {
-        if (!(entity instanceof Player player) || !NPCInstance.is(((CraftEntity) entity).getHandle())) {
-            return null;
-        }
-        final List<MetadataValue> playerAncientScrollsNPCInstanceData = player.getMetadata(PMK_ANCIENT_SCROLLS_NPC_INSTANCE);
-        return playerAncientScrollsNPCInstanceData.isEmpty() ? null : (NPCInstance) playerAncientScrollsNPCInstanceData.getFirst().value();
-    }
-
     public boolean generate(final LivingEntity spawnedLivingEntity) {
         if (!this.generator.getA().test(spawnedLivingEntity) ||
                 plugin().getUniversalRandom().nextDouble() > this.generator.getB() * plugin().getDefaultCachedConfig().npc_generation_probabilityScalar
@@ -99,5 +93,23 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
 
     public static Player getPlayer(final NPCInstance npcInstance) {
         return (Player) plugin().getServer().getEntity(npcInstance.player.getUUID());
+    }
+
+    public static NPCInstance getInstance(final Entity entity) {
+        if (!(entity instanceof Player instancePlayer) || !NPCInstance.is(((CraftEntity) entity).getHandle())) {
+            return null;
+        }
+        final List<MetadataValue> instancePlayerNPCInstanceData = instancePlayer.getMetadata(PMK_ANCIENT_SCROLLS_NPC_INSTANCE);
+        return instancePlayerNPCInstanceData.isEmpty() ? null : (NPCInstance) instancePlayerNPCInstanceData.getFirst().value();
+    }
+
+    public static void closeAllPossibleInstanceMerchantInventories() {
+        plugin().getServer().getOnlinePlayers().forEach((final Player onlinePlayer) -> {
+            final Inventory onlinePlayerOpenTopInventory = onlinePlayer.getOpenInventory().getTopInventory();
+            if (!(onlinePlayerOpenTopInventory instanceof MerchantInventory) || onlinePlayerOpenTopInventory.getHolder() != null) {
+                return;
+            }
+            onlinePlayer.closeInventory();
+        });
     }
 }

@@ -26,10 +26,7 @@ import com.andrewreedhall.ancientscrolls.npc.NPCInstance;
 import com.andrewreedhall.ancientscrolls.util.CommonSets;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
@@ -67,13 +64,5 @@ public final class NPCProspectre extends NPCNative implements Listener {
         final Merchant instanceMerchant = plugin().getServer().createMerchant();
         instanceMerchant.setRecipes(List.of(recipe));
         return instanceMerchant;
-    }
-
-    @EventHandler
-    public void onPlayerInteractAtEntity(final PlayerInteractAtEntityEvent event) {
-        if (!event.getHand().equals(EquipmentSlot.HAND)) {
-            return;
-        }
-        final NPCInstance interactedNPCInstance = this.getInstance(event.getRightClicked());
     }
 }
