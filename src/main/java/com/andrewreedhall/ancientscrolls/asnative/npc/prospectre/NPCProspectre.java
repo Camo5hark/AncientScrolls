@@ -47,7 +47,7 @@ public final class NPCProspectre extends NPCNative implements Listener {
                 "prospectre",
                 "Prospectre",
                 SKIN,
-                new AdditionalAddInstanceToClientPacketBuilder(),
+                new Auxiliary(),
                 new Pair<>(
                         (final LivingEntity livingEntity) ->
                                 CommonSets.UNDEAD_MONSTERS.contains(livingEntity.getType()) &&

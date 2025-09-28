@@ -142,13 +142,13 @@ public final class NPCInstance {
     public void addToClient(final ServerPlayer player) {
         player.connection.send(ClientboundPlayerInfoUpdatePacket.createSinglePlayerInitializing(this.player, false));
         player.connection.send(new ClientboundAddEntityPacket(this.player, this.entity));
-        if (this.npc.additionalAddInstanceToClientPacketBuilder == null) {
+        if (this.npc.auxiliary == null) {
             return;
         }
         plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncDelayedTask(
                 plugin(),
                 () -> {
-                    for (final Packet<?> additionalPacket : this.npc.additionalAddInstanceToClientPacketBuilder.apply(this)) {
+                    for (final Packet<?> additionalPacket : this.npc.auxiliary.apply(this)) {
                         player.connection.send(additionalPacket);
                     }
                 },

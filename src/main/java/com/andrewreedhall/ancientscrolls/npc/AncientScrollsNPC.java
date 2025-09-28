@@ -49,20 +49,20 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
 
     public final String name;
     public final NPCInstance.Skin skin;
-    public final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder;
+    public final Function<NPCInstance, Packet<?>[]> auxiliary;
     public final Pair<Predicate<LivingEntity>, Double> generator;
 
     public AncientScrollsNPC(
             final NamespacedKey key,
             final String name,
             final NPCInstance.Skin skin,
-            final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder,
+            final Function<NPCInstance, Packet<?>[]> auxiliary,
             final Pair<Predicate<LivingEntity>, Double> generator
     ) {
         super(key);
         this.name = name;
         this.skin = skin;
-        this.additionalAddInstanceToClientPacketBuilder = additionalAddInstanceToClientPacketBuilder;
+        this.auxiliary = auxiliary;
         this.generator = generator;
     }
 

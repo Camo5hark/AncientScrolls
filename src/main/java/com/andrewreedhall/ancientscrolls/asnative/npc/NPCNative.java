@@ -35,9 +35,9 @@ public abstract class NPCNative extends AncientScrollsNPC {
             final String id,
             final String name,
             final NPCInstance.Skin skin,
-            final Function<NPCInstance, Packet<?>[]> additionalAddInstanceToClientPacketBuilder,
+            final Function<NPCInstance, Packet<?>[]> auxiliary,
             final Pair<Predicate<LivingEntity>, Double> generator
     ) {
-        super(fromAncientScrollsNamespace(id), name, skin, additionalAddInstanceToClientPacketBuilder, generator);
+        super(fromAncientScrollsNamespace(id), name, skin, auxiliary, generator);
     }
 }
