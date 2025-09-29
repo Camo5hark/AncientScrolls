@@ -47,6 +47,7 @@ public final class NPCHunter extends NPCNative {
                         new Pair<>(Material.COOKED_RABBIT, 10),
                         new Pair<>(Material.COOKED_MUTTON, 20),
                         new Pair<>(Material.BOW, 1),
+                        new Pair<>(Material.CROSSBOW, 1),
                         new Pair<>(Material.IRON_SWORD, 1)
                 )
         );

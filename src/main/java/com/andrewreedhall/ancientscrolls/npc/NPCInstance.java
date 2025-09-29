@@ -201,8 +201,7 @@ public final class NPCInstance {
                             (byte) ((((yRot + 180.0F) % 360.0F) - 180.0F) * (127.0F / 180.0F))
                     ));
                 });
-        //this.ttl -= AncientScrollsNative.NPC_HANDLER_PERIOD;
-        --this.ttl;
+        this.ttl -= 2L;
         if (!this.isTTLUp()) {
             return;
         }

@@ -23,7 +23,11 @@ final class Auxiliary implements Function<NPCInstance, Packet<?>[]> {
                         npcInstance.player.getId(),
                         List.of(
                                 new Pair<>(EquipmentSlot.MAINHAND, new ItemStack(
-                                        plugin().getUniversalRandom().nextBoolean() ? Items.IRON_SWORD : Items.BOW
+                                        switch (plugin().getUniversalRandom().nextInt(3)) {
+                                            case 1 -> Items.BOW;
+                                            case 2 -> Items.CROSSBOW;
+                                            default -> Items.IRON_SWORD;
+                                        }
                                 ))
                         )
                 )
