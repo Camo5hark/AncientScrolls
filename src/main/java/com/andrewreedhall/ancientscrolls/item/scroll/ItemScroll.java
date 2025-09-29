@@ -262,9 +262,4 @@ public abstract class ItemScroll extends AncientScrollsItem {
     private static String formatGenerationProb(final double prob) {
         return String.format("%.1f%%", prob * 100.0);
     }
-
-    public static ItemScroll get(final NamespacedKey key) {
-        final AncientScrollsItem scroll = plugin().getItemRegistry().get(key);
-        return Objects.requireNonNull(scroll instanceof ItemScroll ? (ItemScroll) scroll : null, key + " is not an ItemScroll");
-    }
 }

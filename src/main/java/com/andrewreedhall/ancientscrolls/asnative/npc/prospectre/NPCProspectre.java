@@ -49,15 +49,15 @@ public final class NPCProspectre extends NPCNative implements Listener {
                         (final LivingEntity livingEntity) ->
                                 CommonSets.UNDEAD_MONSTERS.contains(livingEntity.getType()) &&
                                         livingEntity.getLocation().getBlockY() <= 30,
-                        1.0
+                        0.005
                 ),
                 Set.of(
-                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:vigilance")),
-                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:pest_control")),
-                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:mycology")),
-                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:longevity")),
-                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:spelunking")),
-                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:immunity_research"))
+                        "ancientscrolls:vigilance",
+                        "ancientscrolls:pest_control",
+                        "ancientscrolls:mycology",
+                        "ancientscrolls:longevity",
+                        "ancientscrolls:spelunking",
+                        "ancientscrolls:immunity_research"
                 ),
                 Set.of(
                         new Pair<>(Material.GOLD_INGOT, 41),

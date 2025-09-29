@@ -106,7 +106,8 @@ public final class PlayerDataHandler {
     }
 
     public static boolean hasEquippedScroll(final Player player, final ItemScroll scroll) {
-        return getEquippedScrollKeyStringsStream(player).anyMatch((final String equippedScrollID) -> scroll.key.toString().equals(equippedScrollID));
+        final String scrollKeyString = scroll.key.toString();
+        return getEquippedScrollKeyStringsStream(player).anyMatch(scrollKeyString::equals);
     }
 
     public static void removeEquippedScroll(final Player player, final int scrollIndex) {

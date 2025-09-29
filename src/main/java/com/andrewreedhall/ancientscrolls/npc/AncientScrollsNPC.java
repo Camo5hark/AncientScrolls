@@ -66,7 +66,7 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
             final NPCInstance.Skin skin,
             final Function<NPCInstance, Packet<?>[]> auxiliary,
             final Pair<Predicate<LivingEntity>, Double> generator,
-            final Set<ItemScroll> resultScrolls,
+            final Set<String> resultScrollKeyStrings,
             final Set<Pair<Material, Integer>> ingredientItemStackDescriptors
     ) {
         super(key);
@@ -74,7 +74,14 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
         this.skin = skin;
         this.auxiliary = auxiliary;
         this.generator = generator;
-        this.resultScrolls = new ArrayList<>(resultScrolls.stream().toList());
+        this.resultScrolls = new ArrayList<>(
+                resultScrollKeyStrings
+                        .stream()
+                        .map((final String resultScrollKeyString) ->
+                                (ItemScroll) plugin().getItemRegistry().get(NamespacedKey.fromString(resultScrollKeyString))
+                        )
+                        .toList()
+        );
         this.resultScrolls.sort(Randomizer.SCROLL_RANDOMIZER);
         this.ingredientItemStackDescriptors = new ArrayList<>(ingredientItemStackDescriptors.stream().toList());
         this.ingredientItemStackDescriptors.sort(ITEM_STACK_DESCRIPTOR_RANDOMIZER);
