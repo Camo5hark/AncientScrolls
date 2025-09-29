@@ -21,12 +21,15 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative.npc;
 
+import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
 import com.andrewreedhall.ancientscrolls.npc.AncientScrollsNPC;
 import com.andrewreedhall.ancientscrolls.npc.NPCInstance;
 import net.minecraft.network.protocol.Packet;
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import oshi.util.tuples.Pair;
 
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -36,8 +39,10 @@ public abstract class NPCNative extends AncientScrollsNPC {
             final String name,
             final NPCInstance.Skin skin,
             final Function<NPCInstance, Packet<?>[]> auxiliary,
-            final Pair<Predicate<LivingEntity>, Double> generator
+            final Pair<Predicate<LivingEntity>, Double> generator,
+            final Set<ItemScroll> resultScrolls,
+            final Set<Pair<Material, Integer>> ingredientItemStackDescriptors
     ) {
-        super(fromAncientScrollsNamespace(id), name, skin, auxiliary, generator);
+        super(fromAncientScrollsNamespace(id), name, skin, auxiliary, generator, resultScrolls, ingredientItemStackDescriptors);
     }
 }

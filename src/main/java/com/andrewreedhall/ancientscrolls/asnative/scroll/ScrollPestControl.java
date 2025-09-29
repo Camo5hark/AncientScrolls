@@ -44,6 +44,7 @@ public final class ScrollPestControl extends ItemScrollNative implements Listene
                 "- infested effect",
                 "- damage from regular spiders, silverfish, and endermites"
         });
+        this.putMCLootTableGenProb("entities/spider", 0.005);
     }
 
     @EventHandler

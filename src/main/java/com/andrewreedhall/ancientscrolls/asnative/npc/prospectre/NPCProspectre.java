@@ -22,19 +22,16 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.asnative.npc.prospectre;
 
 import com.andrewreedhall.ancientscrolls.asnative.npc.NPCNative;
+import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
 import com.andrewreedhall.ancientscrolls.npc.NPCInstance;
 import com.andrewreedhall.ancientscrolls.util.CommonSets;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Merchant;
-import org.bukkit.inventory.MerchantRecipe;
 import oshi.util.tuples.Pair;
 
-import java.util.List;
-
-import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
+import java.util.Set;
 
 public final class NPCProspectre extends NPCNative implements Listener {
     private static final NPCInstance.Skin SKIN = new NPCInstance.Skin(
@@ -53,16 +50,19 @@ public final class NPCProspectre extends NPCNative implements Listener {
                                 CommonSets.UNDEAD_MONSTERS.contains(livingEntity.getType()) &&
                                         livingEntity.getLocation().getBlockY() <= 30,
                         1.0
+                ),
+                Set.of(
+                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:vigilance")),
+                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:pest_control")),
+                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:mycology")),
+                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:longevity")),
+                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:spelunking")),
+                        ItemScroll.get(NamespacedKey.fromString("ancientscrolls:immunity_research"))
+                ),
+                Set.of(
+                        new Pair<>(Material.GOLD_INGOT, 41),
+                        new Pair<>(Material.DIAMOND, 21)
                 )
         );
-    }
-
-    @Override
-    public Merchant createInstanceMerchant() {
-        final MerchantRecipe recipe = new MerchantRecipe(new ItemStack(Material.DIAMOND), 1);
-        recipe.addIngredient(new ItemStack(Material.DIAMOND));
-        final Merchant instanceMerchant = plugin().getServer().createMerchant();
-        instanceMerchant.setRecipes(List.of(recipe));
-        return instanceMerchant;
     }
 }

@@ -21,11 +21,15 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.util;
 
+import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
+
 import java.util.Comparator;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class Randomizer<T> implements Comparator<T> {
+    public static final Comparator<ItemScroll> SCROLL_RANDOMIZER = new Randomizer<>();
+
     public Randomizer() {}
 
     @Override

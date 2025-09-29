@@ -39,10 +39,14 @@ import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.entity.player.ChatVisiblity;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
+import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
+import oshi.util.tuples.Pair;
 
 import java.net.SocketAddress;
 import java.util.List;
@@ -126,7 +130,19 @@ public final class NPCInstance {
         this.player.setGameMode(GameType.CREATIVE);
         this.player.setPos(locX, locY, locZ);
         ((CraftServer) plugin().getServer()).getServer().getPlayerList().getPlayers().forEach(this::addToClient);
-        this.merchant = this.npc.createInstanceMerchant();
+        this.merchant = plugin().getServer().createMerchant(this.npc.name);
+        final MerchantRecipe merchantRecipe = new MerchantRecipe(
+                this.npc.resultScrolls.get(plugin().getUniversalRandom().nextInt(this.npc.resultScrolls.size())).createItemStack(1),
+                1
+        );
+        final Pair<Material, Integer> ingredientItemStackDescriptor = this.npc.ingredientItemStackDescriptors.get(
+                plugin().getUniversalRandom().nextInt(this.npc.ingredientItemStackDescriptors.size())
+        );
+        merchantRecipe.addIngredient(new ItemStack(
+                ingredientItemStackDescriptor.getA(),
+                plugin().getUniversalRandom().nextInt(1, ingredientItemStackDescriptor.getB())
+        ));
+        this.merchant.setRecipes(List.of(merchantRecipe));
     }
 
     @Override

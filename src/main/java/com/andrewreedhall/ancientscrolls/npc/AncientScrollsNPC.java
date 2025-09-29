@@ -22,8 +22,11 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.npc;
 
 import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
+import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
+import com.andrewreedhall.ancientscrolls.util.Randomizer;
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -32,13 +35,15 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import oshi.util.tuples.Pair;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -46,27 +51,34 @@ import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
     private static final String PMK_ANCIENT_SCROLLS_NPC_INSTANCE = "ancient_scrolls_npc_instance";
+    private static final Comparator<Pair<Material, Integer>> ITEM_STACK_DESCRIPTOR_RANDOMIZER = new Randomizer<>();
 
     public final String name;
     public final NPCInstance.Skin skin;
     public final Function<NPCInstance, Packet<?>[]> auxiliary;
     public final Pair<Predicate<LivingEntity>, Double> generator;
+    public final List<ItemScroll> resultScrolls;
+    public final List<Pair<Material, Integer>> ingredientItemStackDescriptors;
 
     public AncientScrollsNPC(
             final NamespacedKey key,
             final String name,
             final NPCInstance.Skin skin,
             final Function<NPCInstance, Packet<?>[]> auxiliary,
-            final Pair<Predicate<LivingEntity>, Double> generator
+            final Pair<Predicate<LivingEntity>, Double> generator,
+            final Set<ItemScroll> resultScrolls,
+            final Set<Pair<Material, Integer>> ingredientItemStackDescriptors
     ) {
         super(key);
         this.name = name;
         this.skin = skin;
         this.auxiliary = auxiliary;
         this.generator = generator;
+        this.resultScrolls = new ArrayList<>(resultScrolls.stream().toList());
+        this.resultScrolls.sort(Randomizer.SCROLL_RANDOMIZER);
+        this.ingredientItemStackDescriptors = new ArrayList<>(ingredientItemStackDescriptors.stream().toList());
+        this.ingredientItemStackDescriptors.sort(ITEM_STACK_DESCRIPTOR_RANDOMIZER);
     }
-
-    public abstract Merchant createInstanceMerchant();
 
     public NPCInstance createInstance(final World world, final Location location) {
         final NPCInstance npcInstance = new NPCInstance(
