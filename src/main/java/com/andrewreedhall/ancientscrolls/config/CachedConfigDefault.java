@@ -21,6 +21,8 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls;
 
+import com.andrewreedhall.ancientscrolls.config.CachedConfig;
+
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 /**

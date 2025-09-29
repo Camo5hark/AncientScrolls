@@ -19,7 +19,7 @@ License file: <project-root>/COPYING
 GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
  */
 
-package com.andrewreedhall.ancientscrolls;
+package com.andrewreedhall.ancientscrolls.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
