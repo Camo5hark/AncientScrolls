@@ -70,7 +70,7 @@ public final class NPCInstance {
 
     public record Skin(String value, String signature) {}
 
-    private long ttl;
+    private long ttl = 200L;
     public final AncientScrollsNPC npc;
     public final ServerPlayer player;
     public final ServerEntity entity;
@@ -83,7 +83,6 @@ public final class NPCInstance {
             final double locY,
             final double locZ
     ) {
-        this.ttl = 200L;
         this.npc = npc;
         final GameProfile gameProfile = new GameProfile(new UUID(0, UUID.randomUUID().getLeastSignificantBits()), this.npc.name);
         final PropertyMap gameProfileProperties = gameProfile.getProperties();
@@ -202,7 +201,8 @@ public final class NPCInstance {
                             (byte) ((((yRot + 180.0F) % 360.0F) - 180.0F) * (127.0F / 180.0F))
                     ));
                 });
-        this.ttl -= AncientScrollsNative.NPC_HANDLER_PERIOD;
+        //this.ttl -= AncientScrollsNative.NPC_HANDLER_PERIOD;
+        --this.ttl;
         if (!this.isTTLUp()) {
             return;
         }

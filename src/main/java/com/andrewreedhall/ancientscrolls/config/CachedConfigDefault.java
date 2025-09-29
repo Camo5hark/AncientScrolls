@@ -19,9 +19,7 @@ License file: <project-root>/COPYING
 GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
  */
 
-package com.andrewreedhall.ancientscrolls;
-
-import com.andrewreedhall.ancientscrolls.config.CachedConfig;
+package com.andrewreedhall.ancientscrolls.config;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
