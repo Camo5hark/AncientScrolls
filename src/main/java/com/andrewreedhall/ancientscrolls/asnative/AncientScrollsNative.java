@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative;
 
+import com.andrewreedhall.ancientscrolls.asnative.npc.hunter.NPCHunter;
 import com.andrewreedhall.ancientscrolls.asnative.npc.prospectre.NPCProspectre;
 import com.andrewreedhall.ancientscrolls.item.ItemListener;
 import com.andrewreedhall.ancientscrolls.asnative.flask.*;
@@ -154,7 +155,8 @@ public final class AncientScrollsNative {
     private static void registerNPCs() {
         plugin().getLogger().info("Registering native NPCs");
         plugin().getNPCRegistry().registerAll(
-                NPCProspectre.class
+                NPCProspectre.class,
+                NPCHunter.class
         );
     }
 

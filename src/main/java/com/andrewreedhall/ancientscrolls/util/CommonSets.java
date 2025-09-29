@@ -21,7 +21,6 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.util;
 
-import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
 import org.bukkit.potion.PotionEffectType;
@@ -31,7 +30,6 @@ import java.util.Set;
 import static org.bukkit.block.Biome.*;
 import static org.bukkit.entity.EntityType.*;
 import static org.bukkit.potion.PotionEffectType.*;
-import static org.bukkit.Material.*;
 
 /**
  * Sets of related objects for global reference
@@ -147,21 +145,19 @@ public final class CommonSets {
             INFESTED,
             UNLUCK
     );
-    public static final Set<Material> MELEE_WEAPON_TYPES = Set.of(
-            WOODEN_SWORD,
-            STONE_SWORD,
-            IRON_SWORD,
-            GOLDEN_SWORD,
-            DIAMOND_SWORD,
-            NETHERITE_SWORD,
-
-            WOODEN_AXE,
-            STONE_AXE,
-            IRON_AXE,
-            GOLDEN_AXE,
-            DIAMOND_AXE,
-            NETHERITE_AXE,
-
-            MACE
+    public static final Set<Biome> WOODLAND_BIOMES = Set.of(
+            FOREST,
+            FLOWER_FOREST,
+            TAIGA,
+            OLD_GROWTH_PINE_TAIGA,
+            OLD_GROWTH_SPRUCE_TAIGA,
+            SNOWY_TAIGA,
+            BIRCH_FOREST,
+            OLD_GROWTH_BIRCH_FOREST,
+            DARK_FOREST,
+            PALE_GARDEN,
+            JUNGLE,
+            SPARSE_JUNGLE,
+            BAMBOO_JUNGLE
     );
 }

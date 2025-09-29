@@ -21,7 +21,6 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.npc;
 
-import com.andrewreedhall.ancientscrolls.asnative.AncientScrollsNative;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
@@ -94,6 +93,7 @@ public final class NPCInstance {
                 gameProfile,
                 CACHED_CLIENT_INFO
         );
+        this.player.getEntityData().set(ServerPlayer.DATA_PLAYER_MODE_CUSTOMISATION, (byte) 0x7F);
         this.entity = new ServerEntity(
                 level,
                 this.player,
@@ -139,7 +139,7 @@ public final class NPCInstance {
         );
         merchantRecipe.addIngredient(new ItemStack(
                 ingredientItemStackDescriptor.getA(),
-                plugin().getUniversalRandom().nextInt(1, ingredientItemStackDescriptor.getB())
+                plugin().getUniversalRandom().nextInt(1, ingredientItemStackDescriptor.getB() + 1)
         ));
         this.merchant.setRecipes(List.of(merchantRecipe));
     }
