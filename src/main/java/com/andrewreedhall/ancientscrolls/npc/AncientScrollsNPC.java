@@ -25,17 +25,13 @@ import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
 import com.andrewreedhall.ancientscrolls.util.Randomizer;
 import net.minecraft.network.protocol.Packet;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.MerchantInventory;
+import org.bukkit.entity.Vex;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import oshi.util.tuples.Pair;
@@ -122,13 +118,25 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
         return instancePlayerNPCInstanceData.isEmpty() ? null : (NPCInstance) instancePlayerNPCInstanceData.getFirst().value();
     }
 
-    public static void closeAllPossibleInstanceMerchantInventories() {
-        plugin().getServer().getOnlinePlayers().forEach((final Player onlinePlayer) -> {
-            final Inventory onlinePlayerOpenTopInventory = onlinePlayer.getOpenInventory().getTopInventory();
-            if (!(onlinePlayerOpenTopInventory instanceof MerchantInventory) || onlinePlayerOpenTopInventory.getHolder() != null) {
+    public static void cleanupInstance(final NPCInstance npcInstance) {
+        final Player npcInstancePlayer = getPlayer(npcInstance);
+        final World npcInstancePlayerWorld = npcInstancePlayer.getWorld();
+        npcInstancePlayerWorld.getNearbyPlayers(npcInstancePlayer.getLocation(), 10.0).forEach((final Player nearbyPlayer) -> {
+            if (nearbyPlayer.getOpenInventory().getTopInventory().getHolder() != null) {
                 return;
             }
-            onlinePlayer.closeInventory();
+            nearbyPlayer.closeInventory();
         });
+        final Location npcInstancePlayerEyeLocation = npcInstancePlayer.getEyeLocation();
+        npcInstancePlayerWorld.spawn(npcInstancePlayerEyeLocation, Vex.class);
+        npcInstancePlayerWorld.playSound(npcInstancePlayer.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1.0F, 1.0F);
+        npcInstancePlayerWorld.spawnParticle(
+                Particle.SOUL_FIRE_FLAME,
+                npcInstancePlayerEyeLocation,
+                100,
+                1.0,
+                1.0,
+                1.0
+        );
     }
 }

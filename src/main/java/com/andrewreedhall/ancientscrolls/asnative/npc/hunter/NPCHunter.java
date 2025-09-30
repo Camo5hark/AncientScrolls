@@ -24,7 +24,7 @@ public final class NPCHunter extends NPCNative {
                 new Auxiliary(),
                 new Pair<>(
                         (final LivingEntity livingEntity) -> {
-                            if (!CommonSets.UNDEAD_MONSTERS.contains(livingEntity.getType())) {
+                            if (!CommonSets.UNDEAD_MONSTERS.contains(livingEntity.getType()) || livingEntity.getWorld().isDayTime()) {
                                 return false;
                             }
                             final Location livingEntityLocation = livingEntity.getLocation();

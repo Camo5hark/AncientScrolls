@@ -205,9 +205,9 @@ public final class NPCInstance {
         if (!this.isTTLUp()) {
             return;
         }
+        AncientScrollsNPC.cleanupInstance(this);
         ((CraftServer) plugin().getServer()).getServer().getPlayerList().getPlayers().forEach(this::removeFromClient);
         this.player.discard();
-        AncientScrollsNPC.closeAllPossibleInstanceMerchantInventories();
     }
 
     public boolean isTTLUp() {
