@@ -22,7 +22,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.item.scroll;
 
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
-import com.andrewreedhall.ancientscrolls.util.PlayerDataHandler;
+import com.andrewreedhall.ancientscrolls.PlayerDataHandler;
 import com.andrewreedhall.ancientscrolls.util.Randomizer;
 import org.bukkit.*;
 import org.bukkit.block.Block;

@@ -21,7 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.item.scroll;
 
-import com.andrewreedhall.ancientscrolls.util.PlayerDataHandler;
+import com.andrewreedhall.ancientscrolls.PlayerDataHandler;
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;

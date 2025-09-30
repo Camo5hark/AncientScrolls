@@ -19,9 +19,10 @@ License file: <project-root>/COPYING
 GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
  */
 
-package com.andrewreedhall.ancientscrolls.util;
+package com.andrewreedhall.ancientscrolls;
 
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
+import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
