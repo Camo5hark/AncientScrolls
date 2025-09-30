@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls;
 
+import com.andrewreedhall.ancientscrolls.command.CommandManager;
 import com.andrewreedhall.ancientscrolls.config.CachedConfigDefault;
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
 import com.andrewreedhall.ancientscrolls.asnative.AncientScrollsNative;
@@ -46,6 +47,7 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     private static AncientScrollsPlugin plugin = null;
 
     private Random universalRandom = null;
+    private CommandManager commandManager = null;
     private CachedConfigDefault defaultCachedConfig = null;
     private AncientScrollsRegistry<AncientScrollsItem> itemRegistry = null;
     private NPCHandler npcHandler = null;
@@ -60,6 +62,7 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         this.universalRandom = new Random();
+        this.commandManager = new CommandManager();
         this.defaultCachedConfig = new CachedConfigDefault();
         this.itemRegistry = new AncientScrollsRegistry<>();
         this.npcHandler = new NPCHandler();
@@ -75,7 +78,7 @@ public final class AncientScrollsPlugin extends JavaPlugin {
 
     @Override
     public boolean onCommand(final @NotNull CommandSender sender, final Command command, final @NotNull String label, final String @NotNull [] args) {
-        return CommandHandler.handle(sender, command.getName(), args);
+        return this.commandManager.handle(sender, command.getName(), args);
     }
 
     /**
