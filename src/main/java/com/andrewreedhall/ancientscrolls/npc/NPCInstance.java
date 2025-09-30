@@ -69,7 +69,7 @@ public final class NPCInstance {
 
     public record Skin(String value, String signature) {}
 
-    private long ttl = 200L;
+    private long ttl = 24000L;
     public final AncientScrollsNPC npc;
     public final ServerPlayer player;
     public final ServerEntity entity;
@@ -201,6 +201,9 @@ public final class NPCInstance {
                             (byte) ((((yRot + 180.0F) % 360.0F) - 180.0F) * (127.0F / 180.0F))
                     ));
                 });
+        if (this.merchant.getRecipe(0).getUses() != 0) {
+            this.ttl = 0L;
+        }
         this.ttl -= 2L;
         if (!this.isTTLUp()) {
             return;
