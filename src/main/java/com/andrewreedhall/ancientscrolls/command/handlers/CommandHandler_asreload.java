@@ -13,10 +13,10 @@ public final class CommandHandler_asreload extends CommandHandler {
     }
 
     @Override
-    public void validate(AncientScrollsCommand command) {}
+    public void validate(final AncientScrollsCommand command) {}
 
     @Override
-    public boolean execute(AncientScrollsCommand command) {
+    public boolean execute(final AncientScrollsCommand command) {
         plugin().getDefaultCachedConfig().load(true);
         command.sender().sendMessage(Component.text("Reloaded", NamedTextColor.GREEN));
         return true;

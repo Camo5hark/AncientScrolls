@@ -1,6 +1,6 @@
 package com.andrewreedhall.ancientscrolls.command;
 
-import com.andrewreedhall.ancientscrolls.command.handlers.CommandHandler_asreload;
+import com.andrewreedhall.ancientscrolls.command.handlers.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
@@ -19,6 +19,7 @@ public final class CommandManager {
 
     public CommandManager() {
         this.putCommandHandler(new CommandHandler_asreload());
+        this.putCommandHandler(new CommandHandler_asgive());
     }
 
     private void putCommandHandler(final CommandHandler commandHandler) {
@@ -35,8 +36,10 @@ public final class CommandManager {
             commandHandler.validate(command);
         } catch (final CommandException e) {
             sender.sendMessage(Component.text(e.getMessage(), NamedTextColor.RED));
-            return true;
+            return false;
         }
-        return commandHandler.execute(command);
+        final boolean result = commandHandler.execute(command);
+        commandHandler.resetCache();
+        return result;
     }
 }
