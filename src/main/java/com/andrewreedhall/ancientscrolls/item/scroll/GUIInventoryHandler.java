@@ -23,6 +23,8 @@ package com.andrewreedhall.ancientscrolls.item.scroll;
 
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import com.google.common.collect.Lists;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -41,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
-import static org.bukkit.ChatColor.*;
 
 public final class GUIInventoryHandler implements Listener {
     private static final int PREVIOUS_PAGE_BUTTON_SLOT = 45;
@@ -54,15 +55,15 @@ public final class GUIInventoryHandler implements Listener {
 
     public void createPageInventories() {
         Lists.partition(ItemScroll.createListOfAllRegistered(), 45).forEach((final List<ItemScroll> scrolls) -> {
-            final Inventory guiPageInventory = plugin().getServer().createInventory(null, 54, "Ancient Scrolls");
+            final Inventory guiPageInventory = plugin().getServer().createInventory(null, 54, Component.text("Ancient Scrolls"));
             guiPageInventory.addItem(
                     scrolls
                             .stream()
                             .map((final ItemScroll scroll) -> scroll.createItemStackWithGenerationInfo(1))
                             .toArray(ItemStack[]::new)
             );
-            putNavigationButtonItemStack(guiPageInventory, PREVIOUS_PAGE_BUTTON_SLOT, Color.RED, RED + "Previous Page");
-            putNavigationButtonItemStack(guiPageInventory, NEXT_PAGE_BUTTON_SLOT, Color.GREEN, GREEN + "Next Page");
+            putNavigationButtonItemStack(guiPageInventory, PREVIOUS_PAGE_BUTTON_SLOT, Color.RED, "Previous Page", NamedTextColor.RED);
+            putNavigationButtonItemStack(guiPageInventory, NEXT_PAGE_BUTTON_SLOT, Color.GREEN, "Next Page", NamedTextColor.GREEN);
             this.guiPageInventories.add(guiPageInventory);
         });
     }
@@ -111,14 +112,20 @@ public final class GUIInventoryHandler implements Listener {
         event.getPlayer().removeMetadata(PMK_GUI_PAGE_INVENTORY_INDEX, plugin());
     }
 
-    private static void putNavigationButtonItemStack(final Inventory guiPageInventory, final int slot, final Color arrowColor, final String displayName) {
+    private static void putNavigationButtonItemStack(
+            final Inventory guiPageInventory,
+            final int slot,
+            final Color arrowColor,
+            final String displayName,
+            final NamedTextColor displayNameColor
+    ) {
         final ItemStack navigationButtonItemStack = new ItemStack(Material.TIPPED_ARROW);
         final PotionMeta navigationButtonItemMeta = (PotionMeta) BukkitUtil.getItemMeta(navigationButtonItemStack);
         if (navigationButtonItemMeta == null) {
             plugin().getLogger().warning("ItemMeta is null for GUI navigation button ItemStack");
             return;
         }
-        navigationButtonItemMeta.setDisplayName(displayName);
+        navigationButtonItemMeta.displayName(Component.text(displayName, displayNameColor));
         navigationButtonItemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
         navigationButtonItemMeta.setColor(arrowColor);
         navigationButtonItemStack.setItemMeta(navigationButtonItemMeta);

@@ -24,6 +24,10 @@ package com.andrewreedhall.ancientscrolls.item.scroll;
 import com.andrewreedhall.ancientscrolls.PlayerDataHandler;
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -55,15 +59,14 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
-import static org.bukkit.ChatColor.*;
 
 public abstract class ItemScroll extends AncientScrollsItem {
     private static final List<Boolean> CACHED_FLAGS = List.of(true);
-    private static final String CACHED_DISPLAY_NAME = GOLD + "Ancient Scroll";
+    private static final Component CACHED_DISPLAY_NAME = Component.text("Ancient Scroll", NamedTextColor.GOLD);
     protected static final PotionEffect NIGHT_VISION_POTION_EFFECT = new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, false);
 
     private final List<String> cachedKey;
-    private final List<String> cachedLore;
+    private final List<Component> cachedLore;
     protected boolean enderDragonReward = false;
     protected boolean special = false;
 
@@ -71,9 +74,9 @@ public abstract class ItemScroll extends AncientScrollsItem {
         super(key);
         this.cachedKey = List.of(this.key.toString());
         this.cachedLore = new ArrayList<>(lore.length + 1);
-        this.cachedLore.add(LIGHT_PURPLE + name);
+        this.cachedLore.add(Component.text(name, NamedTextColor.LIGHT_PURPLE));
         for (String loreElem : lore) {
-            this.cachedLore.add(GRAY + ITALIC.toString() + loreElem);
+            this.cachedLore.add(Component.text(loreElem, NamedTextColor.GRAY, TextDecoration.ITALIC));
         }
     }
 
@@ -86,8 +89,8 @@ public abstract class ItemScroll extends AncientScrollsItem {
         modelData.setStrings(this.cachedKey);
         itemMeta.setCustomModelDataComponent(modelData);
         itemMeta.setMaxStackSize(1);
-        itemMeta.setDisplayName(CACHED_DISPLAY_NAME);
-        itemMeta.setLore(this.cachedLore);
+        itemMeta.displayName(CACHED_DISPLAY_NAME);
+        itemMeta.lore(this.cachedLore);
         itemMeta.setEnchantmentGlintOverride(true);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
@@ -200,26 +203,38 @@ public abstract class ItemScroll extends AncientScrollsItem {
     public ItemStack createItemStackWithGenerationInfo(final int amount) {
         final ItemStack itemStack = this.createItemStack(amount);
         final ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
-        final List<String> lore = itemMeta.hasLore() ? new ArrayList<>(Objects.requireNonNull(itemMeta.getLore())) : new ArrayList<>();
+        final List<Component> lore = itemMeta.hasLore() ? new ArrayList<>(Objects.requireNonNull(itemMeta.lore())) : new ArrayList<>();
         if (this.enderDragonReward) {
-            lore.add(DARK_PURPLE + "Ender Dragon reward");
+            lore.add(Component.text("Ender Dragon reward", NamedTextColor.DARK_PURPLE));
         }
         if (this.special) {
-            lore.add(YELLOW + "Special");
+            lore.add(Component.text("Special", NamedTextColor.YELLOW));
         }
         if (!this.lootTableGenProbs.isEmpty()) {
-            lore.add(GREEN + "Basic generation:");
+            lore.add(Component.text("Basic generation", NamedTextColor.GREEN));
             this.lootTableGenProbs.forEach((final NamespacedKey key, final Double prob) ->
-                    lore.add(DARK_GREEN + "- " + key.toString() + WHITE + " = " + formatGenerationProb(prob))
+                    lore.add(Component.join(
+                            JoinConfiguration.noSeparators(),
+                            Component.text("- " + key.toString(), NamedTextColor.DARK_GREEN),
+                            formatGenerationProb(prob)
+                    ))
             );
         }
         if (this.vaultGenProb != null) {
-            lore.add(GOLD + "Vaults" + WHITE + " = " + formatGenerationProb(this.vaultGenProb));
+            lore.add(Component.join(
+                    JoinConfiguration.noSeparators(),
+                    Component.text("Vaults", NamedTextColor.GOLD),
+                    formatGenerationProb(this.vaultGenProb)
+            ));
         }
         if (this.ominousVaultGenProb != null) {
-            lore.add(AQUA + "Ominous Vaults" + WHITE + " = " + formatGenerationProb(this.ominousVaultGenProb));
+            lore.add(Component.join(
+                    JoinConfiguration.noSeparators(),
+                    Component.text("Ominous Vaults", NamedTextColor.AQUA),
+                    formatGenerationProb(this.ominousVaultGenProb)
+            ));
         }
-        itemMeta.setLore(lore);
+        itemMeta.lore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -259,7 +274,7 @@ public abstract class ItemScroll extends AncientScrollsItem {
                 .toList();
     }
 
-    private static String formatGenerationProb(final double prob) {
-        return String.format("%.1f%%", prob * 100.0);
+    private static Component formatGenerationProb(final double prob) {
+        return Component.text(" = " + String.format("%.1f%%", prob * 100.0), NamedTextColor.WHITE);
     }
 }
