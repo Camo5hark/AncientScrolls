@@ -24,6 +24,7 @@ public final class CommandManager {
         this.putCommandHandler(new CommandHandler_ancientknowledge());
         this.putCommandHandler(new CommandHandler_ancientknowledgeothers());
         this.putCommandHandler(new CommandHandler_addequippedscroll());
+        this.putCommandHandler(new CommandHandler_asgui());
     }
 
     private void putCommandHandler(final CommandHandler commandHandler) {
