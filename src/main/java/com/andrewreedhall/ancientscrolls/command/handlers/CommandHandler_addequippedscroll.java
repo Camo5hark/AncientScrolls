@@ -18,7 +18,7 @@ public final class CommandHandler_addequippedscroll extends CommandHandler {
     @Override
     public void validate(final AncientScrollsCommand command) {
         this.validateOnlinePlayerNameArg(command, 0);
-        this.validateTypedRegistryValueArg(command, 1, plugin().getItemRegistry(), ItemScroll.class);
+        this.validateRegistryValueArg(command, 1, plugin().getItemRegistry(), ItemScroll.class);
     }
 
     @Override

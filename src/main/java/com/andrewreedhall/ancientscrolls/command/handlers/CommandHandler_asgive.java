@@ -3,6 +3,7 @@ package com.andrewreedhall.ancientscrolls.command.handlers;
 import com.andrewreedhall.ancientscrolls.command.AncientScrollsCommand;
 import com.andrewreedhall.ancientscrolls.command.CommandHandler;
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
+import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,7 +19,7 @@ public final class CommandHandler_asgive extends CommandHandler {
     @Override
     public void validate(final AncientScrollsCommand command) {
         this.validateOnlinePlayerNameArg(command, 0);
-        this.validateRegistryValueArg(command, 1, plugin().getItemRegistry());
+        this.validateRegistryValueArg(command, 1, plugin().getItemRegistry(), ItemScroll.class);
         this.validateIntegerArg(command, 2);
     }
 

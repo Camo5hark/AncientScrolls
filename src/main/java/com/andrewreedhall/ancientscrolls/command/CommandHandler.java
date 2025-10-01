@@ -68,23 +68,22 @@ public abstract class CommandHandler {
         this.cachedArgs.put(argIndex, key);
     }
 
-    protected void validateRegistryValueArg(final AncientScrollsCommand command, final int argIndex, final AncientScrollsRegistry<?> registry) {
+    protected <T extends AncientScrollsRegistry.Value, U extends T> void validateRegistryValueArg(
+            final AncientScrollsCommand command,
+            final int argIndex,
+            final AncientScrollsRegistry<T> registry,
+            final Class<U> registryValueType
+    ) {
         this.validateKeyArg(command, argIndex);
         final NamespacedKey key = (NamespacedKey) this.cachedArgs.get(argIndex);
         final Object value = registry.get(key);
         if (value == null) {
             throw new CommandManager.CommandException("No value registered to key: " + key);
         }
-        this.cachedArgs.put(argIndex, value);
-    }
-
-    protected void validateTypedRegistryValueArg(final AncientScrollsCommand command, final int argIndex, final AncientScrollsRegistry<?> registry, final Class<?> type) {
-        this.validateRegistryValueArg(command, argIndex, registry);
-        final Object value = this.cachedArgs.get(argIndex);
-        if (type.isInstance(value)) {
-            return;
+        if (registryValueType.isInstance(value)) {
+            throw new CommandManager.CommandException("Value is not of type: " + registryValueType.getSimpleName());
         }
-        throw new CommandManager.CommandException("No registered value of type: " + type.getSimpleName());
+        this.cachedArgs.put(argIndex, value);
     }
 
     protected void validateIntegerArg(final AncientScrollsCommand command, final int argIndex) {
