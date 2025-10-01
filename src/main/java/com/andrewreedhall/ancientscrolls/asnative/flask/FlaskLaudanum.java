@@ -21,14 +21,13 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative.flask;
 
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.potion.PotionEffectType;
 
-import static org.bukkit.ChatColor.*;
-
 public final class FlaskLaudanum extends ItemFlaskNative{
     public FlaskLaudanum() {
-        super("laudanum", DARK_PURPLE + "Laudanum", new String[] {
+        super("laudanum",  "Laudanum", NamedTextColor.DARK_PURPLE, new String[] {
                 "An ancient pain-relieving supplement"
         }, Color.BLACK, PotionEffectType.REGENERATION, PotionEffectType.SLOWNESS);
         this.putMCLootTableGenProb("chests/stronghold_corridor", 0.329);

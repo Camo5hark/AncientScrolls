@@ -22,12 +22,20 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.asnative.flask;
 
 import com.andrewreedhall.ancientscrolls.item.flask.ItemFlask;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
-import org.bukkit.NamespacedKey;
 import org.bukkit.potion.PotionEffectType;
 
 public abstract class ItemFlaskNative extends ItemFlask {
-    public ItemFlaskNative(final String id, final String displayName, final String[] lore, final Color color, final PotionEffectType buffPotionEffectType, final PotionEffectType debuffPotionEffectType) {
-        super(fromAncientScrollsNamespace(id), displayName, lore, color, buffPotionEffectType, debuffPotionEffectType);
+    public ItemFlaskNative(
+            final String id,
+            final String displayName,
+            final NamedTextColor displayNameColor,
+            final String[] lore,
+            final Color color,
+            final PotionEffectType buffPotionEffectType,
+            final PotionEffectType debuffPotionEffectType
+    ) {
+        super(fromAncientScrollsNamespace(id), displayName, displayNameColor, lore, color, buffPotionEffectType, debuffPotionEffectType);
     }
 }

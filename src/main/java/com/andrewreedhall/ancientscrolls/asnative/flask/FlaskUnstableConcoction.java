@@ -21,14 +21,13 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative.flask;
 
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.potion.PotionEffectType;
 
-import static org.bukkit.ChatColor.*;
-
 public final class FlaskUnstableConcoction extends ItemFlaskNative {
     public FlaskUnstableConcoction() {
-        super("unstable_concoction", AQUA + "Unstable Concoction", new String[] {
+        super("unstable_concoction", "Unstable Concoction", NamedTextColor.AQUA, new String[] {
                 "Boost of energy at a cost"
         }, Color.FUCHSIA, PotionEffectType.SPEED, PotionEffectType.WEAKNESS);
         this.putMCLootTableGenProb("chests/stronghold_corridor", 0.329);

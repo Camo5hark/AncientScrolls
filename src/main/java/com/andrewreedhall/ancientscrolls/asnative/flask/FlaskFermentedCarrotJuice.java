@@ -21,14 +21,13 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative.flask;
 
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.potion.PotionEffectType;
 
-import static org.bukkit.ChatColor.*;
-
 public final class FlaskFermentedCarrotJuice extends ItemFlaskNative {
     public FlaskFermentedCarrotJuice() {
-        super("fermented_carrot_juice", GREEN + "Fermented Carrot Juice", new String[] {
+        super("fermented_carrot_juice", "Fermented Carrot Juice", NamedTextColor.GREEN, new String[] {
                 "Carrots are good for your eyesight"
         }, Color.ORANGE, PotionEffectType.NIGHT_VISION, PotionEffectType.NAUSEA);
         this.putMCLootTableGenProb("chests/village/village_desert_house", 0.266);

@@ -23,6 +23,9 @@ package com.andrewreedhall.ancientscrolls.item.flask;
 
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -36,21 +39,27 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.bukkit.ChatColor.*;
-
 public abstract class ItemFlask extends AncientScrollsItem {
-    private final String displayName;
-    private final List<String> cachedLore;
+    private final Component displayName;
+    private final List<Component> cachedLore;
     private final Color color;
     private final PotionEffect buffPotionEffect;
     private final PotionEffect debuffPotionEffect;
 
-    public ItemFlask(final NamespacedKey key, final String displayName, final String[] lore, final Color color, final PotionEffectType buffPotionEffectType, final PotionEffectType debuffPotionEffectType) {
+    public ItemFlask(
+            final NamespacedKey key,
+            final String displayName,
+            final NamedTextColor displayNameColor,
+            final String[] lore,
+            final Color color,
+            final PotionEffectType buffPotionEffectType,
+            final PotionEffectType debuffPotionEffectType
+    ) {
         super(key);
-        this.displayName = displayName;
+        this.displayName = Component.text(displayName, displayNameColor);
         this.cachedLore = new ArrayList<>(lore.length);
         for (String loreElem : lore) {
-            this.cachedLore.add(GRAY + ITALIC.toString() + loreElem);
+            this.cachedLore.add(Component.text(loreElem, NamedTextColor.GRAY, TextDecoration.ITALIC));
         }
         this.color = color;
         this.buffPotionEffect = new PotionEffect(buffPotionEffectType, 1200, 1, false);
@@ -64,8 +73,8 @@ public abstract class ItemFlask extends AncientScrollsItem {
         ItemStack itemStack = new ItemStack(Material.POTION);
         ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
         PotionMeta potionMeta = (PotionMeta) itemMeta;
-        potionMeta.setDisplayName(this.displayName);
-        potionMeta.setLore(this.cachedLore);
+        potionMeta.displayName(this.displayName);
+        potionMeta.lore(this.cachedLore);
         potionMeta.setColor(this.color);
         potionMeta.setEnchantmentGlintOverride(true);
         potionMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);

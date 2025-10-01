@@ -21,14 +21,13 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative.flask;
 
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.potion.PotionEffectType;
 
-import static org.bukkit.ChatColor.*;
-
 public final class FlaskDragonsBlood extends ItemFlaskNative{
     public FlaskDragonsBlood() {
-        super("dragons_blood", GOLD + "Dragon's Blood", new String[] {
+        super("dragons_blood", "Dragon's Blood", NamedTextColor.GOLD, new String[] {
                 "Ancient dragons were born in fire"
         }, Color.RED, PotionEffectType.FIRE_RESISTANCE, PotionEffectType.BLINDNESS);
         this.putMCLootTableGenProb("chests/ruined_portal", 0.205);

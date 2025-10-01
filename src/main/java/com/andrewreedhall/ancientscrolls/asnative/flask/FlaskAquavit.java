@@ -21,14 +21,13 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative.flask;
 
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.potion.PotionEffectType;
 
-import static org.bukkit.ChatColor.*;
-
 public final class FlaskAquavit extends ItemFlaskNative {
     public FlaskAquavit() {
-        super("aquavit", BLUE + "Aquavit", new String[] {
+        super("aquavit", "Aquavit", NamedTextColor.BLUE, new String[] {
                 "Contains the spirit of the sea"
         }, Color.AQUA, PotionEffectType.DOLPHINS_GRACE, PotionEffectType.MINING_FATIGUE);
         this.putMCLootTableGenProb("chests/buried_treasure", 0.25);
