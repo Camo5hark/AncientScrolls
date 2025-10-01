@@ -17,9 +17,8 @@ public final class CommandHandler_ancientknowledge extends CommandHandler {
     }
 
     @Override
-    public boolean execute(AncientScrollsCommand command) {
+    public void execute(AncientScrollsCommand command) {
         final Player player = (Player) command.sender();
         plugin().getEquippedScrollsInventoryHandler().open(player, player);
-        return true;
     }
 }

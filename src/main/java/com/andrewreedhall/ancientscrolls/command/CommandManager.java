@@ -23,6 +23,7 @@ public final class CommandManager {
         this.putCommandHandler(new CommandHandler_clearequippedscrolls());
         this.putCommandHandler(new CommandHandler_ancientknowledge());
         this.putCommandHandler(new CommandHandler_ancientknowledgeothers());
+        this.putCommandHandler(new CommandHandler_addequippedscroll());
     }
 
     private void putCommandHandler(final CommandHandler commandHandler) {
@@ -41,8 +42,8 @@ public final class CommandManager {
             sender.sendMessage(Component.text(e.getMessage(), NamedTextColor.RED));
             return false;
         }
-        final boolean result = commandHandler.execute(command);
+        commandHandler.execute(command);
         commandHandler.resetCache();
-        return result;
+        return true;
     }
 }

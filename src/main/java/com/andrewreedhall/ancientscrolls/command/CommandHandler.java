@@ -18,7 +18,7 @@ public abstract class CommandHandler {
     }
 
     public abstract void validate(final AncientScrollsCommand command);
-    public abstract boolean execute(final AncientScrollsCommand command);
+    public abstract void execute(final AncientScrollsCommand command);
 
     @Override
     public int hashCode() {
@@ -68,14 +68,23 @@ public abstract class CommandHandler {
         this.cachedArgs.put(argIndex, key);
     }
 
-    protected void validateRegisteredKeyArg(final AncientScrollsCommand command, final int argIndex, final AncientScrollsRegistry<?> registry) {
+    protected void validateRegistryValueArg(final AncientScrollsCommand command, final int argIndex, final AncientScrollsRegistry<?> registry) {
         this.validateKeyArg(command, argIndex);
         final NamespacedKey key = (NamespacedKey) this.cachedArgs.get(argIndex);
         final Object value = registry.get(key);
         if (value == null) {
-            throw new CommandManager.CommandException("Key not registered: " + key);
+            throw new CommandManager.CommandException("No value registered to key: " + key);
         }
         this.cachedArgs.put(argIndex, value);
+    }
+
+    protected void validateTypedRegistryValueArg(final AncientScrollsCommand command, final int argIndex, final AncientScrollsRegistry<?> registry, final Class<?> type) {
+        this.validateRegistryValueArg(command, argIndex, registry);
+        final Object value = this.cachedArgs.get(argIndex);
+        if (type.isInstance(value)) {
+            return;
+        }
+        throw new CommandManager.CommandException("No registered value of type: " + type.getSimpleName());
     }
 
     protected void validateIntegerArg(final AncientScrollsCommand command, final int argIndex) {

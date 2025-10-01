@@ -29,7 +29,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public final class ScrollNightLife extends ItemScrollNative implements Listener {
     public ScrollNightLife() {
-        super("nightlife", "Nightlife", new String[] {
+        super("night_life", "Nightlife", new String[] {
                 "Night vision at night",
                 "+20% damage towards and -20% damage from overworld monsters"
         });
