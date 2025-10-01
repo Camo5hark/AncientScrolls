@@ -80,7 +80,7 @@ public abstract class CommandHandler {
         if (value == null) {
             throw new CommandManager.CommandException("No value registered to key: " + key);
         }
-        if (registryValueType.isInstance(value)) {
+        if (!registryValueType.isInstance(value)) {
             throw new CommandManager.CommandException("Value is not of type: " + registryValueType.getSimpleName());
         }
         this.cachedArgs.put(argIndex, value);
