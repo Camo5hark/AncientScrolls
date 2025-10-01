@@ -42,11 +42,16 @@ commands:
     permission-message: "\u00A7cYou do not have permission to use this command."
     usage: "\u00A7Usage: /asclear <player>"
   ancientknowledge:
-    description: "Opens a player's ancient knowledge inventory"
+    description: "Opens your ancient knowledge inventory"
     permission: "ancientscrolls.ancientknowledge"
     permission-message: "\u00A7cYou do not have permission to use this command."
-    usage: "\u00A7Usage: /ancientknowledge [player]"
+    usage: "\u00A7Usage: /ancientknowledge"
     aliases: ["ak"]
+  ancientknowledgeothers:
+    description: "Opens another player's ancient knowledge inventory"
+    permission: "ancientscrolls.admin"
+    permission-message: "\u00A7cYou do not have permission to use this command."
+    usage: "\u00A7Usage: /ancientknowledge <player>"
   addequippedscroll:
     description: "Forces a player to equip a scroll"
     permission: "ancientscrolls.admin"
@@ -69,9 +74,6 @@ permissions:
   ancientscrolls.ancientknowledge:
     description: "Allows player to use /ancientknowledge"
     default: true
-  ancientscrolls.ancientknowledge.others:
-    description: "Allows player to use /ancientknowledge for other players"
-    default: "op"
   ancientscrolls.asgui:
     description: "Allows player to use /asgui"
     default: true

@@ -20,6 +20,9 @@ public final class CommandManager {
     public CommandManager() {
         this.putCommandHandler(new CommandHandler_asreload());
         this.putCommandHandler(new CommandHandler_asgive());
+        this.putCommandHandler(new CommandHandler_clearequippedscrolls());
+        this.putCommandHandler(new CommandHandler_ancientknowledge());
+        this.putCommandHandler(new CommandHandler_ancientknowledgeothers());
     }
 
     private void putCommandHandler(final CommandHandler commandHandler) {

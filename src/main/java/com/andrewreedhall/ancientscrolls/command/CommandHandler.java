@@ -1,5 +1,7 @@
 package com.andrewreedhall.ancientscrolls.command;
 
+import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -54,5 +56,35 @@ public abstract class CommandHandler {
             throw new CommandManager.CommandException("Could not find online player: " + onlinePlayerName);
         }
         this.cachedArgs.put(argIndex, onlinePlayer);
+    }
+
+    protected void validateKeyArg(final AncientScrollsCommand command, final int argIndex) {
+        this.validateExistingArg(command, argIndex);
+        final String keyString = (String) this.cachedArgs.get(argIndex);
+        final NamespacedKey key = NamespacedKey.fromString(keyString);
+        if (key == null) {
+            throw new CommandManager.CommandException("Invalid key: " + keyString);
+        }
+        this.cachedArgs.put(argIndex, key);
+    }
+
+    protected void validateRegisteredKeyArg(final AncientScrollsCommand command, final int argIndex, final AncientScrollsRegistry<?> registry) {
+        this.validateKeyArg(command, argIndex);
+        final NamespacedKey key = (NamespacedKey) this.cachedArgs.get(argIndex);
+        final Object value = registry.get(key);
+        if (value == null) {
+            throw new CommandManager.CommandException("Key not registered: " + key);
+        }
+        this.cachedArgs.put(argIndex, value);
+    }
+
+    protected void validateIntegerArg(final AncientScrollsCommand command, final int argIndex) {
+        this.validateExistingArg(command, argIndex);
+        final String intString = (String) this.cachedArgs.get(argIndex);
+        try {
+            this.cachedArgs.put(argIndex, Integer.parseInt(intString));
+        } catch (final NumberFormatException e) {
+            throw new CommandManager.CommandException("Invalid integer: " + intString);
+        }
     }
 }
