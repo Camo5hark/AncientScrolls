@@ -21,6 +21,8 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.util;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
@@ -37,6 +39,10 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Objects;
 
 public final class BukkitUtil {
+    private static final TooltipDisplay.Builder HIDE_POTION_CONTENTS_TOOLTIP_DISPLAY_BUILDER = TooltipDisplay
+            .tooltipDisplay()
+            .addHiddenComponents(DataComponentTypes.POTION_CONTENTS);
+
     /**
      * Plays Sound.BLOCK_NOTE_BLOCK_PLING at half pitch for player<br>
      * For when a player performs an invalid action
@@ -130,5 +136,9 @@ public final class BukkitUtil {
      */
     public static ItemMeta getItemMeta(final ItemStack itemStack) {
         return Objects.requireNonNull(itemStack.getItemMeta(), "ItemMeta is null for ItemStack " + itemStack);
+    }
+
+    public static void hidePotionContentsTooltipDisplay(final ItemStack itemStack) {
+        itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, HIDE_POTION_CONTENTS_TOOLTIP_DISPLAY_BUILDER);
     }
 }

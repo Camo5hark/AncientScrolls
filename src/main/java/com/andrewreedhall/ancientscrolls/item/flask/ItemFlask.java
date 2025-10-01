@@ -29,7 +29,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -77,10 +76,10 @@ public abstract class ItemFlask extends AncientScrollsItem {
         potionMeta.lore(this.cachedLore);
         potionMeta.setColor(this.color);
         potionMeta.setEnchantmentGlintOverride(true);
-        potionMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
         potionMeta.addCustomEffect(this.buffPotionEffect, false);
         potionMeta.addCustomEffect(this.debuffPotionEffect, false);
         itemStack.setItemMeta(potionMeta);
+        BukkitUtil.hidePotionContentsTooltipDisplay(itemStack);
         return itemStack;
     }
 }

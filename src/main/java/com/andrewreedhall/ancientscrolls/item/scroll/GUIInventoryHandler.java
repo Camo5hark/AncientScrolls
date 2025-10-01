@@ -33,7 +33,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -126,9 +125,9 @@ public final class GUIInventoryHandler implements Listener {
             return;
         }
         navigationButtonItemMeta.displayName(Component.text(displayName, displayNameColor));
-        navigationButtonItemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
         navigationButtonItemMeta.setColor(arrowColor);
         navigationButtonItemStack.setItemMeta(navigationButtonItemMeta);
+        BukkitUtil.hidePotionContentsTooltipDisplay(navigationButtonItemStack);
         guiPageInventory.setItem(slot, navigationButtonItemStack);
     }
 }
