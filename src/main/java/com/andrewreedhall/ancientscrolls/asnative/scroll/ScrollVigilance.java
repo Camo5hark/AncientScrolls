@@ -23,8 +23,9 @@ package com.andrewreedhall.ancientscrolls.asnative.scroll;
 
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import com.google.common.base.CaseFormat;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Monster;
@@ -32,8 +33,6 @@ import org.bukkit.entity.Player;
 
 import java.util.Comparator;
 import java.util.Optional;
-
-import static org.bukkit.ChatColor.*;
 
 public final class ScrollVigilance extends ItemScrollNative {
     public ScrollVigilance() {
@@ -59,15 +58,13 @@ public final class ScrollVigilance extends ItemScrollNative {
                 return;
             }
             final Monster highestDamagingNearbyMonster = highestDamagingNearbyMonsterOptional.get();
-            equippingPlayer.spigot().sendMessage(
-                    ChatMessageType.ACTION_BAR,
-                    new TextComponent(
-                            RED + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, highestDamagingNearbyMonster.getType().toString())
-                            + GOLD + " detected "
-                            + RED + (int) Math.round(highestDamagingNearbyMonster.getLocation().distance(equippingPlayerLocation))
-                            + GOLD + " blocks away"
-                    )
-            );
+            equippingPlayer.sendActionBar(Component.join(
+                    JoinConfiguration.noSeparators(),
+                    Component.text(CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, highestDamagingNearbyMonster.getType().toString()), NamedTextColor.RED),
+                    Component.text(" detected ", NamedTextColor.GOLD),
+                    Component.text((int) Math.round(highestDamagingNearbyMonster.getLocation().distance(equippingPlayerLocation)), NamedTextColor.RED),
+                    Component.text(" blocks away", NamedTextColor.GOLD)
+            ));
         }, 60L);
     }
 }

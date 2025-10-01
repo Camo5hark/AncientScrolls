@@ -1,8 +1,7 @@
 package com.andrewreedhall.ancientscrolls.asnative.scroll;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -32,7 +31,7 @@ public final class ScrollVolcanology extends ItemScrollNative implements Listene
             if (equippingPlayer.isInLava()) {
                 final char[] meter = new char[equippingPlayerPDC.getOrDefault(this.pdckLavaDamageImmunityTTL, PersistentDataType.INTEGER, MAX_LAVA_DAMAGE_IMMUNITY_TTL)];
                 Arrays.fill(meter, '|');
-                equippingPlayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + new String(meter)));
+                equippingPlayer.sendActionBar(Component.text(new String(meter), NamedTextColor.RED));
             } else {
                 equippingPlayerPDC.set(this.pdckLavaDamageImmunityTTL, PersistentDataType.INTEGER, 200);
             }
