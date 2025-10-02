@@ -23,6 +23,8 @@ package com.andrewreedhall.ancientscrolls.item.scroll;
 
 import com.andrewreedhall.ancientscrolls.PlayerDataHandler;
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -41,6 +43,9 @@ import java.util.Map;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class EquippedScrollsInventoryHandler implements Listener, Runnable {
+    private static final Component INVENTORY_TITLE = Component.text("Ancient Knowledge");
+    private static final Component BARRIER_DISPLAY_NAME = Component.text(" ");
+
     private final Map<Player, Inventory> equippedScrollInventories = new HashMap<>();
 
     public EquippedScrollsInventoryHandler() {}
@@ -56,8 +61,8 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
                     itemStack = playerEquippedScroll == null ? null : playerEquippedScroll.createItemStack(1);
                 } else {
                     itemStack = new ItemStack(Material.BARRIER);
-                    ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
-                    itemMeta.setDisplayName(" ");
+                    final ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
+                    itemMeta.displayName(BARRIER_DISPLAY_NAME);
                     itemStack.setItemMeta(itemMeta);
                 }
                 equippedScrollInventory.setItem(i, itemStack);
@@ -70,7 +75,7 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
         final Player player = event.getPlayer();
         final int maxEquippedScrolls = plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls;
         final int equippedScrollInventorySize = ((maxEquippedScrolls / 9) + (maxEquippedScrolls % 9 == 0 ? 0 : 1)) * 9;
-        this.equippedScrollInventories.put(player, plugin().getServer().createInventory(player, equippedScrollInventorySize, "Ancient Knowledge"));
+        this.equippedScrollInventories.put(player, plugin().getServer().createInventory(player, equippedScrollInventorySize, INVENTORY_TITLE));
     }
 
     @EventHandler

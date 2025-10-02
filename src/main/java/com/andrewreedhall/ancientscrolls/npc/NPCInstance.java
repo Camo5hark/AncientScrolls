@@ -41,8 +41,11 @@ import net.minecraft.world.phys.Vec3;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MenuType;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.inventory.view.MerchantView;
+import org.bukkit.inventory.view.builder.MerchantInventoryViewBuilder;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import oshi.util.tuples.Pair;
@@ -74,6 +77,7 @@ public final class NPCInstance {
     public final ServerPlayer player;
     public final ServerEntity entity;
     public final Merchant merchant;
+    public final MerchantInventoryViewBuilder<@NotNull MerchantView> merchantInventoryViewBuilder;
 
     public NPCInstance(
             final AncientScrollsNPC npc,
@@ -129,7 +133,7 @@ public final class NPCInstance {
         this.player.setGameMode(GameType.CREATIVE);
         this.player.setPos(locX, locY, locZ);
         ((CraftServer) plugin().getServer()).getServer().getPlayerList().getPlayers().forEach(this::addToClient);
-        this.merchant = plugin().getServer().createMerchant(this.npc.name);
+        this.merchant = plugin().getServer().createMerchant(this.npc.merchantName);
         final MerchantRecipe merchantRecipe = new MerchantRecipe(
                 this.npc.resultScrolls.get(plugin().getUniversalRandom().nextInt(this.npc.resultScrolls.size())).createItemStack(1),
                 1
@@ -142,6 +146,7 @@ public final class NPCInstance {
                 plugin().getUniversalRandom().nextInt(1, ingredientItemStackDescriptor.getB() + 1)
         ));
         this.merchant.setRecipes(List.of(merchantRecipe));
+        this.merchantInventoryViewBuilder = MenuType.MERCHANT.builder().merchant(this.merchant);
     }
 
     @Override

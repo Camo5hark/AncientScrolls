@@ -24,6 +24,7 @@ package com.andrewreedhall.ancientscrolls.npc;
 import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
 import com.andrewreedhall.ancientscrolls.util.Randomizer;
+import net.kyori.adventure.text.Component;
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -55,6 +56,7 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
     public final Pair<Predicate<LivingEntity>, Double> generator;
     public final List<ItemScroll> resultScrolls;
     public final List<Pair<Material, Integer>> ingredientItemStackDescriptors;
+    public final Component merchantName;
 
     public AncientScrollsNPC(
             final NamespacedKey key,
@@ -81,6 +83,7 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
         this.resultScrolls.sort(Randomizer.SCROLL_RANDOMIZER);
         this.ingredientItemStackDescriptors = new ArrayList<>(ingredientItemStackDescriptors.stream().toList());
         this.ingredientItemStackDescriptors.sort(ITEM_STACK_DESCRIPTOR_RANDOMIZER);
+        this.merchantName = Component.text(this.name);
     }
 
     public NPCInstance createInstance(final World world, final Location location) {

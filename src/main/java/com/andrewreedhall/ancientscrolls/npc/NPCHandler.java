@@ -85,6 +85,7 @@ public final class NPCHandler implements Runnable, Listener {
         if (interactedNPCInstance == null) {
             return;
         }
-        event.getPlayer().openMerchant(interactedNPCInstance.merchant, true);
+        final Player interactingPlayer = event.getPlayer();
+        interactingPlayer.openInventory(interactedNPCInstance.merchantInventoryViewBuilder.build(interactingPlayer));
     }
 }

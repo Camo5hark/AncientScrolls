@@ -25,8 +25,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.potion.PotionEffectType;
 
-import static org.bukkit.ChatColor.*;
-
 public final class FlaskHerbalMixture extends ItemFlaskNative {
     public FlaskHerbalMixture() {
         super("herbal_mixture", "Herbal Mixture", NamedTextColor.GREEN, new String[] {
