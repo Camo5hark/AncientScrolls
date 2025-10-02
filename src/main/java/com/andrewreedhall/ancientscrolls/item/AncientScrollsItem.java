@@ -22,6 +22,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.item;
 
 import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
+import com.andrewreedhall.ancientscrolls.Entropic;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -38,7 +39,7 @@ import java.util.*;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
-public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value {
+public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value implements Entropic {
     private final long entropy;
     protected final Map<NamespacedKey, Double> lootTableGenProbs = new HashMap<>();
     protected Double dungeonChestGenProb = null;
@@ -47,7 +48,7 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value {
 
     public AncientScrollsItem(final NamespacedKey key) {
         super(key);
-        this.entropy = new Random(this.key.hashCode()).nextLong();
+        this.entropy = this.generateEntropy();
     }
 
     public abstract ItemStack createItemStack(int amount);
