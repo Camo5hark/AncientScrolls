@@ -31,7 +31,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import java.util.Random;
 
 public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Value implements Entropic {
-    protected record GenerationInfo(double prob, int offsetBlockX, int blockY, int offsetBlockZ) {}
+    public record GenerationInfo(double prob, int offsetBlockX, int blockY, int offsetBlockZ) {}
 
     private final long entropy;
 
@@ -45,7 +45,7 @@ public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Val
     public boolean generate(final ChunkLoadEvent event) {
         final Chunk chunk = event.getChunk();
         final GenerationInfo generationInfo = this.createGenerationInfo(chunk);
-        if (generationInfo == null) {
+        if (generationInfo == null || this.createChunkBasedRandom(chunk).nextDouble() > generationInfo.prob) {
             return false;
         }
         StructureGenerator.generate(
@@ -59,9 +59,9 @@ public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Val
     }
 
     private Random createChunkBasedRandom(final Chunk chunk) {
-        long x = (chunk.getX() & 0x18) << 24;
-        long z = chunk.getZ() & 0x18;
-        long seed = (x | z) & this.entropy;
+        final long x = (long) (chunk.getX() & 0xFFFFFF) << 24;
+        final long z = chunk.getZ() & 0xFFFFFF;
+        final long seed = ((x | z) & this.entropy) ^ (chunk.getWorld().getSeed() & 0xFFFFFFFFFFFFL);
         return new Random(seed);
     }
 }

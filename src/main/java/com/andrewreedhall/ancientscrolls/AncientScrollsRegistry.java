@@ -58,6 +58,11 @@ public final class AncientScrollsRegistry<T extends AncientScrollsRegistry.Value
             return obj == this || (obj instanceof Value && obj.hashCode() == this.hashCode());
         }
 
+        @Override
+        public String toString() {
+            return this.getClass().getSimpleName() + "[" + this.key.toString() + "]";
+        }
+
         /**
          *
          * @param id identifier component of the key

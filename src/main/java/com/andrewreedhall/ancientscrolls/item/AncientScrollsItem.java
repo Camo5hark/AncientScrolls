@@ -112,7 +112,7 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value im
         long seed = (x | y | z) & this.entropy;
         final World world = location.getWorld();
         if (world != null) {
-            seed ^= world.getSeed();
+            seed ^= (world.getSeed() & 0xFFFFFFFFFFFFL);
         }
         return new Random(seed);
     }

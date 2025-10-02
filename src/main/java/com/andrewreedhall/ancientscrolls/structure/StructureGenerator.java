@@ -21,7 +21,19 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.structure;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+
+import java.util.Optional;
+
+import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class StructureGenerator {
     public static void generate(
@@ -31,5 +43,26 @@ public final class StructureGenerator {
             final int blockY,
             final int blockZ
     ) {
+        final StructureTemplateManager levelStructureTemplateManager = level.getStructureManager();
+        final String structureKeyString = structure.key.toString();
+        final Optional<StructureTemplate> optionalStructureTemplate = levelStructureTemplateManager.get(
+                ResourceLocation.parse(structureKeyString)
+        );
+        if (optionalStructureTemplate.isEmpty()) {
+            plugin().getLogger().warning("Structure template not found: " + structureKeyString);
+            return;
+        }
+        optionalStructureTemplate.get().placeInWorld(
+                level,
+                BlockPos.ZERO,
+                new BlockPos(blockX, blockY, blockZ),
+                new StructurePlaceSettings()
+                        .setIgnoreEntities(false)
+                        .setRotation(Rotation.NONE)
+                        .setMirror(Mirror.NONE)
+                        .setLiquidSettings(LiquidSettings.APPLY_WATERLOGGING),
+                level.getRandom(),
+                2
+        );
     }
 }

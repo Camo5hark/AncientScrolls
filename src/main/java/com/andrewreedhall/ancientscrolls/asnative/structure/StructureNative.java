@@ -21,5 +21,10 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative.structure;
 
-public abstract class StructureNative {
+import com.andrewreedhall.ancientscrolls.structure.AncientScrollsStructure;
+
+public abstract class StructureNative extends AncientScrollsStructure {
+    public StructureNative(final String id) {
+        super(fromAncientScrollsNamespace(id));
+    }
 }
