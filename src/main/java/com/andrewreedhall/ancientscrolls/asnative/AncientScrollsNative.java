@@ -163,7 +163,6 @@ public final class AncientScrollsNative {
     public static void registerAll() {
         registerItems();
         registerNPCs();
-        postRegisterAll();
         plugin().scheduleTask((final BukkitScheduler scheduler) ->
                 scheduler.scheduleSyncDelayedTask(plugin(), AncientScrollsNative::postRegisterAll)
         );
