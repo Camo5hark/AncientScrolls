@@ -29,6 +29,7 @@ import com.andrewreedhall.ancientscrolls.item.scroll.EquippedScrollsInventoryHan
 import com.andrewreedhall.ancientscrolls.item.scroll.GUIInventoryHandler;
 import com.andrewreedhall.ancientscrolls.npc.AncientScrollsNPC;
 import com.andrewreedhall.ancientscrolls.npc.NPCHandler;
+import com.andrewreedhall.ancientscrolls.structure.AncientScrollsStructure;
 import com.andrewreedhall.ancientscrolls.util.MonsterPoisonSimulator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -52,6 +53,7 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     private AncientScrollsRegistry<AncientScrollsItem> itemRegistry = null;
     private NPCHandler npcHandler = null;
     private AncientScrollsRegistry<AncientScrollsNPC> npcRegistry = null;
+    private AncientScrollsRegistry<AncientScrollsStructure> structureRegistry = null;
     private EquippedScrollsInventoryHandler equippedScrollsInventoryHandler = null;
     private MonsterPoisonSimulator monsterPoisonSimulator = null;
     private GUIInventoryHandler guiInventoryHandler = null;
@@ -67,6 +69,7 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         this.itemRegistry = new AncientScrollsRegistry<>();
         this.npcHandler = new NPCHandler();
         this.npcRegistry = new AncientScrollsRegistry<>();
+        this.structureRegistry = new AncientScrollsRegistry<>();
         this.equippedScrollsInventoryHandler = new EquippedScrollsInventoryHandler();
         this.monsterPoisonSimulator = new MonsterPoisonSimulator();
         this.defaultCachedConfig.load(false);
@@ -152,6 +155,10 @@ public final class AncientScrollsPlugin extends JavaPlugin {
 
     public AncientScrollsRegistry<AncientScrollsNPC> getNPCRegistry() {
         return this.npcRegistry;
+    }
+
+    public AncientScrollsRegistry<AncientScrollsStructure> getStructureRegistry() {
+        return this.structureRegistry;
     }
 
     public EquippedScrollsInventoryHandler getEquippedScrollsInventoryHandler() {

@@ -27,6 +27,7 @@ import com.andrewreedhall.ancientscrolls.item.ItemListener;
 import com.andrewreedhall.ancientscrolls.asnative.flask.*;
 import com.andrewreedhall.ancientscrolls.asnative.scroll.*;
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScrollListener;
+import com.andrewreedhall.ancientscrolls.structure.StructureListener;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
@@ -41,7 +42,10 @@ public final class AncientScrollsNative {
                 plugin().getGUIInventoryHandler(),
 
                 // npc
-                plugin().getNPCHandler()
+                plugin().getNPCHandler(),
+
+                // structure
+                new StructureListener()
         );
         plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(
                 plugin(),
