@@ -48,7 +48,7 @@ public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Val
         if (generationInfo == null || this.createChunkBasedRandom(chunk).nextDouble() > generationInfo.prob) {
             return false;
         }
-        StructureGenerator.generate(
+        StructurePlacer.place(
                 this,
                 ((CraftWorld) chunk.getWorld()).getHandle(),
                 (chunk.getX() << 4) + generationInfo.offsetBlockX(),
@@ -61,7 +61,7 @@ public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Val
     private Random createChunkBasedRandom(final Chunk chunk) {
         final long x = (long) (chunk.getX() & 0xFFFFFF) << 24;
         final long z = chunk.getZ() & 0xFFFFFF;
-        final long seed = ((x | z) & this.entropy) ^ (chunk.getWorld().getSeed() & 0xFFFFFFFFFFFFL);
+        final long seed = ((x | z) & this.entropy) & (chunk.getWorld().getSeed() & 0xFFFFFFFFFFFFL);
         return new Random(seed);
     }
 }

@@ -27,6 +27,6 @@ tasks.register<Jar>("buildTestPlugin") {
     archiveFileName.set(project.name + "-TEST.jar")
 }
 
-tasks.withType<JavaCompile> {
-    options.compilerArgs.add("-Xlint:deprecation")
-}
+//tasks.withType<JavaCompile> {
+//    options.compilerArgs.add("-Xlint:deprecation")
+//}

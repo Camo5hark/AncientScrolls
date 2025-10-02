@@ -23,6 +23,7 @@ package com.andrewreedhall.ancientscrolls.asnative;
 
 import com.andrewreedhall.ancientscrolls.asnative.npc.hunter.NPCHunter;
 import com.andrewreedhall.ancientscrolls.asnative.npc.prospectre.NPCProspectre;
+import com.andrewreedhall.ancientscrolls.asnative.structure.StructurePillagerShip;
 import com.andrewreedhall.ancientscrolls.item.ItemListener;
 import com.andrewreedhall.ancientscrolls.asnative.flask.*;
 import com.andrewreedhall.ancientscrolls.asnative.scroll.*;
@@ -164,9 +165,17 @@ public final class AncientScrollsNative {
         );
     }
 
+    private static void registerStructures() {
+        plugin().getLogger().info("Registering native structures");
+        plugin().getStructureRegistry().registerAll(
+                StructurePillagerShip.class
+        );
+    }
+
     public static void registerAll() {
         registerItems();
         registerNPCs();
+        registerStructures();
         plugin().scheduleTask((final BukkitScheduler scheduler) ->
                 scheduler.scheduleSyncDelayedTask(plugin(), AncientScrollsNative::postRegisterAll)
         );

@@ -160,15 +160,10 @@ public final class CommonSets {
             SPARSE_JUNGLE,
             BAMBOO_JUNGLE
     );
-    public static final Set<Biome> OCEAN_BIOMES = Set.of(
-            OCEAN,
+    public static final Set<Biome> DEEP_OCEAN_BIOMES = Set.of(
             DEEP_OCEAN,
-            WARM_OCEAN,
-            LUKEWARM_OCEAN,
             DEEP_LUKEWARM_OCEAN,
-            COLD_OCEAN,
             DEEP_COLD_OCEAN,
-            FROZEN_OCEAN,
             DEEP_FROZEN_OCEAN
     );
 }

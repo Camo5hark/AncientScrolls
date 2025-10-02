@@ -38,7 +38,7 @@ public final class StructurePillagerShip extends StructureNative {
             return null;
         }
         final Block originBlock = chunk.getWorld().getHighestBlockAt(chunk.getX() << 4, chunk.getZ() << 4);
-        if (!originBlock.getType().equals(Material.WATER) || !CommonSets.OCEAN_BIOMES.contains(originBlock.getBiome())) {
+        if (!originBlock.getType().equals(Material.WATER) || !CommonSets.DEEP_OCEAN_BIOMES.contains(originBlock.getBiome())) {
             return null;
         }
         return new GenerationInfo(0.1, 0, originBlock.getY(), 0);

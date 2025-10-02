@@ -35,8 +35,8 @@ import java.util.Optional;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
-public final class StructureGenerator {
-    public static void generate(
+public final class StructurePlacer {
+    public static void place(
             final AncientScrollsStructure structure,
             final ServerLevel level,
             final int blockX,
