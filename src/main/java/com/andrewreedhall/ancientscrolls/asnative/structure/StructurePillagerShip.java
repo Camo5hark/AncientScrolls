@@ -41,6 +41,6 @@ public final class StructurePillagerShip extends StructureNative {
         if (!originBlock.getType().equals(Material.WATER) || !CommonSets.DEEP_OCEAN_BIOMES.contains(originBlock.getBiome())) {
             return null;
         }
-        return new GenerationInfo(0.1, 0, originBlock.getY(), 0);
+        return new GenerationInfo(0.02, 0, originBlock.getY() - 1, 0);
     }
 }

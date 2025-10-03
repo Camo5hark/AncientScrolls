@@ -23,6 +23,7 @@ package com.andrewreedhall.ancientscrolls.structure;
 
 import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
 import com.andrewreedhall.ancientscrolls.Entropic;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.bukkit.Chunk;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -30,13 +31,15 @@ import org.bukkit.event.world.ChunkLoadEvent;
 
 import java.util.Random;
 
-public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Value implements Entropic {
+public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Value implements Entropic, StructureTemplateAccess {
     public record GenerationInfo(double prob, int offsetBlockX, int blockY, int offsetBlockZ) {}
 
+    private final StructureTemplate structureTemplate;
     private final long entropy;
 
     public AncientScrollsStructure(final NamespacedKey key) {
         super(key);
+        this.structureTemplate = this.load(this.key.getKey());
         this.entropy = this.generateEntropy();
     }
 
@@ -45,23 +48,18 @@ public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Val
     public boolean generate(final ChunkLoadEvent event) {
         final Chunk chunk = event.getChunk();
         final GenerationInfo generationInfo = this.createGenerationInfo(chunk);
-        if (generationInfo == null || this.createChunkBasedRandom(chunk).nextDouble() > generationInfo.prob) {
+        final Random random = this.generateRandom(this.entropy, chunk.getWorld().getSeed(), chunk.getX(), chunk.getZ());
+        if (generationInfo == null || random.nextDouble() > generationInfo.prob) {
             return false;
         }
-        StructurePlacer.place(
-                this,
+        this.place(
+                this.structureTemplate,
                 ((CraftWorld) chunk.getWorld()).getHandle(),
                 (chunk.getX() << 4) + generationInfo.offsetBlockX(),
                 generationInfo.blockY(),
-                (chunk.getZ() << 4) + generationInfo.offsetBlockZ()
+                (chunk.getZ() << 4) + generationInfo.offsetBlockZ(),
+                random
         );
         return true;
-    }
-
-    private Random createChunkBasedRandom(final Chunk chunk) {
-        final long x = (long) (chunk.getX() & 0xFFFFFF) << 24;
-        final long z = chunk.getZ() & 0xFFFFFF;
-        final long seed = ((x | z) & this.entropy) & (chunk.getWorld().getSeed() & 0xFFFFFFFFFFFFL);
-        return new Random(seed);
     }
 }
