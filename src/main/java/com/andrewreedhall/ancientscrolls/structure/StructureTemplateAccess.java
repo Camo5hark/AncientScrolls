@@ -7,10 +7,8 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
@@ -55,7 +53,7 @@ public interface StructureTemplateAccess {
         levelAccess.setStructureTransformer(new CraftStructureTransformer(level, new ChunkPos(position), Set.of(), Set.of()));
         final RandomSource randomSource = new RandomSourceWrapper(random);
         final boolean placed = structureTemplate.placeInWorld(
-                level,
+                levelAccess,
                 position,
                 position,
                 new StructurePlaceSettings()
@@ -65,7 +63,6 @@ public interface StructureTemplateAccess {
                         .setFinalizeEntities(true)
                         .setKnownShape(true)
                         .setLiquidSettings(LiquidSettings.APPLY_WATERLOGGING)
-                        .addProcessor(new BlockIgnoreProcessor(List.of(Blocks.RED_WOOL)))
                         .setRandom(randomSource),
                 randomSource,
                 2
