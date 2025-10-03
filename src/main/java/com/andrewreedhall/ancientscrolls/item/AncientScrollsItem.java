@@ -23,10 +23,8 @@ package com.andrewreedhall.ancientscrolls.item;
 
 import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
 import com.andrewreedhall.ancientscrolls.Entropic;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Vault;
 import org.bukkit.event.block.BlockDispenseLootEvent;
@@ -40,11 +38,11 @@ import java.util.*;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value implements Entropic {
-    private final long entropy;
     protected final Map<NamespacedKey, Double> lootTableGenProbs = new HashMap<>();
     protected Double dungeonChestGenProb = null;
     protected Double vaultGenProb = null;
     protected Double ominousVaultGenProb = null;
+    private final long entropy;
 
     public AncientScrollsItem(final NamespacedKey key) {
         super(key);
@@ -65,7 +63,8 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value im
         Random random;
         Inventory inventory = null;
         if (event.getInventoryHolder() instanceof final BlockInventoryHolder blockInventoryHolder) {
-            random = this.createLocationBasedRandom(blockInventoryHolder.getBlock().getLocation());
+            final Block block = blockInventoryHolder.getBlock();
+            random = this.generateRandom(this.entropy, block.getWorld().getSeed(), block.getX(), block.getY(), block.getZ());
             inventory = blockInventoryHolder.getInventory();
         } else {
             random = plugin().getUniversalRandom();
@@ -86,7 +85,8 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value im
     }
 
     private void generateByVault(final Block vault, final double genProb, final BlockDispenseLootEvent event) {
-        if (this.createLocationBasedRandom(vault.getLocation()).nextDouble() > genProb * plugin().getDefaultCachedConfig().item_generation_probabilityScalar) {
+        final Random random = this.generateRandom(this.entropy, vault.getWorld().getSeed(), vault.getX(), vault.getY(), vault.getZ());
+        if (random.nextDouble() > genProb * plugin().getDefaultCachedConfig().item_generation_probabilityScalar) {
             return;
         }
         final List<ItemStack> dispensedLoot = event.getDispensedLoot();
@@ -103,17 +103,5 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value im
         } else if (this.ominousVaultGenProb != null) {
             this.generateByVault(dispensingVault, this.ominousVaultGenProb, event);
         }
-    }
-
-    private Random createLocationBasedRandom(final Location location) {
-        final long x = (long) (location.getBlockX() & 0xFFFF) << 32;
-        final long y = (long) (location.getBlockY() & 0xFFFF) << 16;
-        final long z = location.getBlockZ() & 0xFFFF;
-        long seed = (x | y | z) & this.entropy;
-        final World world = location.getWorld();
-        if (world != null) {
-            seed &= (world.getSeed() & 0xFFFFFFFFFFFFL);
-        }
-        return new Random(seed);
     }
 }
