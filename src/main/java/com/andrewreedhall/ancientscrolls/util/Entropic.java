@@ -1,4 +1,4 @@
-package com.andrewreedhall.ancientscrolls;
+package com.andrewreedhall.ancientscrolls.util;
 
 import java.util.Random;
 

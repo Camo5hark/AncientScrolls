@@ -22,7 +22,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.item;
 
 import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
-import com.andrewreedhall.ancientscrolls.Entropic;
+import com.andrewreedhall.ancientscrolls.util.Entropic;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;

@@ -22,7 +22,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.structure;
 
 import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
-import com.andrewreedhall.ancientscrolls.Entropic;
+import com.andrewreedhall.ancientscrolls.util.Entropic;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.bukkit.Chunk;
 import org.bukkit.NamespacedKey;
