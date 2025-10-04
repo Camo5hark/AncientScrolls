@@ -48,7 +48,7 @@ public final class ScrollBioluminescence extends ItemScrollNative {
     private static @NotNull Collection<Player> getNearbyPlayers(Player equippingPlayer) {
         final World eqippingPlayerWorld = equippingPlayer.getWorld();
         final Location equippingPlayerLocation = equippingPlayer.getLocation();
-        final double radius = (eqippingPlayerWorld.getSimulationDistance() - 1) * 16.0;
+        final double radius = (eqippingPlayerWorld.getSimulationDistance() - 1) << 4;
         return eqippingPlayerWorld.getNearbyPlayers(
                 equippingPlayerLocation,
                 radius,

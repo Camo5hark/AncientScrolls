@@ -44,7 +44,7 @@ public final class ScrollScrollOfTheDead extends ItemScrollNative implements Lis
         final World damagingPlayerWorld = damagingPlayer.getWorld();
         damagingPlayerWorld.getNearbyLivingEntities(
                 damagingPlayer.getLocation(),
-                Math.min((damagingPlayerWorld.getSimulationDistance() - 1) * 16.0, 25.0),
+                Math.min((damagingPlayerWorld.getSimulationDistance() - 1) << 4, 25.0),
                 (final LivingEntity nearbyLivingEntity) -> nearbyLivingEntity instanceof Monster && CommonSets.UNDEAD_MONSTERS.contains(nearbyLivingEntity.getType())
         ).forEach((final LivingEntity nearbyLivingEntity) -> {
             final Monster nearbyUndeadMonster = (Monster) nearbyLivingEntity;

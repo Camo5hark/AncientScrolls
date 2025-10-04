@@ -56,7 +56,7 @@ public final class ScrollQuantumTunnelling extends ItemScrollNative implements L
             return;
         }
         final RayTraceResult rayTraceResult = launchingPlayer.rayTraceBlocks(
-                (launchingPlayer.getWorld().getSimulationDistance() - 1) * 16.0
+                (launchingPlayer.getWorld().getSimulationDistance() - 1) << 4
         );
         if (rayTraceResult == null) {
             return;

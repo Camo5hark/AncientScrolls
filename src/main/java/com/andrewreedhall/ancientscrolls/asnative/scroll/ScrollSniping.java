@@ -54,7 +54,7 @@ public final class ScrollSniping extends ItemScrollNative implements Listener {
         final RayTraceResult rayTraceResult = launchingPlayerWorld.rayTraceEntities(
                 launchingPlayer.getEyeLocation(),
                 launchingPlayerDirection,
-                (launchingPlayerWorld.getSimulationDistance() - 1) * 16.0,
+                (launchingPlayerWorld.getSimulationDistance() - 1) << 4,
                 1.0,
                 (final Entity rayTracedEntity) ->
                         rayTracedEntity instanceof LivingEntity && launchedArrow.canHitEntity(rayTracedEntity)

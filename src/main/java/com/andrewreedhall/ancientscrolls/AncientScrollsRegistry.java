@@ -60,7 +60,7 @@ public final class AncientScrollsRegistry<T extends AncientScrollsRegistry.Value
 
         @Override
         public String toString() {
-            return this.getClass().getSimpleName() + "[" + this.key.toString() + "]";
+            return this.getClass().getName() + "{key=\"" + this.key.toString() + "\"}";
         }
 
         /**
