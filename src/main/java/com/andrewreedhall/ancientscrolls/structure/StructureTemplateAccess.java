@@ -25,21 +25,21 @@ import java.util.logging.Level;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public interface StructureTemplateAccess {
-    default StructureTemplate load(final String structureID) {
-        final StructureTemplate structureTemplate = new StructureTemplate();
+    AncientScrollsStructure getStructure();
+
+    default void load() {
+        final String structureID = this.getStructure().key.getKey();
         try (final InputStream structureNBTIn = this.getClass().getClassLoader().getResourceAsStream("structures/" + structureID + ".nbt")) {
-            structureTemplate.load(
+            this.getStructure().structureTemplate.load(
                     ((CraftServer) plugin().getServer()).getServer().registryAccess().lookup(Registries.BLOCK).get(),
                     NbtIo.readCompressed(Objects.requireNonNull(structureNBTIn), NbtAccounter.unlimitedHeap())
             );
         } catch (final IOException e) {
             plugin().getLogger().log(Level.SEVERE, "Could not get NBT input stream for structure " + structureID, e);
         }
-        return structureTemplate;
     }
 
     default void place(
-            final StructureTemplate structureTemplate,
             final ServerLevel level,
             final int blockX,
             final int blockY,
@@ -47,6 +47,7 @@ public interface StructureTemplateAccess {
             final Random random
     ) {
         // Reference: https://github.com/PaperMC/Paper/blob/main/paper-server/src/main/java/org/bukkit/craftbukkit/structure/CraftStructure.java
+        final StructureTemplate structureTemplate = this.getStructure().structureTemplate;
         final BlockPos position = new BlockPos(blockX, blockY, blockZ);
         final TransformerGeneratorAccess levelAccess = new TransformerGeneratorAccess();
         levelAccess.setDelegate(level);

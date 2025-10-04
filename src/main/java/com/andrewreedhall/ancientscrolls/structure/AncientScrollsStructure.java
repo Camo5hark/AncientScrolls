@@ -34,16 +34,21 @@ import java.util.Random;
 public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Value implements Entropic, StructureTemplateAccess {
     public record GenerationInfo(double prob, int offsetBlockX, int blockY, int offsetBlockZ) {}
 
-    private final StructureTemplate structureTemplate;
+    public final StructureTemplate structureTemplate = new StructureTemplate();
     private final long entropy;
 
     public AncientScrollsStructure(final NamespacedKey key) {
         super(key);
-        this.structureTemplate = this.load(this.key.getKey());
         this.entropy = this.generateEntropy();
+        this.load();
     }
 
     protected abstract GenerationInfo createGenerationInfo(final Chunk chunk);
+
+    @Override
+    public AncientScrollsStructure getStructure() {
+        return this;
+    }
 
     public boolean generate(final ChunkLoadEvent event) {
         final Chunk chunk = event.getChunk();
@@ -53,7 +58,6 @@ public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Val
             return false;
         }
         this.place(
-                this.structureTemplate,
                 ((CraftWorld) chunk.getWorld()).getHandle(),
                 (chunk.getX() << 4) + generationInfo.offsetBlockX(),
                 generationInfo.blockY(),

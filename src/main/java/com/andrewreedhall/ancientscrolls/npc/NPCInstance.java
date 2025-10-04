@@ -57,7 +57,7 @@ import java.util.UUID;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
-public final class NPCInstance {
+public final class NPCInstance implements NPCPlayerAccess {
     private static final ClientInformation CACHED_CLIENT_INFO = new ClientInformation(
             "en_us",
             1,
@@ -159,6 +159,11 @@ public final class NPCInstance {
         return obj == this || (obj instanceof NPCInstance && obj.hashCode() == this.hashCode());
     }
 
+    @Override
+    public NPCInstance getNPCInstance() {
+        return this;
+    }
+
     public void addToClient(final ServerPlayer player) {
         player.connection.send(ClientboundPlayerInfoUpdatePacket.createSinglePlayerInitializing(this.player, false));
         player.connection.send(new ClientboundAddEntityPacket(this.player, this.entity));
@@ -213,7 +218,7 @@ public final class NPCInstance {
         if (!this.isTTLUp()) {
             return;
         }
-        AncientScrollsNPC.cleanupInstance(this);
+        this.onTTLUp();
         ((CraftServer) plugin().getServer()).getServer().getPlayerList().getPlayers().forEach(this::removeFromClient);
         this.player.discard();
     }

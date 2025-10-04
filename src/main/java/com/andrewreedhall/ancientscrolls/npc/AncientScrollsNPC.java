@@ -32,7 +32,6 @@ import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Vex;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import oshi.util.tuples.Pair;
@@ -94,7 +93,7 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
                 location.getY(),
                 location.getZ()
         );
-        getPlayer(npcInstance).setMetadata(PMK_ANCIENT_SCROLLS_NPC_INSTANCE, new FixedMetadataValue(plugin(), npcInstance));
+        npcInstance.getPlayer().setMetadata(PMK_ANCIENT_SCROLLS_NPC_INSTANCE, new FixedMetadataValue(plugin(), npcInstance));
         plugin().getNPCHandler().activeNPCInstances.add(npcInstance);
         return npcInstance;
     }
@@ -109,37 +108,11 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
         return true;
     }
 
-    public static Player getPlayer(final NPCInstance npcInstance) {
-        return (Player) plugin().getServer().getEntity(npcInstance.player.getUUID());
-    }
-
     public static NPCInstance getInstance(final Entity entity) {
         if (!(entity instanceof Player instancePlayer) || !NPCInstance.is(((CraftEntity) entity).getHandle())) {
             return null;
         }
         final List<MetadataValue> instancePlayerNPCInstanceData = instancePlayer.getMetadata(PMK_ANCIENT_SCROLLS_NPC_INSTANCE);
         return instancePlayerNPCInstanceData.isEmpty() ? null : (NPCInstance) instancePlayerNPCInstanceData.getFirst().value();
-    }
-
-    public static void cleanupInstance(final NPCInstance npcInstance) {
-        final Player npcInstancePlayer = getPlayer(npcInstance);
-        final World npcInstancePlayerWorld = npcInstancePlayer.getWorld();
-        npcInstancePlayerWorld.getNearbyPlayers(npcInstancePlayer.getLocation(), 10.0).forEach((final Player nearbyPlayer) -> {
-            if (nearbyPlayer.getOpenInventory().getTopInventory().getHolder() != null) {
-                return;
-            }
-            nearbyPlayer.closeInventory();
-        });
-        final Location npcInstancePlayerEyeLocation = npcInstancePlayer.getEyeLocation();
-        npcInstancePlayerWorld.spawn(npcInstancePlayerEyeLocation, Vex.class);
-        npcInstancePlayerWorld.playSound(npcInstancePlayer.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1.0F, 1.0F);
-        npcInstancePlayerWorld.spawnParticle(
-                Particle.SOUL_FIRE_FLAME,
-                npcInstancePlayerEyeLocation,
-                100,
-                1.0,
-                1.0,
-                1.0
-        );
     }
 }
