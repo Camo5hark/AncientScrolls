@@ -26,13 +26,15 @@ import com.andrewreedhall.ancientscrolls.util.Entropic;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.bukkit.Chunk;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.event.world.ChunkLoadEvent;
 
 import java.util.Random;
 
 public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Value implements Entropic, StructureTemplateAccess {
-    public record GenerationInfo(double prob, int offsetBlockX, int blockY, int offsetBlockZ) {}
+    public record GenerationInfo(double prob, int blockY) {}
 
     public final StructureTemplate structureTemplate = new StructureTemplate();
     private final long entropy;
@@ -43,7 +45,7 @@ public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Val
         this.load();
     }
 
-    protected abstract GenerationInfo createGenerationInfo(final Chunk chunk);
+    protected abstract GenerationInfo createGenerationInfo(final World world, final int blockX, final int blockZ);
 
     @Override
     public AncientScrollsStructure getStructure() {
@@ -52,16 +54,16 @@ public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Val
 
     public boolean generate(final ChunkLoadEvent event) {
         final Chunk chunk = event.getChunk();
-        final GenerationInfo generationInfo = this.createGenerationInfo(chunk);
+        final GenerationInfo generationInfo = this.createGenerationInfo(chunk.getWorld(), chunk.getX() << 4, chunk.getZ() << 4);
         final Random random = this.generateRandom(this.entropy, chunk.getWorld().getSeed(), chunk.getX(), chunk.getZ());
         if (generationInfo == null || random.nextDouble() > generationInfo.prob) {
             return false;
         }
         this.place(
                 ((CraftWorld) chunk.getWorld()).getHandle(),
-                (chunk.getX() << 4) + generationInfo.offsetBlockX(),
+                chunk.getX() << 4,
                 generationInfo.blockY(),
-                (chunk.getZ() << 4) + generationInfo.offsetBlockZ(),
+                chunk.getZ() << 4,
                 random
         );
         return true;

@@ -22,7 +22,6 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.asnative.structure;
 
 import com.andrewreedhall.ancientscrolls.util.CommonSets;
-import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -33,14 +32,14 @@ public final class StructurePillagerShip extends StructureNative {
     }
 
     @Override
-    protected GenerationInfo createGenerationInfo(final Chunk chunk) {
-        if (!chunk.getWorld().getEnvironment().equals(World.Environment.NORMAL)) {
+    protected GenerationInfo createGenerationInfo(final World world, final int blockX, final int blockZ) {
+        if (!world.getEnvironment().equals(World.Environment.NORMAL)) {
             return null;
         }
-        final Block originBlock = chunk.getWorld().getHighestBlockAt(chunk.getX() << 4, chunk.getZ() << 4);
-        if (!originBlock.getType().equals(Material.WATER) || !CommonSets.DEEP_OCEAN_BIOMES.contains(originBlock.getBiome())) {
+        final Block block = world.getHighestBlockAt(blockX, blockZ);
+        if (!block.getType().equals(Material.WATER) || !CommonSets.DEEP_OCEAN_BIOMES.contains(block.getBiome())) {
             return null;
         }
-        return new GenerationInfo(0.0025, 0, originBlock.getY() - 1, 0);
+        return new GenerationInfo(0.0025, block.getY() - 1);
     }
 }
