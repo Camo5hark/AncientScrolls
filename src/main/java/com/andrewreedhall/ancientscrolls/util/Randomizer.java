@@ -24,16 +24,37 @@ package com.andrewreedhall.ancientscrolls.util;
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
 
 import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
+/**
+ * Comparator that randomizes (shuffles) elements of a list
+ * @param <T>
+ */
 public final class Randomizer<T> implements Comparator<T> {
-    public static final Comparator<ItemScroll> SCROLL_RANDOMIZER = new Randomizer<>();
+    /**
+     * Global randomizer for scrolls
+     */
+    public static final Randomizer<ItemScroll> SCROLL_RANDOMIZER = new Randomizer<>();
+
+    private Random random = plugin().getUniversalRandom();
 
     public Randomizer() {}
 
     @Override
     public int compare(final T obj1, final T obj2) {
-        return plugin().getUniversalRandom().nextInt(-1, 2);
+        return random.nextInt(-1, 2);
+    }
+
+    /**
+     * Sorts a list using this randomizer
+     * @param list the list to randomize (shuffle)
+     * @param random null for <code>plugin().getUniversalRandom()</code>
+     */
+    public void sort(final List<T> list, final Random random) {
+        this.random = random == null ? plugin().getUniversalRandom() : random;
+        list.sort(this);
     }
 }

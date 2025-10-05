@@ -42,6 +42,7 @@ import org.bukkit.inventory.MerchantRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -127,7 +128,7 @@ public final class ItemScrollListener implements Listener {
                         .filter((final ItemScroll scroll) -> !scroll.isSpecial())
                         .toList()
         );
-        registeredNonSpecialScrolls.sort(Randomizer.SCROLL_RANDOMIZER);
+        Randomizer.SCROLL_RANDOMIZER.sort(registeredNonSpecialScrolls, null);
         final MerchantRecipe scrollRecipe = new MerchantRecipe(
                 registeredNonSpecialScrolls.get(
                         plugin()
