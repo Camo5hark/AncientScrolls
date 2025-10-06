@@ -27,13 +27,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class StructureListener implements Listener {
-    private static final Comparator<AncientScrollsStructure> STRUCTURE_RANDOMIZER = new Randomizer<>();
+    private static final Randomizer<AncientScrollsStructure> STRUCTURE_RANDOMIZER = new Randomizer<>();
 
     public StructureListener() {}
 
@@ -43,7 +43,7 @@ public final class StructureListener implements Listener {
             return;
         }
         final List<AncientScrollsStructure> registeredStructures = new ArrayList<>(plugin().getStructureRegistry().getAll());
-        registeredStructures.sort(STRUCTURE_RANDOMIZER);
+        STRUCTURE_RANDOMIZER.sort(registeredStructures, new Random(event.getChunk().getChunkKey()));
         for (final AncientScrollsStructure structure : registeredStructures) {
             if (structure.generate(event)) {
                 break;

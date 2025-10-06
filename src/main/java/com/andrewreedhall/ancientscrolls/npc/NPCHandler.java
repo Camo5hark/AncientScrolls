@@ -38,7 +38,7 @@ import java.util.*;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class NPCHandler implements Runnable, Listener {
-    private static final Comparator<AncientScrollsNPC> NPC_RANDOMIZER = new Randomizer<>();
+    private static final Randomizer<AncientScrollsNPC> NPC_RANDOMIZER = new Randomizer<>();
 
     public final Set<NPCInstance> activeNPCInstances = new HashSet<>();
 
@@ -67,7 +67,7 @@ public final class NPCHandler implements Runnable, Listener {
             return;
         }
         final List<AncientScrollsNPC> registeredNPCs = new ArrayList<>(plugin().getNPCRegistry().getAll().stream().toList());
-        registeredNPCs.sort(NPC_RANDOMIZER);
+        NPC_RANDOMIZER.sort(registeredNPCs, null);
         for (final AncientScrollsNPC registeredNPC : registeredNPCs) {
             if (registeredNPC.generate(spawnedLivingEntity)) {
                 spawnedLivingEntity.remove();

@@ -37,7 +37,6 @@ import org.bukkit.metadata.MetadataValue;
 import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -47,7 +46,7 @@ import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
     private static final String PMK_ANCIENT_SCROLLS_NPC_INSTANCE = "ancient_scrolls_npc_instance";
-    private static final Comparator<Pair<Material, Integer>> ITEM_STACK_DESCRIPTOR_RANDOMIZER = new Randomizer<>();
+    private static final Randomizer<Pair<Material, Integer>> ITEM_STACK_DESCRIPTOR_RANDOMIZER = new Randomizer<>();
 
     public final String name;
     public final NPCInstance.Skin skin;
@@ -81,7 +80,7 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
         );
         this.resultScrolls.sort(Randomizer.SCROLL_RANDOMIZER);
         this.ingredientItemStackDescriptors = new ArrayList<>(ingredientItemStackDescriptors.stream().toList());
-        this.ingredientItemStackDescriptors.sort(ITEM_STACK_DESCRIPTOR_RANDOMIZER);
+        ITEM_STACK_DESCRIPTOR_RANDOMIZER.sort(this.ingredientItemStackDescriptors, null);
         this.merchantName = Component.text(this.name);
     }
 
