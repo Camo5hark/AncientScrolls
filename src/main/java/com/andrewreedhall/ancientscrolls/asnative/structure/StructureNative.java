@@ -22,9 +22,30 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.asnative.structure;
 
 import com.andrewreedhall.ancientscrolls.structure.AncientScrollsStructure;
+import com.andrewreedhall.ancientscrolls.util.CommonSets;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 
 public abstract class StructureNative extends AncientScrollsStructure {
     public StructureNative(final String id) {
         super(fromAncientScrollsNamespace(id));
+    }
+
+    protected static GenerationInfo createGenerationInfoDeepOceanSurface(
+            final World world,
+            final int blockX,
+            final int blockZ,
+            final int offsetBlockY,
+            final double prob
+    ) {
+        if (!world.getEnvironment().equals(World.Environment.NORMAL)) {
+            return null;
+        }
+        final Block block = world.getHighestBlockAt(blockX, blockZ);
+        if (!block.getType().equals(Material.WATER) || !CommonSets.DEEP_OCEAN_BIOMES.contains(block.getBiome())) {
+            return null;
+        }
+        return new GenerationInfo(prob, block.getY() + offsetBlockY);
     }
 }
