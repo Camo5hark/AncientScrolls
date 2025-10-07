@@ -23,7 +23,6 @@ package com.andrewreedhall.ancientscrolls.item.scroll;
 
 import com.andrewreedhall.ancientscrolls.PlayerDataHandler;
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
-import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -42,6 +41,9 @@ import java.util.Map;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
+/**
+ * Handles the display and synchronization of equipped scrolls inventories per player.
+ */
 public final class EquippedScrollsInventoryHandler implements Listener, Runnable {
     private static final Component INVENTORY_TITLE = Component.text("Ancient Knowledge");
     private static final Component BARRIER_DISPLAY_NAME = Component.text(" ");
@@ -110,6 +112,11 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
         }
     }
 
+    /**
+     * Opens the equipped scrolls inventory of a target player for the given player.
+     * @param openingPlayer the player who will view the inventory
+     * @param equippedScrollsPlayer the player whose scrolls inventory is being viewed
+     */
     public void open(final Player openingPlayer, final Player equippedScrollsPlayer) {
         final Inventory equippedScrollInventory = this.equippedScrollInventories.get(equippedScrollsPlayer);
         if (equippedScrollInventory == null) {

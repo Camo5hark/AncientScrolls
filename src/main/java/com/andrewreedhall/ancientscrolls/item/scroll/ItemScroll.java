@@ -128,6 +128,11 @@ public abstract class ItemScroll extends AncientScrollsItem {
         return PlayerDataHandler.hasEquippedScroll(player, this);
     }
 
+    /**
+     * Schedules a repeating task for all players equipping this scroll.
+     * @param task task to run per player
+     * @param period repetition period in ticks
+     */
     protected void scheduleRepeatingTaskPerEquippingPlayer(final Consumer<Player> task, final long period) {
         plugin().scheduleTask(
                 (final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(
