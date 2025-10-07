@@ -42,7 +42,7 @@ import java.util.Random;
 import java.util.function.Function;
 
 /**
- * Main class for AncientScrolls plugin
+ * Main plugin class for Ancient Scrolls.
  */
 public final class AncientScrollsPlugin extends JavaPlugin {
     private static AncientScrollsPlugin plugin = null;
@@ -58,8 +58,14 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     private MonsterPoisonSimulator monsterPoisonSimulator = null;
     private GUIInventoryHandler guiInventoryHandler = null;
 
+    /**
+     * Constructs the plugin.
+     */
     public AncientScrollsPlugin() {}
 
+    /**
+     * Called when the plugin is enabled.
+     */
     @Override
     public void onEnable() {
         plugin = this;
@@ -79,33 +85,30 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         this.guiInventoryHandler.createPageInventories();
     }
 
+    /**
+     * Handles commands issued to the plugin.
+     * @param sender command sender
+     * @param command command
+     * @param label command label
+     * @param args command arguments
+     * @return true if handled
+     */
     @Override
     public boolean onCommand(final @NotNull CommandSender sender, final Command command, final @NotNull String label, final String @NotNull [] args) {
         return this.commandManager.handle(sender, command.getName(), args);
     }
 
     /**
-     * Reloads the default cached config
-     */
-    public void reload() {
-        final long startTime = System.currentTimeMillis();
-        this.getLogger().info("Reloading");
-        this.defaultCachedConfig.load(true);
-        this.getLogger().info("Reloaded in " + (System.currentTimeMillis() - startTime) + " ms");
-    }
-
-    /**
-     * Registers a single Bukkit event listener
-     * @param listener a Bukkit event listener
+     * Registers a single event listener.
+     * @param listener the listener to register
      */
     public void registerListener(final Listener listener) {
         this.getServer().getPluginManager().registerEvents(listener, this);
     }
 
     /**
-     * Registers multiple Bukkit event listeners
-     * @param listeners Bukkit event listeners
-     * @see #registerListener(Listener)
+     * Registers multiple event listeners.
+     * @param listeners the listeners to register
      */
     public void registerListeners(final Listener... listeners) {
         for (final Listener listener : listeners) {
@@ -114,10 +117,10 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     }
 
     /**
-     * Utility method that wraps the scheduling of a Bukkit task to check if the task was successfully scheduled
-     * @param taskSchedulingFunction use the BukkitScheduler provided by this function to schedule the task and return the task ID to this function
-     * @return the Bukkit task ID
-     * @throws RuntimeException if the task was not successfully scheduled (taskSchedulingFunction returned -1)
+     * Schedules a Bukkit task via function.
+     * @param taskSchedulingFunction function to schedule the task
+     * @return task ID
+     * @throws RuntimeException if scheduling fails
      */
     public int scheduleTask(final Function<BukkitScheduler, Integer> taskSchedulingFunction) {
         final int taskID = taskSchedulingFunction.apply(this.getServer().getScheduler());
@@ -130,52 +133,80 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     }
 
     /**
-     *
-     * @return the universal RNG to be used globally by the plugin to reduce the creation of Random objects
+     * Gets the plugin's shared random instance.
+     * @return universal random
      */
     public Random getUniversalRandom() {
         return this.universalRandom;
     }
 
     /**
-     *
-     * @return CachedConfig for <code>#getConfig()</code>
+     * Gets the cached config.
+     * @return default cached config
      */
     public CachedConfigDefault getDefaultCachedConfig() {
         return this.defaultCachedConfig;
     }
 
+    /**
+     * Gets the item registry.
+     * @return item registry
+     */
     public AncientScrollsRegistry<AncientScrollsItem> getItemRegistry() {
         return this.itemRegistry;
     }
 
+    /**
+     * Gets the NPC handler.
+     * @return NPC handler
+     */
     public NPCHandler getNPCHandler() {
         return this.npcHandler;
     }
 
+    /**
+     * Gets the NPC registry.
+     * @return NPC registry
+     */
     public AncientScrollsRegistry<AncientScrollsNPC> getNPCRegistry() {
         return this.npcRegistry;
     }
 
+    /**
+     * Gets the structure registry.
+     * @return structure registry
+     */
     public AncientScrollsRegistry<AncientScrollsStructure> getStructureRegistry() {
         return this.structureRegistry;
     }
 
+    /**
+     * Gets the equipped scrolls inventory handler.
+     * @return inventory handler
+     */
     public EquippedScrollsInventoryHandler getEquippedScrollsInventoryHandler() {
         return this.equippedScrollsInventoryHandler;
     }
 
+    /**
+     * Gets the monster poison simulator.
+     * @return poison simulator
+     */
     public MonsterPoisonSimulator getMonsterPoisonSimulator() {
         return this.monsterPoisonSimulator;
     }
 
+    /**
+     * Gets the GUI inventory handler.
+     * @return GUI inventory handler
+     */
     public GUIInventoryHandler getGUIInventoryHandler() {
         return this.guiInventoryHandler;
     }
 
     /**
-     *
-     * @return the plugin singleton instance for global reference
+     * Gets the plugin instance.
+     * @return plugin instance
      */
     public static AncientScrollsPlugin plugin() {
         return plugin;
