@@ -26,10 +26,14 @@ import com.andrewreedhall.ancientscrolls.util.CommonSets;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.util.BlockTransformer;
+import org.bukkit.util.EntityTransformer;
+
+import java.util.Set;
 
 public abstract class StructureNative extends AncientScrollsStructure {
-    public StructureNative(final String id) {
-        super(fromAncientScrollsNamespace(id));
+    public StructureNative(final String id, final Set<BlockTransformer> blockTransformers, final Set<EntityTransformer> entityTransformers) {
+        super(fromAncientScrollsNamespace(id), blockTransformers, entityTransformers);
     }
 
     protected static GenerationInfo createGenerationInfoDeepOceanSurface(

@@ -25,7 +25,7 @@ import org.bukkit.World;
 
 public final class StructureFishermanRaft extends StructureNative {
     public StructureFishermanRaft() {
-        super("fisherman_raft");
+        super("fisherman_raft", null, null);
     }
 
     @Override

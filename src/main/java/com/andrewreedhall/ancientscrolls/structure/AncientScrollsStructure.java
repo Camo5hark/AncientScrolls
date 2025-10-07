@@ -29,17 +29,28 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.util.BlockTransformer;
+import org.bukkit.util.EntityTransformer;
 
 import java.util.Random;
+import java.util.Set;
 
 public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Value implements Entropic, StructureTemplateAccess {
     public record GenerationInfo(double prob, int blockY) {}
 
     public final StructureTemplate structureTemplate = new StructureTemplate();
+    public final Set<BlockTransformer> blockTransformers;
+    public final Set<EntityTransformer> entityTransformers;
     private final long entropy;
 
-    public AncientScrollsStructure(final NamespacedKey key) {
+    public AncientScrollsStructure(
+            final NamespacedKey key,
+            final Set<BlockTransformer> blockTransformers,
+            final Set<EntityTransformer> entityTransformers
+    ) {
         super(key);
+        this.blockTransformers = blockTransformers;
+        this.entityTransformers = entityTransformers;
         this.entropy = this.generateEntropy();
         this.load();
     }

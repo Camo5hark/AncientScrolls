@@ -25,7 +25,7 @@ import org.bukkit.World;
 
 public final class StructurePillagerShip extends StructureNative {
     public StructurePillagerShip() {
-        super("pillager_ship");
+        super("pillager_ship", null, null);
     }
 
     @Override

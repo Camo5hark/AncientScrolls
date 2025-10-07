@@ -16,6 +16,8 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.util.CraftStructureTransformer;
 import org.bukkit.craftbukkit.util.RandomSourceWrapper;
 import org.bukkit.craftbukkit.util.TransformerGeneratorAccess;
+import org.bukkit.util.BlockTransformer;
+import org.bukkit.util.EntityTransformer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +27,9 @@ import java.util.logging.Level;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public interface StructureTemplateAccess {
+    Set<BlockTransformer> EMPTY_BLOCK_TRANSFORMERS = Set.of();
+    Set<EntityTransformer> EMPTY_ENTITY_TRANSFORMERS = Set.of();
+
     AncientScrollsStructure getStructure();
 
     default void load() {
@@ -47,11 +52,17 @@ public interface StructureTemplateAccess {
             final Random random
     ) {
         // Reference: https://github.com/PaperMC/Paper/blob/main/paper-server/src/main/java/org/bukkit/craftbukkit/structure/CraftStructure.java
-        final StructureTemplate structureTemplate = this.getStructure().structureTemplate;
+        final AncientScrollsStructure structure = this.getStructure();
+        final StructureTemplate structureTemplate = structure.structureTemplate;
         final BlockPos position = new BlockPos(blockX, blockY, blockZ);
         final TransformerGeneratorAccess levelAccess = new TransformerGeneratorAccess();
         levelAccess.setDelegate(level);
-        levelAccess.setStructureTransformer(new CraftStructureTransformer(level, new ChunkPos(position), Set.of(), Set.of()));
+        levelAccess.setStructureTransformer(new CraftStructureTransformer(
+                level,
+                new ChunkPos(position),
+                structure.blockTransformers == null ? EMPTY_BLOCK_TRANSFORMERS : structure.blockTransformers,
+                structure.entityTransformers == null ? EMPTY_ENTITY_TRANSFORMERS : structure.entityTransformers
+        ));
         final RandomSource randomSource = new RandomSourceWrapper(random);
         final boolean placed = structureTemplate.placeInWorld(
                 levelAccess,
