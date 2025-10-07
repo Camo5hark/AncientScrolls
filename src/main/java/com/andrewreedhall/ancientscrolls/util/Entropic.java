@@ -9,16 +9,10 @@ import java.util.Random;
 public interface Entropic {
     /**
      *
-     * @return a pseudorandom 48-bit integer that is unique to this type
+     * @return a pseudorandom 64-bit integer that is highly likely to be unique to this type
      */
     default long generateEntropy() {
-        final byte[] entropyComponents = new byte[Long.BYTES];
-        new Random(this.hashCode()).nextBytes(entropyComponents);
-        long entropy = 0L;
-        for (int i = 0; i < entropyComponents.length; ++i) {
-            entropy |= (long) entropyComponents[i] << (i * Byte.SIZE);
-        }
-        return entropy;
+        return new Random(this.hashCode()).nextLong();
     }
 
     default Random generateRandom(final long entropy, final long inputSeed, final long... data) {
@@ -29,7 +23,7 @@ public interface Entropic {
             outputSeed = mixAndRotate(data[i], outputSeed, i);
         }
         outputSeed = mixAndRotate(inputSeed, outputSeed, i);
-        outputSeed = mixAndRotate(entropy, outputSeed, i + 1);
+        outputSeed = mixAndRotate(entropy == 0L ? this.generateEntropy() : entropy, outputSeed, i + 1);
         return new Random(outputSeed);
     }
 

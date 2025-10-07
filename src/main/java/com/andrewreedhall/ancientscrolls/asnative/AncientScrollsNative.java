@@ -24,6 +24,7 @@ package com.andrewreedhall.ancientscrolls.asnative;
 import com.andrewreedhall.ancientscrolls.asnative.npc.hunter.NPCHunter;
 import com.andrewreedhall.ancientscrolls.asnative.npc.prospectre.NPCProspectre;
 import com.andrewreedhall.ancientscrolls.asnative.structure.StructureFishermanRaft;
+import com.andrewreedhall.ancientscrolls.asnative.structure.StructureFloatingIsland;
 import com.andrewreedhall.ancientscrolls.asnative.structure.StructurePillagerShip;
 import com.andrewreedhall.ancientscrolls.item.ItemListener;
 import com.andrewreedhall.ancientscrolls.asnative.flask.*;
@@ -170,7 +171,8 @@ public final class AncientScrollsNative {
         plugin().getLogger().info("Registering native structures");
         plugin().getStructureRegistry().registerAll(
                 StructurePillagerShip.class,
-                StructureFishermanRaft.class
+                StructureFishermanRaft.class,
+                StructureFloatingIsland.class
         );
     }
 

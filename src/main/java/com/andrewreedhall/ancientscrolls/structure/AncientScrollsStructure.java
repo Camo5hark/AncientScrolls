@@ -27,7 +27,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import org.bukkit.Chunk;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.event.world.ChunkLoadEvent;
 
