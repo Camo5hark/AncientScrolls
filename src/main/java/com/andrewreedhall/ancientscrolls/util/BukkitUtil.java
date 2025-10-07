@@ -38,6 +38,9 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Objects;
 
+/**
+ * Bukkit utility methods
+ */
 public final class BukkitUtil {
     private static final TooltipDisplay.Builder HIDE_POTION_CONTENTS_TOOLTIP_DISPLAY_BUILDER = TooltipDisplay
             .tooltipDisplay()

@@ -34,6 +34,10 @@ import java.util.Set;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
+/**
+ * An instance of this class simulates the poison effect for monsters, which are normally not affected by the poison
+ * effect
+ */
 public final class MonsterPoisonSimulator {
     private static class MonsterPoisonInstance {
         public final Monster monster;
@@ -86,6 +90,12 @@ public final class MonsterPoisonSimulator {
         );
     }
 
+    /**
+     * If <code>livingEntity</code> is a monster, then a <code>MonsterPoisonInstance</code> is created and registered.<br>
+     * If <code>livingEntity</code> is not a monster, then a poison potion effect is added to <code>livingEntity</code>.
+     * @param livingEntity a living entity, monster or not
+     * @param duration how many ticks the poison effect should last
+     */
     public void add(final LivingEntity livingEntity, final int duration) {
         if (livingEntity instanceof Monster monster) {
             this.monsterPoisonInstances.add(new MonsterPoisonInstance(monster, duration));

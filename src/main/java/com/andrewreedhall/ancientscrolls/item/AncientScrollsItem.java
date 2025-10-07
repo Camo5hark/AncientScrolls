@@ -37,6 +37,9 @@ import java.util.*;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
+/**
+ * An instance of this class is a type of Ancient Scrolls item (such as a scroll or flask).
+ */
 public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value implements Entropic {
     protected final Map<NamespacedKey, Double> lootTableGenProbs = new HashMap<>();
     protected Double dungeonChestGenProb = null;
@@ -49,13 +52,23 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value im
         this.entropy = this.generateEntropy();
     }
 
+    /**
+     *
+     * @param amount amount for the ItemStack
+     * @return a new ItemStack of this Ancient Scrolls item
+     */
     public abstract ItemStack createItemStack(int amount);
 
+    /**
+     * Puts a probability of generating for a Minecraft loot table
+     * @param id an ID for a Minecraft loot table key (e.g. "shipwreck_treasure")
+     * @param prob a probability of generating from 0 to 1
+     */
     protected void putMCLootTableGenProb(final String id, final double prob) {
         this.lootTableGenProbs.put(NamespacedKey.minecraft(id), prob);
     }
 
-    public void generateByLootTable(final LootGenerateEvent event) {
+    void generateByLootTable(final LootGenerateEvent event) {
         final Double lootTableGenProb = this.lootTableGenProbs.get(event.getLootTable().getKey());
         if (lootTableGenProb == null) {
             return;
@@ -81,10 +94,10 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value im
         event.getLoot().add(this.createItemStack(1));
     }
 
-    public void generateByDungeonChest() {
+    void generateByDungeonChest() {
     }
 
-    private void generateByVault(final Block vault, final double genProb, final BlockDispenseLootEvent event) {
+    void generateByVault(final Block vault, final double genProb, final BlockDispenseLootEvent event) {
         final Random random = this.generateRandom(this.entropy, vault.getWorld().getSeed(), vault.getX(), vault.getY(), vault.getZ());
         if (random.nextDouble() > genProb * plugin().getDefaultCachedConfig().item_generation_probabilityScalar) {
             return;
@@ -93,7 +106,7 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value im
         dispensedLoot.add(this.createItemStack(1));
     }
 
-    public void generateByVault(final BlockDispenseLootEvent event) {
+    void generateByVault(final BlockDispenseLootEvent event) {
         final Block dispensingVault = event.getBlock();
         if (!dispensingVault.getType().equals(Material.VAULT) || !(dispensingVault.getBlockData() instanceof Vault dispensingVaultData)) {
             return;

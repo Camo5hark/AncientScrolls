@@ -54,7 +54,7 @@ public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Val
         this.blockTransformers = blockTransformers;
         this.entityTransformers = entityTransformers;
         this.entropy = this.generateEntropy();
-        this.load();
+        this.load(this.getClass().getClassLoader());
     }
 
     protected abstract GenerationInfo createGenerationInfo(final World world, final int blockX, final int blockZ);
