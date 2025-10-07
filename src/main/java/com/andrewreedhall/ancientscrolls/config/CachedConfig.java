@@ -35,59 +35,79 @@ import java.util.stream.Stream;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 /**
- * An alternative way of accessing Bukkit FileConfiguration fields<br>
- * YAML config fields are discretely cached in memory as fields of this class instead of being stored and accessed through a Map as FileConfiguration does it
+ * Abstract base for configuration classes with automatic field loading.
  */
 public abstract class CachedConfig {
     /**
-     * Config field metadata<br>
-     * Specifies the YAML path and default value of the field
+     * Annotation for mapping config values to fields.
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
     protected @interface Meta {
-        String path();
-        boolean defaultBoolean() default false;
-        int defaultInt() default 0;
-        long defaultLong() default 0L;
-        float defaultFloat() default 0.0F;
-        double defaultDouble() default 0.0;
-        String defaultString() default "";
-        boolean isStringList() default false;
-
         /**
-         *
-         * @return true if the field should not be re-cached when the config is reloaded
+         * Config path to read the value from.
+         */
+        String path();
+        /**
+         * Default boolean value.
+         */
+        boolean defaultBoolean() default false;
+        /**
+         * Default int value.
+         */
+        int defaultInt() default 0;
+        /**
+         * Default long value.
+         */
+        long defaultLong() default 0L;
+        /**
+         * Default float value.
+         */
+        float defaultFloat() default 0.0F;
+        /**
+         * Default double value.
+         */
+        double defaultDouble() default 0.0;
+        /**
+         * Default string value.
+         */
+        String defaultString() default "";
+        /**
+         * Whether the field is a string list.
+         */
+        boolean isStringList() default false;
+        /**
+         * If true, the value is not reloaded.
          */
         boolean fixed() default false;
     }
 
     /**
-     * The FileConfiguration to cache the fields of
+     * The underlying config file.
      */
     public final FileConfiguration config;
 
     /**
-     *
-     * @param config the FileConfiguration to cache the fields of
+     * Constructs the config wrapper.
+     * @param config the backing file configuration
      */
     public CachedConfig(final FileConfiguration config) {
         this.config = config;
     }
 
     /**
-     * Saves the default FileConfiguration file if it does not exist yet
+     * Saves the default config file.
      */
     protected abstract void saveDefaultConfig();
 
     /**
-     * Reloads the FileConfiguration of this CachedConfig
+     * Reloads the config from disk.
      */
     protected abstract void reloadConfig();
 
     /**
-     * Reloads the FileConfiguration and caches all its values to each corresponding @Meta field of this CachedConfig
-     * @param reload true if this is a reload, false if this is the initial load
+     * Loads config values into annotated fields.
+     * @param reload whether to reload non-fixed fields
      */
     public void load(final boolean reload) {
         this.saveDefaultConfig();
