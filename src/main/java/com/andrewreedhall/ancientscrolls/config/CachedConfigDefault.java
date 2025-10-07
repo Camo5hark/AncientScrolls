@@ -38,8 +38,11 @@ public final class CachedConfigDefault extends CachedConfig {
     public boolean npc_generation_enabled;
     @Meta(path = "npc.generation.probability-scalar", defaultDouble = 1.0)
     public double npc_generation_probabilityScalar;
-    @Meta(path = "npc.generation.max-player-distance", defaultDouble = 50.0)
-    public double npc_generation_maxPlayerDistance;
+
+    @Meta(path = "structure.generation.enabled", defaultBoolean = true)
+    public boolean structure_generation_enabled;
+    @Meta(path = "structure.generation.probability-scalar", defaultDouble = 1.0)
+    public double structure_generation_probabilityScalar;
 
     public CachedConfigDefault() {
         super(plugin().getConfig());

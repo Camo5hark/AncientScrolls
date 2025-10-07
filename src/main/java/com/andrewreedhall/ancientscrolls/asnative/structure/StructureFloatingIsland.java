@@ -70,6 +70,6 @@ public final class StructureFloatingIsland extends StructureNative {
         ) {
             return null;
         }
-        return new GenerationInfo(0.01, Math.max(world.getMinHeight(), world.getMaxHeight() - 20));
+        return new GenerationInfo(0.0005, Math.max(world.getMinHeight(), world.getMaxHeight() - 20));
     }
 }

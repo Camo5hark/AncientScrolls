@@ -35,6 +35,8 @@ import org.bukkit.util.EntityTransformer;
 import java.util.Random;
 import java.util.Set;
 
+import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
+
 public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Value implements Entropic, StructureTemplateAccess {
     public record GenerationInfo(double prob, int blockY) {}
 
@@ -66,7 +68,9 @@ public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Val
         final Chunk chunk = event.getChunk();
         final GenerationInfo generationInfo = this.createGenerationInfo(chunk.getWorld(), chunk.getX() << 4, chunk.getZ() << 4);
         final Random random = this.generateRandom(this.entropy, chunk.getWorld().getSeed(), chunk.getX(), chunk.getZ());
-        if (generationInfo == null || random.nextDouble() > generationInfo.prob) {
+        if (generationInfo == null ||
+                random.nextDouble() > generationInfo.prob * plugin().getDefaultCachedConfig().structure_generation_probabilityScalar
+        ) {
             return false;
         }
         this.place(

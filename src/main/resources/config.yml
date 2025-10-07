@@ -8,12 +8,15 @@ item:
     max-equipped-scrolls: 9
   generation:
     enabled: true
-    # Scales the generation probability for loot tables, vaults, and ominous vaults
+    # Scales the generation probability of Ancient Scrolls items generating in loot tables, vaults, and ominous vaults
     probability-scalar: 1.0
 npc:
   generation:
     enabled: true
     # Scales the spawning probability of a NPC
     probability-scalar: 1.0
-    # The maximum distance any player must be from an EntitySpawnEvent for a NPC to spawn
-    max-player-distance: 50.0
+structure:
+  generation:
+    enabled: true
+    # Scales the generation probability for structures
+    probability-scalar: 1.0
