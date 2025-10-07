@@ -32,7 +32,7 @@ import static org.bukkit.entity.EntityType.*;
 import static org.bukkit.potion.PotionEffectType.*;
 
 /**
- * Cached unmodifiable sets of related Bukkit enum instances
+ * Unmodifiable sets of related Bukkit enum objects
  */
 public final class CommonSets {
     public static final Set<EntityType> NETHER_MONSTERS = Set.of(

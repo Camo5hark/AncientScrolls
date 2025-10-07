@@ -24,24 +24,23 @@ package com.andrewreedhall.ancientscrolls.util;
 import java.util.Random;
 
 /**
- * Generates a type-unique pseudorandom 64-bit integer known as "entropy" for implementing types. This integer can then
- * be used to generate <code>java.util.Random</code> instances for arbitrary data.
+ * Provides entropy-based random generation utilities.
  */
 public interface Entropic {
     /**
-     *
-     * @return a pseudorandom 64-bit integer that is extremely likely to be unique to this type
+     * Generates entropy based on the object's hash code.
+     * @return a pseudo-random entropy value
      */
     default long generateEntropy() {
         return new Random(this.hashCode()).nextLong();
     }
 
     /**
-     * Generates a <code>java.util.Random</code> instance extremely likely to be unique to arbitrary data.
-     * @param entropy cached return value of <code>generateEntropy()</code>, or 0 if not cached
-     * @param inputSeed an "instance" seed, such as a World seed
-     * @param data arbitrary data, such as coordinates
-     * @return a new <code>java.util.Random</code> instance
+     * Generates a {@link Random} instance using entropy, a seed, and optional data.
+     * @param entropy cached (or custom) entropy or 0L to auto-generate using {@link Entropic#generateEntropy()}
+     * @param inputSeed the base seed
+     * @param data optional additional data for mixing
+     * @return a seeded {@link Random} instance
      */
     default Random generateRandom(final long entropy, final long inputSeed, final long... data) {
         // Based on SplitMix64's algorithm
