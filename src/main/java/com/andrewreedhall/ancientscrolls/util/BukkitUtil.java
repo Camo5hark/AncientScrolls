@@ -39,7 +39,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Objects;
 
 /**
- * Bukkit utility methods
+ * Utility methods for Bukkit-related operations.
  */
 public final class BukkitUtil {
     private static final TooltipDisplay.Builder HIDE_POTION_CONTENTS_TOOLTIP_DISPLAY_BUILDER = TooltipDisplay
@@ -47,27 +47,26 @@ public final class BukkitUtil {
             .addHiddenComponents(DataComponentTypes.POTION_CONTENTS);
 
     /**
-     * Plays Sound.BLOCK_NOTE_BLOCK_PLING at half pitch for player<br>
-     * For when a player performs an invalid action
-     * @param player a player
+     * Plays a negative feedback sound to a player.
+     * @param player the player
      */
     public static void playBadSound(final Player player) {
         player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0F, 0.5F);
     }
 
     /**
-     *
-     * @param event an EntityDamageByEntityEvent
-     * @return true if the damaged entity was damaged by a ranged attacker
+     * Checks if the damage event was caused by a ranged attack.
+     * @param event the damage event
+     * @return true if ranged damage
      */
     public static boolean isRangedDamage(final EntityDamageByEntityEvent event) {
         return event.getDamager() instanceof Projectile;
     }
 
     /**
-     * If the damaged entity was damaged by a ranged attacker, the ranged attacker is returned instead of the projectile
-     * @param event an EntityDamageByEntityEvent
-     * @return the actual damager
+     * Gets the true damager entity, accounting for projectiles.
+     * @param event the damage event
+     * @return the damager entity
      */
     public static Entity getDamager(final EntityDamageByEntityEvent event) {
         final Entity damager = event.getDamager();
@@ -75,9 +74,9 @@ public final class BukkitUtil {
     }
 
     /**
-     * This method exists because <code>Player#isOnGround()</code> is deprecated
-     * @param player a player
-     * @return true if the player is on the ground
+     * Checks if the player is on the ground.
+     * @param player the player
+     * @return true if on ground
      */
     public static boolean isPlayerOnGround(final Player player) {
         if (player.isFlying() || player.isGliding() || player.isSwimming() || player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType().isAir()) {
@@ -88,41 +87,39 @@ public final class BukkitUtil {
     }
 
     /**
-     *
-     * @param player a player
-     * @return true if the player is in a situation where they can perform a critical melee attack (falling and not on ground)
+     * Checks if a player can perform a critical hit.
+     * @param player the player
+     * @return true if critical hit is possible
      */
     public static boolean canCrit(final Player player) {
         return player.getFallDistance() > 0.0 && !isPlayerOnGround(player);
     }
 
     /**
-     * Ignores the possible null AttributeInstance returned by <code>LivingEntity#getAttribute(Attribute)</code><br>
-     * Just make sure that you know what type of entity you are working with and that it is guaranteed to have the attribute
-     * @param livingEntity a living entity
-     * @param attribute an attribute
-     * @return the entity's attribute instance of attribute
-     * @throws NullPointerException if the entity does not have the attribute
+     * Gets an attribute instance from a living entity.
+     * @param livingEntity the entity
+     * @param attribute the attribute
+     * @return the attribute instance
+     * @throws NullPointerException if not applicable
      */
     public static AttributeInstance getAttributeInstance(final LivingEntity livingEntity, final Attribute attribute) {
         return Objects.requireNonNull(livingEntity.getAttribute(attribute), "Attribute " + attribute + " is not applicable for living entity " + livingEntity);
     }
 
     /**
-     * AttributeInstance does not have a hasModifier method or something similar
-     * @param attributeInstance an attribute instance
-     * @param attributeModifierKey a key that points to an attribute modifier in the attribute instance
-     * @return true if the attribute instance has an attribute modifier of the key
+     * Checks if an attribute instance has a modifier with the given key.
+     * @param attributeInstance the attribute instance
+     * @param attributeModifierKey the modifier key
+     * @return true if found
      */
     public static boolean hasAttributeModifier(final AttributeInstance attributeInstance, final NamespacedKey attributeModifierKey) {
         return attributeInstance.getModifiers().stream().anyMatch((final AttributeModifier attributeModifier) -> attributeModifier.getKey().equals(attributeModifierKey));
     }
 
     /**
-     * Attempts to add an item stack to an inventory<br>
-     * If the item stack was not added (inventory is full, restriction, etc.), it is dropped at the inventory holder's location if applicable
-     * @param inventory an inventory
-     * @param itemStack an item stack
+     * Adds an item to an inventory or drops it if full and the holder is a player.
+     * @param inventory the inventory
+     * @param itemStack the item to add
      */
     public static void addItem(final Inventory inventory, final ItemStack itemStack) {
         if (inventory.addItem(itemStack).isEmpty() || !(inventory.getHolder() instanceof Player inventoryHolderPlayer)) {
@@ -132,15 +129,19 @@ public final class BukkitUtil {
     }
 
     /**
-     * Ignores the possible null ItemMeta returned by <code>ItemStack#getItemMeta()</code>
-     * @param itemStack an item stack
-     * @return a snapshot of the item stack's item meta
-     * @throws NullPointerException if the item stack's item meta is null (is this even possible?)
+     * Gets non-null item meta from an item stack.
+     * @param itemStack the item stack
+     * @return the item meta
+     * @throws NullPointerException if meta is null
      */
     public static ItemMeta getItemMeta(final ItemStack itemStack) {
         return Objects.requireNonNull(itemStack.getItemMeta(), "ItemMeta is null for ItemStack " + itemStack);
     }
 
+    /**
+     * Hides potion contents from an item's tooltip.
+     * @param itemStack the item stack
+     */
     public static void hidePotionContentsTooltipDisplay(final ItemStack itemStack) {
         itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, HIDE_POTION_CONTENTS_TOOLTIP_DISPLAY_BUILDER);
     }
