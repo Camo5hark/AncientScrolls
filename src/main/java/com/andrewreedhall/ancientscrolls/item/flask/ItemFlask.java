@@ -38,6 +38,9 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a custom potion-like item with a buff and debuff effect.
+ */
 public abstract class ItemFlask extends AncientScrollsItem {
     private final Component displayName;
     private final List<Component> cachedLore;
@@ -45,6 +48,16 @@ public abstract class ItemFlask extends AncientScrollsItem {
     private final PotionEffect buffPotionEffect;
     private final PotionEffect debuffPotionEffect;
 
+    /**
+     * Constructs a new ItemFlask with custom display, lore, effects, and loot table probabilities.
+     * @param key the unique item key
+     * @param displayName the display name text
+     * @param displayNameColor the color of the display name
+     * @param lore the item lore lines
+     * @param color the potion color
+     * @param buffPotionEffectType the positive effect type
+     * @param debuffPotionEffectType the negative effect type
+     */
     public ItemFlask(
             final NamespacedKey key,
             final String displayName,
@@ -67,6 +80,11 @@ public abstract class ItemFlask extends AncientScrollsItem {
         this.putMCLootTableGenProb("blocks/vault", 0.24);
     }
 
+    /**
+     * Creates an ItemStack of this flask.
+     * @param amount the number of items in the stack
+     * @return the created ItemStack
+     */
     @Override
     public ItemStack createItemStack(final int amount) {
         ItemStack itemStack = new ItemStack(Material.POTION);
