@@ -38,31 +38,47 @@ import java.util.*;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 /**
- * An instance of this class is a type of Ancient Scrolls item (such as a scroll or flask).
+ * Represents a scroll item with configurable loot generation logic.
  */
 public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value implements Entropic {
+    /**
+     * Per-loot-table generation probabilities (by loot table key).
+     */
     protected final Map<NamespacedKey, Double> lootTableGenProbs = new HashMap<>();
+    /**
+     * Generation probability when found in a dungeon chest.
+     */
     protected Double dungeonChestGenProb = null;
+    /**
+     * Generation probability when found in a standard vault.
+     */
     protected Double vaultGenProb = null;
+    /**
+     * Generation probability when found in an ominous vault.
+     */
     protected Double ominousVaultGenProb = null;
     private final long entropy;
 
+    /**
+     * Constructs a scroll item with the given key and initializes entropy.
+     * @param key the unique item key
+     */
     public AncientScrollsItem(final NamespacedKey key) {
         super(key);
         this.entropy = this.generateEntropy();
     }
 
     /**
-     *
-     * @param amount amount for the ItemStack
-     * @return a new ItemStack of this Ancient Scrolls item
+     * Creates an {@link ItemStack} representing this item.
+     * @param amount the quantity
+     * @return the created item stack
      */
     public abstract ItemStack createItemStack(int amount);
 
     /**
-     * Puts a probability of generating for a Minecraft loot table
-     * @param id an ID for a Minecraft loot table key (e.g. "shipwreck_treasure")
-     * @param prob a probability of generating from 0 to 1
+     * Adds a loot table generation probability for a vanilla loot table.
+     * @param id the Minecraft loot table ID (e.g. "chests/abandoned_mineshaft")
+     * @param prob the generation probability
      */
     protected void putMCLootTableGenProb(final String id, final double prob) {
         this.lootTableGenProbs.put(NamespacedKey.minecraft(id), prob);

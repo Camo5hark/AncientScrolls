@@ -24,7 +24,7 @@ package com.andrewreedhall.ancientscrolls.config;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 /**
- * CachedConfig for <code>plugin().getConfig()</code>
+ * Cached config for default plugin config.
  */
 public final class CachedConfigDefault extends CachedConfig {
     @Meta(path = "item.scroll.max-equipped-scrolls", defaultInt = 9, fixed = true)

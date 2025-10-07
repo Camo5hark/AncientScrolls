@@ -60,16 +60,34 @@ import java.util.function.Predicate;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
+/**
+ * Represents a special item scroll with effects, lore, and generation behavior.
+ */
 public abstract class ItemScroll extends AncientScrollsItem {
     private static final List<Boolean> CACHED_FLAGS = List.of(true);
     private static final Component CACHED_DISPLAY_NAME = Component.text("Ancient Scroll", NamedTextColor.GOLD);
+    /**
+     * Night vision effect used by scrolls.
+     */
     protected static final PotionEffect NIGHT_VISION_POTION_EFFECT = new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, false);
 
     private final List<String> cachedKey;
     private final List<Component> cachedLore;
+    /**
+     * Whether this scroll is a reward from the Ender Dragon.
+     */
     protected boolean enderDragonReward = false;
+    /**
+     * Whether this scroll is classified as special (boss drops, cannot be purchased from traveling merchant)
+     */
     protected boolean special = false;
 
+    /**
+     * Constructs a new ItemScroll.
+     * @param key unique scroll key
+     * @param name scroll display name
+     * @param lore lore lines
+     */
     public ItemScroll(final NamespacedKey key, final String name, final String[] lore) {
         super(key);
         this.cachedKey = List.of(this.key.toString());
@@ -80,6 +98,11 @@ public abstract class ItemScroll extends AncientScrollsItem {
         }
     }
 
+    /**
+     * Creates an ItemStack of this scroll.
+     * @param amount stack size
+     * @return the created ItemStack
+     */
     @Override
     public ItemStack createItemStack(int amount) {
         final ItemStack itemStack = new ItemStack(Material.PAPER, amount);
@@ -96,6 +119,11 @@ public abstract class ItemScroll extends AncientScrollsItem {
         return itemStack;
     }
 
+    /**
+     * Checks whether the scroll is currently equipped by a player.
+     * @param player player to check
+     * @return true if equipped, false otherwise.
+     */
     public boolean isEquipping(final Player player) {
         return PlayerDataHandler.hasEquippedScroll(player, this);
     }
@@ -116,6 +144,12 @@ public abstract class ItemScroll extends AncientScrollsItem {
         );
     }
 
+    /**
+     * Applies or removes attribute modifiers for equipping players based on a condition.
+     * @param attributeModifierDescriptors set of attribute and modifier pairs
+     * @param condition predicate to test players
+     * @param extraTaskPerEquippingPlayer optional task per player, null for no task
+     */
     protected void modifyAttributesOfEquippingPlayers(final Set<Pair<Attribute, AttributeModifier>> attributeModifierDescriptors, final Predicate<Player> condition, final Consumer<Player> extraTaskPerEquippingPlayer) {
         plugin().scheduleTask((final BukkitScheduler scheduler) ->
                 scheduler.scheduleSyncRepeatingTask(plugin(), () ->
@@ -146,6 +180,11 @@ public abstract class ItemScroll extends AncientScrollsItem {
         );
     }
 
+    /**
+     * Adds a potion effect to players equipping this scroll, if condition passes.
+     * @param potionEffect effect to apply
+     * @param condition predicate to test players
+     */
     protected void addPotionEffectToEquippingPlayers(final PotionEffect potionEffect, final Predicate<Player> condition) {
         this.scheduleRepeatingTaskPerEquippingPlayer((final Player equippingPlayer) -> {
             if (!condition.test(equippingPlayer)) {
@@ -155,6 +194,12 @@ public abstract class ItemScroll extends AncientScrollsItem {
         }, 20L);
     }
 
+    /**
+     * Cancels block consumption on placement based on scroll and chance.
+     * @param event placement event
+     * @param blockTypes block types to affect
+     * @param prob probability to reduce consumption
+     */
     protected void reduceConsumedPlacedBlocks(final BlockPlaceEvent event, final Set<Material> blockTypes, final double prob) {
         final Player placingPlayer = event.getPlayer();
         if (
@@ -168,6 +213,12 @@ public abstract class ItemScroll extends AncientScrollsItem {
         event.getItemInHand().add();
     }
 
+    /**
+     * Applies damage bonuses or reductions against specific entity types.
+     * @param event damage event
+     * @param entityTypes affected entity types
+     * @param bonus bonus or reduction multiplier
+     */
     protected void applyBonusAgainstEntityTypes(final EntityDamageByEntityEvent event, final Set<EntityType> entityTypes, final double bonus) {
         final Entity damaged = event.getEntity();
         final Entity damager = event.getDamager();
@@ -185,6 +236,11 @@ public abstract class ItemScroll extends AncientScrollsItem {
         }
     }
 
+    /**
+     * Cancels a specific potion effect if the player is equipping this scroll.
+     * @param event potion effect event
+     * @param potionEffectType type of effect to cancel
+     */
     protected void negatePotionEffectType(final EntityPotionEffectEvent event, final PotionEffectType potionEffectType) {
         if (!(event.getEntity() instanceof Player affectedPlayer)) {
             return;
@@ -196,10 +252,21 @@ public abstract class ItemScroll extends AncientScrollsItem {
         event.setCancelled(true);
     }
 
+    /**
+     * Creates a namespaced subkey under this scroll's key.
+     * @param id subkey identifier
+     * @return a derived namespaced key
+     */
     protected NamespacedKey createSubkey(final String id) {
         return fromAncientScrollsNamespace(this.key.getKey() + "/" + id);
     }
 
+    /**
+     * Creates an ItemStack with additional lore about scroll generation.
+     * @param amount stack size
+     * @return the created ItemStack
+     * @see ItemScroll#createItemStack(int)
+     */
     public ItemStack createItemStackWithGenerationInfo(final int amount) {
         final ItemStack itemStack = this.createItemStack(amount);
         final ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
@@ -239,14 +306,27 @@ public abstract class ItemScroll extends AncientScrollsItem {
         return itemStack;
     }
 
+    /**
+     * Returns whether this scroll is an Ender Dragon reward.
+     * @return true if so, false otherwise
+     */
     public boolean isEnderDragonReward() {
         return this.enderDragonReward;
     }
 
+    /**
+     * Returns whether this scroll is special (boss drop, cannot be purchased from traveling merchants)
+     * @return true if so, false otherwise.
+     */
     public boolean isSpecial() {
         return this.special;
     }
 
+    /**
+     * Checks whether an ItemStack is a valid scroll ItemStack.
+     * @param itemStack the ItemStack to check
+     * @return true if it's a scroll, false otherwise
+     */
     public static boolean is(final ItemStack itemStack) {
         if (!itemStack.getType().equals(Material.PAPER)) {
             return false;
@@ -259,11 +339,20 @@ public abstract class ItemScroll extends AncientScrollsItem {
         return !modelDataFlags.isEmpty() && modelDataFlags.getFirst();
     }
 
+    /**
+     * Extracts the scroll key from an ItemStack.
+     * @param scrollItemStack the scroll ItemStack
+     * @return the extracted key, or null if not a scroll ItemStack
+     */
     public static NamespacedKey getKey(final ItemStack scrollItemStack) {
         final List<String> scrollModelDataStrings = BukkitUtil.getItemMeta(scrollItemStack).getCustomModelDataComponent().getStrings();
         return scrollModelDataStrings.isEmpty() ? null : NamespacedKey.fromString(scrollModelDataStrings.getFirst());
     }
 
+    /**
+     * Creates a list of all registered ItemScrolls.
+     * @return unmodifiable list of registered scrolls
+     */
     public static List<ItemScroll> createListOfAllRegistered() {
         return plugin()
                 .getItemRegistry()
