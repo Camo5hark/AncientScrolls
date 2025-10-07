@@ -24,15 +24,18 @@ package com.andrewreedhall.ancientscrolls.structure;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.generator.LimitedRegion;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockTransformer;
 import org.jetbrains.annotations.NotNull;
+import oshi.util.tuples.Pair;
 
+import java.util.Set;
 import java.util.function.Supplier;
 
 public record BlockTransformerTreasureContainer(
         Class<? extends Container> containerType,
-        Supplier<ItemStack[]> treasureItemStacks
+        Supplier<Set<Pair<Integer, ItemStack>>> treasureItemStackDescriptors
 ) implements BlockTransformer {
     @Override
     public @NotNull BlockState transform(
@@ -46,7 +49,10 @@ public record BlockTransformerTreasureContainer(
         if (!this.containerType.isInstance(current)) {
             return current;
         }
-        ((Container) current).getInventory().addItem(this.treasureItemStacks.get());
+        final Inventory containerInventory = ((Container) current).getInventory();
+        this.treasureItemStackDescriptors.get().forEach((final Pair<Integer, ItemStack> treasureItemStackDescriptor) ->
+                containerInventory.setItem(treasureItemStackDescriptor.getA(), treasureItemStackDescriptor.getB())
+        );
         return current;
     }
 }

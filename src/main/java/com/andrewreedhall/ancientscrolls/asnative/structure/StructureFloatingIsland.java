@@ -24,7 +24,7 @@ package com.andrewreedhall.ancientscrolls.asnative.structure;
 import com.andrewreedhall.ancientscrolls.structure.BlockTransformerTreasureContainer;
 import org.bukkit.World;
 import org.bukkit.block.Chest;
-import org.bukkit.inventory.ItemStack;
+import oshi.util.tuples.Pair;
 
 import java.util.Set;
 
@@ -33,9 +33,15 @@ import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 public final class StructureFloatingIsland extends StructureNative {
     public StructureFloatingIsland() {
         super("floating_island", Set.of(
-                new BlockTransformerTreasureContainer(Chest.class, () -> new ItemStack[] {
-                        plugin().getItemRegistry().get(fromAncientScrollsNamespace("acrobatics")).createItemStack(1)
-                })
+                new BlockTransformerTreasureContainer(Chest.class, () -> Set.of(
+                        new Pair<>(
+                                13,
+                                plugin()
+                                        .getItemRegistry()
+                                        .get(fromAncientScrollsNamespace("scroll_of_the_sky_folk"))
+                                        .createItemStack(1)
+                        )
+                ))
         ), null);
     }
 
