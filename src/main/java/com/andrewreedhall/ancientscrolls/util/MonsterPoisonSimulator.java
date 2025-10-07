@@ -35,8 +35,7 @@ import java.util.Set;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 /**
- * An instance of this class simulates the poison effect for monsters, which are normally not affected by the poison
- * effect
+ * Simulates poison effects on monsters (who are immune to poison effects in vanilla)
  */
 public final class MonsterPoisonSimulator {
     private static class MonsterPoisonInstance {
@@ -61,8 +60,14 @@ public final class MonsterPoisonSimulator {
 
     private final Set<MonsterPoisonInstance> monsterPoisonInstances = new HashSet<>();
 
+    /**
+     * Creates a new poison simulator.
+     */
     public MonsterPoisonSimulator() {}
 
+    /**
+     * Schedules a repeating task to apply poison damage and particles.
+     */
     public void scheduleRepeatingTask() {
         plugin().scheduleTask(
                 (final BukkitScheduler scheduler) ->
@@ -91,10 +96,13 @@ public final class MonsterPoisonSimulator {
     }
 
     /**
-     * If <code>livingEntity</code> is a monster, then a <code>MonsterPoisonInstance</code> is created and registered.<br>
-     * If <code>livingEntity</code> is not a monster, then a poison potion effect is added to <code>livingEntity</code>.
-     * @param livingEntity a living entity, monster or not
-     * @param duration how many ticks the poison effect should last
+     * Applies poison to a living entity.
+     * <ul>
+     *     <li>If it's a monster, applies custom poison logic.</li>
+     *     <li>Otherwise, applies standard poison effect.</li>
+     * </ul>
+     * @param livingEntity the entity to poison
+     * @param duration poison duration in ticks
      */
     public void add(final LivingEntity livingEntity, final int duration) {
         if (livingEntity instanceof Monster monster) {
