@@ -22,8 +22,10 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.asnative.structure;
 
 import com.andrewreedhall.ancientscrolls.structure.BlockTransformerTreasureContainer;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Chest;
+import org.bukkit.inventory.ItemStack;
 import oshi.util.tuples.Pair;
 
 import java.util.Set;
@@ -35,11 +37,27 @@ public final class StructureFloatingIsland extends StructureNative {
         super("floating_island", Set.of(
                 new BlockTransformerTreasureContainer(Chest.class, () -> Set.of(
                         new Pair<>(
+                                4,
+                                new ItemStack(Material.ENCHANTED_GOLDEN_APPLE)
+                        ),
+                        new Pair<>(
+                                12,
+                                new ItemStack(Material.DIAMOND)
+                        ),
+                        new Pair<>(
                                 13,
                                 plugin()
                                         .getItemRegistry()
                                         .get(fromAncientScrollsNamespace("scroll_of_the_sky_folk"))
                                         .createItemStack(1)
+                        ),
+                        new Pair<>(
+                                14,
+                                new ItemStack(Material.DIAMOND)
+                        ),
+                        new Pair<>(
+                                22,
+                                new ItemStack(Material.ENCHANTED_GOLDEN_APPLE)
                         )
                 ))
         ), null);
