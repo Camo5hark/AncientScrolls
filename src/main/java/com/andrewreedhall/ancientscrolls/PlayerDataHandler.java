@@ -37,10 +37,13 @@ import java.util.stream.Stream;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
+/**
+ * Handles equipped scroll data for players using persistent storage.
+ */
 public final class PlayerDataHandler {
     private static final NamespacedKey PDK_EQUIPPED_SCROLL_KEY_STRINGS = NamespacedKey.fromString("equipped_scroll_key_strings", plugin());
     private static final String EQUIPPED_SCROLL_KEY_STRING_NULL = "*";
-    private static final Function<String, ItemScroll> CODEC_STRING_TO_SCROLL = (final String string) -> {
+    private static final Function<String, ItemScroll> STRING_TO_SCROLL = (final String string) -> {
         if (string.equals(EQUIPPED_SCROLL_KEY_STRING_NULL)) {
             return null;
         }
@@ -50,7 +53,7 @@ public final class PlayerDataHandler {
         }
         return (ItemScroll) plugin().getItemRegistry().get(scrollKey);
     };
-    private static final Function<ItemScroll, String> CODEC_SCROLL_TO_STRING = (final ItemScroll scroll) -> scroll == null ? EQUIPPED_SCROLL_KEY_STRING_NULL : scroll.key.toString();
+    private static final Function<ItemScroll, String> SCROLL_TO_STRING = (final ItemScroll scroll) -> scroll == null ? EQUIPPED_SCROLL_KEY_STRING_NULL : scroll.key.toString();
 
     private static Stream<String> getEquippedScrollKeyStringsStream(final Player player) {
         final String[] defaultEquippedScrollKeyStrings = new String[plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls];
@@ -65,15 +68,25 @@ public final class PlayerDataHandler {
                 .stream();
     }
 
+    /**
+     * Returns the currently equipped scrolls of a player.
+     * @param player the player
+     * @return array of equipped scrolls
+     */
     public static ItemScroll[] getEquippedScrolls(final Player player) {
         final int maxEquippedScrolls = plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls;
         return getEquippedScrollKeyStringsStream(player)
                 .limit(maxEquippedScrolls)
-                .map(CODEC_STRING_TO_SCROLL)
+                .map(STRING_TO_SCROLL)
                 .toList()
                 .toArray(new ItemScroll[maxEquippedScrolls]);
     }
 
+    /**
+     * Sets the equipped scrolls of a player.
+     * @param player the player
+     * @param scrolls scrolls to set
+     */
     public static void setEquippedScrolls(final Player player, final ItemScroll[] scrolls) {
         player
                 .getPersistentDataContainer()
@@ -82,15 +95,25 @@ public final class PlayerDataHandler {
                         PersistentDataType.LIST.strings(),
                         Arrays.stream(scrolls)
                                 .limit(plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls)
-                                .map(CODEC_SCROLL_TO_STRING)
+                                .map(SCROLL_TO_STRING)
                                 .toList()
                 );
     }
 
+    /**
+     * Clears all equipped scrolls for a player.
+     * @param player the player
+     */
     public static void clearEquippedScrolls(final Player player) {
         setEquippedScrolls(player, new ItemScroll[plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls]);
     }
 
+    /**
+     * Inserts a scroll into the first available equipped slot.
+     * @param player the player
+     * @param scroll the scroll to insert
+     * @return true if inserted, false if no slot available
+     */
     public static boolean insertEquippedScroll(final Player player, final ItemScroll scroll) {
         final ItemScroll[] equippedScrolls = getEquippedScrolls(player);
         for (int i = 0; i < equippedScrolls.length; ++i) {
@@ -106,11 +129,23 @@ public final class PlayerDataHandler {
         return false;
     }
 
+    /**
+     * Checks if a player has a specific scroll equipped.
+     * @param player the player
+     * @param scroll the scroll to check
+     * @return true if equipped, false otherwise
+     */
     public static boolean hasEquippedScroll(final Player player, final ItemScroll scroll) {
         final String scrollKeyString = scroll.key.toString();
         return getEquippedScrollKeyStringsStream(player).anyMatch(scrollKeyString::equals);
     }
 
+    /**
+     * Removes a scroll at the given equipped index.
+     * @param player the player
+     * @param scrollIndex index of the scroll to remove
+     * @throws IndexOutOfBoundsException if index is invalid
+     */
     public static void removeEquippedScroll(final Player player, final int scrollIndex) {
         if (scrollIndex < 0 || scrollIndex >= plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls) {
             final IndexOutOfBoundsException e = new IndexOutOfBoundsException("Index of scroll to remove is out of bounds: " + scrollIndex);
