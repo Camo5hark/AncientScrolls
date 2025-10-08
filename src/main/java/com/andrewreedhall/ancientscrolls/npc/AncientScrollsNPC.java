@@ -44,6 +44,9 @@ import java.util.function.Predicate;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
+/**
+ * Defines an Ancient Scrolls NPC with custom skin, behavior, and scroll trades.
+ */
 public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
     private static final String PMK_ANCIENT_SCROLLS_NPC_INSTANCE = "ancient_scrolls_npc_instance";
     private static final Randomizer<Pair<Material, Integer>> ITEM_STACK_DESCRIPTOR_RANDOMIZER = new Randomizer<>();
@@ -56,6 +59,16 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
     public final List<Pair<Material, Integer>> ingredientItemStackDescriptors;
     public final Component merchantName;
 
+    /**
+     * Constructs a new AncientScrollsNPC with behavior, appearance, and scroll configuration.
+     * @param key the unique key for this NPC
+     * @param name the NPC's name
+     * @param skin the skin used by the NPC
+     * @param auxiliary extra packets to send when the NPC spawns
+     * @param generator predicate and probability for NPC spawning
+     * @param resultScrollKeyStrings keys for scrolls the NPC can trade
+     * @param ingredientItemStackDescriptors item and count pairs used as trade ingredients
+     */
     public AncientScrollsNPC(
             final NamespacedKey key,
             final String name,
@@ -84,6 +97,12 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
         this.merchantName = Component.text(this.name);
     }
 
+    /**
+     * Spawns an NPC instance at a given location in the world.
+     * @param world the world to spawn in
+     * @param location the location to spawn at
+     * @return the created NPCInstance
+     */
     public NPCInstance createInstance(final World world, final Location location) {
         final NPCInstance npcInstance = new NPCInstance(
                 this,
@@ -97,7 +116,7 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
         return npcInstance;
     }
 
-    public boolean generate(final LivingEntity spawnedLivingEntity) {
+    boolean generate(final LivingEntity spawnedLivingEntity) {
         if (!this.generator.getA().test(spawnedLivingEntity) ||
                 plugin().getUniversalRandom().nextDouble() > this.generator.getB() * plugin().getDefaultCachedConfig().npc_generation_probabilityScalar
         ) {
@@ -107,6 +126,11 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
         return true;
     }
 
+    /**
+     * Retrieves the NPCInstance from a player entity, if present.
+     * @param entity the entity to check
+     * @return the NPCInstance, or null if not found
+     */
     public static NPCInstance getInstance(final Entity entity) {
         if (!(entity instanceof Player instancePlayer) || !NPCInstance.is(((CraftEntity) entity).getHandle())) {
             return null;

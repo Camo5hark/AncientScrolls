@@ -57,6 +57,9 @@ import java.util.UUID;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
+/**
+ * Represents a runtime instance of an Ancient Scrolls NPC.
+ */
 public final class NPCInstance implements NPCPlayerAccess {
     private static final ClientInformation CACHED_CLIENT_INFO = new ClientInformation(
             "en_us",
@@ -70,6 +73,11 @@ public final class NPCInstance implements NPCPlayerAccess {
             ParticleStatus.MINIMAL
     );
 
+    /**
+     * Represents the skin texture and signature for an NPC.
+     * @param value the skin texture value
+     * @param signature the skin texture signature
+     */
     public record Skin(String value, String signature) {}
 
     private long ttl = 24000L;
@@ -79,6 +87,14 @@ public final class NPCInstance implements NPCPlayerAccess {
     public final Merchant merchant;
     public final MerchantInventoryViewBuilder<@NotNull MerchantView> merchantInventoryViewBuilder;
 
+    /**
+     * Creates a new NPCInstance at a given world location.
+     * @param npc the NPC definition
+     * @param level the server level to spawn in
+     * @param locX x-coordinate
+     * @param locY y-coordinate
+     * @param locZ z-coordinate
+     */
     public NPCInstance(
             final AncientScrollsNPC npc,
             final ServerLevel level,
@@ -164,6 +180,10 @@ public final class NPCInstance implements NPCPlayerAccess {
         return this;
     }
 
+    /**
+     * Sends NPC spawn packets to a specific player, including auxiliary packets.
+     * @param player the player to send packets to
+     */
     public void addToClient(final ServerPlayer player) {
         player.connection.send(ClientboundPlayerInfoUpdatePacket.createSinglePlayerInitializing(this.player, false));
         player.connection.send(new ClientboundAddEntityPacket(this.player, this.entity));
@@ -186,6 +206,9 @@ public final class NPCInstance implements NPCPlayerAccess {
         player.connection.send(new ClientboundPlayerInfoRemovePacket(List.of(this.player.getUUID())));
     }
 
+    /**
+     * Updates the NPC each tick; handles rotation, TTL, and despawning.
+     */
     public void tick() {
         this.player
                 .level()
@@ -223,10 +246,19 @@ public final class NPCInstance implements NPCPlayerAccess {
         this.player.discard();
     }
 
+    /**
+     * Returns whether the NPC's time-to-live has expired.
+     * @return true if TTL is 0 or less
+     */
     public boolean isTTLUp() {
         return this.ttl <= 0L;
     }
 
+    /**
+     * Checks if the given entity is an NPCInstance based on UUID bits.
+     * @param entity the entity to check
+     * @return true if entity is an NPCInstance
+     */
     public static boolean is(final Entity entity) {
         return entity.getUUID().getMostSignificantBits() == 0L;
     }
