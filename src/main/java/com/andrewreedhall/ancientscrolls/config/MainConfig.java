@@ -26,7 +26,7 @@ import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 /**
  * Cached config for default plugin config.
  */
-public final class CachedConfigDefault extends CachedConfig {
+public final class MainConfig extends CachedConfig {
     @Meta(path = "item.scroll.max-equipped-scrolls", defaultInt = 9, fixed = true)
     public int item_scroll_maxEquippedScrolls;
     @Meta(path = "item.generation.enabled", defaultBoolean = true)
@@ -44,7 +44,7 @@ public final class CachedConfigDefault extends CachedConfig {
     @Meta(path = "structure.generation.probability-scalar", defaultDouble = 1.0)
     public double structure_generation_probabilityScalar;
 
-    public CachedConfigDefault() {
+    public MainConfig() {
         super(plugin().getConfig());
     }
 

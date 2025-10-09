@@ -118,7 +118,7 @@ public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
 
     boolean generate(final LivingEntity spawnedLivingEntity) {
         if (!this.generator.getA().test(spawnedLivingEntity) ||
-                plugin().getUniversalRandom().nextDouble() > this.generator.getB() * plugin().getDefaultCachedConfig().npc_generation_probabilityScalar
+                plugin().getUniversalRandom().nextDouble() > this.generator.getB() * plugin().getMainConfig().npc_generation_probabilityScalar
         ) {
             return false;
         }

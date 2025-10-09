@@ -75,7 +75,7 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        final int maxEquippedScrolls = plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls;
+        final int maxEquippedScrolls = plugin().getMainConfig().item_scroll_maxEquippedScrolls;
         final int equippedScrollInventorySize = ((maxEquippedScrolls / 9) + (maxEquippedScrolls % 9 == 0 ? 0 : 1)) * 9;
         this.equippedScrollInventories.put(player, plugin().getServer().createInventory(player, equippedScrollInventorySize, INVENTORY_TITLE));
     }

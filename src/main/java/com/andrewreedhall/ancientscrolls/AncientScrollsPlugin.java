@@ -22,7 +22,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls;
 
 import com.andrewreedhall.ancientscrolls.command.CommandManager;
-import com.andrewreedhall.ancientscrolls.config.CachedConfigDefault;
+import com.andrewreedhall.ancientscrolls.config.MainConfig;
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
 import com.andrewreedhall.ancientscrolls.asnative.AncientScrollsNative;
 import com.andrewreedhall.ancientscrolls.item.scroll.EquippedScrollsInventoryHandler;
@@ -49,7 +49,7 @@ public final class AncientScrollsPlugin extends JavaPlugin {
 
     private Random universalRandom = null;
     private CommandManager commandManager = null;
-    private CachedConfigDefault defaultCachedConfig = null;
+    private MainConfig mainConfig = null;
     private AncientScrollsRegistry<AncientScrollsItem> itemRegistry = null;
     private NPCHandler npcHandler = null;
     private AncientScrollsRegistry<AncientScrollsNPC> npcRegistry = null;
@@ -71,14 +71,14 @@ public final class AncientScrollsPlugin extends JavaPlugin {
         plugin = this;
         this.universalRandom = new Random();
         this.commandManager = new CommandManager();
-        this.defaultCachedConfig = new CachedConfigDefault();
+        this.mainConfig = new MainConfig();
         this.itemRegistry = new AncientScrollsRegistry<>();
         this.npcHandler = new NPCHandler();
         this.npcRegistry = new AncientScrollsRegistry<>();
         this.structureRegistry = new AncientScrollsRegistry<>();
         this.equippedScrollsInventoryHandler = new EquippedScrollsInventoryHandler();
         this.monsterPoisonSimulator = new MonsterPoisonSimulator();
-        this.defaultCachedConfig.load(false);
+        this.mainConfig.load(false);
         this.monsterPoisonSimulator.scheduleRepeatingTask();
         this.guiInventoryHandler = new GUIInventoryHandler();
         AncientScrollsNative.registerAll();
@@ -144,8 +144,8 @@ public final class AncientScrollsPlugin extends JavaPlugin {
      * Gets the cached config.
      * @return default cached config
      */
-    public CachedConfigDefault getDefaultCachedConfig() {
-        return this.defaultCachedConfig;
+    public MainConfig getMainConfig() {
+        return this.mainConfig;
     }
 
     /**

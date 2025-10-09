@@ -33,7 +33,7 @@ public final class ItemListener implements Listener {
 
     @EventHandler
     public void onLootGenerate(final LootGenerateEvent event) {
-        if (!plugin().getDefaultCachedConfig().item_generation_enabled) {
+        if (!plugin().getMainConfig().item_generation_enabled) {
             return;
         }
         plugin().getItemRegistry().getAll().forEach((final AncientScrollsItem item) -> item.generateByLootTable(event));
@@ -41,7 +41,7 @@ public final class ItemListener implements Listener {
 
     @EventHandler
     public void onBlockDispenseLoot(final BlockDispenseLootEvent event) {
-        if (!plugin().getDefaultCachedConfig().item_generation_enabled) {
+        if (!plugin().getMainConfig().item_generation_enabled) {
             return;
         }
         plugin().getItemRegistry().getAll().forEach((final AncientScrollsItem item) -> item.generateByVault(event));

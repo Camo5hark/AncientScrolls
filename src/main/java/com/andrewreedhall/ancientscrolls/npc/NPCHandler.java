@@ -60,7 +60,7 @@ public final class NPCHandler implements Runnable, Listener {
 
     @EventHandler
     public void onEntitySpawn(final EntitySpawnEvent event) {
-        if (!plugin().getDefaultCachedConfig().npc_generation_enabled ||
+        if (!plugin().getMainConfig().npc_generation_enabled ||
                 !(event.getEntity() instanceof LivingEntity spawnedLivingEntity) ||
                 !event.getEntity().getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL)
         ) {

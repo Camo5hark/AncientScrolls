@@ -56,7 +56,7 @@ public final class PlayerDataHandler {
     private static final Function<ItemScroll, String> SCROLL_TO_STRING = (final ItemScroll scroll) -> scroll == null ? EQUIPPED_SCROLL_KEY_STRING_NULL : scroll.key.toString();
 
     private static Stream<String> getEquippedScrollKeyStringsStream(final Player player) {
-        final String[] defaultEquippedScrollKeyStrings = new String[plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls];
+        final String[] defaultEquippedScrollKeyStrings = new String[plugin().getMainConfig().item_scroll_maxEquippedScrolls];
         Arrays.fill(defaultEquippedScrollKeyStrings, EQUIPPED_SCROLL_KEY_STRING_NULL);
         return player
                 .getPersistentDataContainer()
@@ -74,7 +74,7 @@ public final class PlayerDataHandler {
      * @return array of equipped scrolls
      */
     public static ItemScroll[] getEquippedScrolls(final Player player) {
-        final int maxEquippedScrolls = plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls;
+        final int maxEquippedScrolls = plugin().getMainConfig().item_scroll_maxEquippedScrolls;
         return getEquippedScrollKeyStringsStream(player)
                 .limit(maxEquippedScrolls)
                 .map(STRING_TO_SCROLL)
@@ -94,7 +94,7 @@ public final class PlayerDataHandler {
                         Objects.requireNonNull(PDK_EQUIPPED_SCROLL_KEY_STRINGS),
                         PersistentDataType.LIST.strings(),
                         Arrays.stream(scrolls)
-                                .limit(plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls)
+                                .limit(plugin().getMainConfig().item_scroll_maxEquippedScrolls)
                                 .map(SCROLL_TO_STRING)
                                 .toList()
                 );
@@ -105,7 +105,7 @@ public final class PlayerDataHandler {
      * @param player the player
      */
     public static void clearEquippedScrolls(final Player player) {
-        setEquippedScrolls(player, new ItemScroll[plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls]);
+        setEquippedScrolls(player, new ItemScroll[plugin().getMainConfig().item_scroll_maxEquippedScrolls]);
     }
 
     /**
@@ -147,7 +147,7 @@ public final class PlayerDataHandler {
      * @throws IndexOutOfBoundsException if index is invalid
      */
     public static void removeEquippedScroll(final Player player, final int scrollIndex) {
-        if (scrollIndex < 0 || scrollIndex >= plugin().getDefaultCachedConfig().item_scroll_maxEquippedScrolls) {
+        if (scrollIndex < 0 || scrollIndex >= plugin().getMainConfig().item_scroll_maxEquippedScrolls) {
             final IndexOutOfBoundsException e = new IndexOutOfBoundsException("Index of scroll to remove is out of bounds: " + scrollIndex);
             plugin().getLogger().warning(e.getMessage());
             throw e;

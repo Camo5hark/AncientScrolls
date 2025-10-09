@@ -21,7 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.config;
 
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -85,13 +85,13 @@ public abstract class CachedConfig {
     /**
      * The underlying config file.
      */
-    public final FileConfiguration config;
+    public final YamlConfiguration config;
 
     /**
      * Constructs the config wrapper.
      * @param config the backing file configuration
      */
-    public CachedConfig(final FileConfiguration config) {
+    public CachedConfig(final YamlConfiguration config) {
         this.config = config;
     }
 

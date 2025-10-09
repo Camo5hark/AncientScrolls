@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls;
 
+import com.andrewreedhall.ancientscrolls.config.CachedConfig;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 
@@ -43,13 +44,19 @@ public final class AncientScrollsRegistry<T extends AncientScrollsRegistry.Value
          * The unique key identifying this value.
          */
         public final NamespacedKey key;
+        /**
+         * Config for this value.
+         */
+        protected final CachedConfig config;
 
         /**
          * Constructs a new value with the given key.
          * @param key the key
+         * @param config the config
          */
-        public Value(final NamespacedKey key) {
+        public Value(final NamespacedKey key, final CachedConfig config) {
             this.key = key;
+            this.config = config;
         }
 
         @Override
