@@ -98,7 +98,7 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value im
         } else {
             random = plugin().getUniversalRandom();
         }
-        if (random.nextDouble() > lootTableGenProb * plugin().getMainConfig().item_generation_probabilityScalar) {
+        if (random.nextDouble() > lootTableGenProb * plugin().item_generation_probabilityScalar) {
             return;
         }
         final List<ItemStack> generatedLoot = event.getLoot();
@@ -115,7 +115,7 @@ public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value im
 
     void generateByVault(final Block vault, final double genProb, final BlockDispenseLootEvent event) {
         final Random random = this.generateRandom(this.entropy, vault.getWorld().getSeed(), vault.getX(), vault.getY(), vault.getZ());
-        if (random.nextDouble() > genProb * plugin().getMainConfig().item_generation_probabilityScalar) {
+        if (random.nextDouble() > genProb * plugin().item_generation_probabilityScalar) {
             return;
         }
         final List<ItemStack> dispensedLoot = event.getDispensedLoot();

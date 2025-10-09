@@ -19,9 +19,9 @@ License file: <project-root>/COPYING
 GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
  */
 
-package com.andrewreedhall.ancientscrolls.config;
+package com.andrewreedhall.ancientscrolls;
 
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.Configuration;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -29,21 +29,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.AccessFlag;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
-/**
- * Abstract base for configuration classes with automatic field loading.
- */
-public abstract class CachedConfig {
+public interface Configurable {
     /**
      * Annotation for mapping config values to fields.
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
-    protected @interface Meta {
+    @interface Meta {
         /**
          * Config path to read the value from.
          */
@@ -82,36 +80,14 @@ public abstract class CachedConfig {
         boolean fixed() default false;
     }
 
-    /**
-     * The underlying config file.
-     */
-    public final FileConfiguration config;
+    Configuration getConfig();
+    void saveDefaultConfig();
+    void reloadConfig();
 
-    /**
-     * Constructs the config wrapper.
-     * @param config the backing file configuration
-     */
-    public CachedConfig(final FileConfiguration config) {
-        this.config = config;
-    }
-
-    /**
-     * Saves the default config file.
-     */
-    protected abstract void saveDefaultConfig();
-
-    /**
-     * Reloads the config from disk.
-     */
-    protected abstract void reloadConfig();
-
-    /**
-     * Loads config values into annotated fields.
-     * @param reload whether to reload non-fixed fields
-     */
-    public void load(final boolean reload) {
+    default void loadConfig(final boolean reload) {
         this.saveDefaultConfig();
         this.reloadConfig();
+        final Configuration config = this.getConfig();
         Stream.of(this.getClass().getFields()).parallel().filter((final Field field) -> {
             if (!field.isAnnotationPresent(Meta.class)) {
                 return false;
@@ -150,11 +126,11 @@ public abstract class CachedConfig {
                         return;
                 }
             }
-            final Object value = this.config.get(meta.path(), defaultValue);
+            final Object value = config.get(meta.path(), defaultValue);
             try {
                 field.set(this, value);
             } catch (IllegalAccessException e) {
-                plugin().getLogger().severe("Could not write to CachedConfig field: " + field.getName() + ", config file: " + this.config.getName());
+                plugin().getLogger().severe("Could not write to CachedConfig field: " + field.getName() + ", config file: " + config.getName());
                 throw new RuntimeException(e);
             }
         });

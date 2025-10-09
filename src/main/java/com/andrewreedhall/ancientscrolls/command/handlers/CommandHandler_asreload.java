@@ -38,7 +38,7 @@ public final class CommandHandler_asreload extends CommandHandler {
 
     @Override
     public void execute(final AncientScrollsCommand command) {
-        plugin().getMainConfig().load(true);
+        plugin().loadConfig(true);
         command.sender().sendMessage(Component.text("Reloaded", NamedTextColor.GREEN));
     }
 }

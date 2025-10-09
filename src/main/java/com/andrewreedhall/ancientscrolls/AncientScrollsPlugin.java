@@ -22,7 +22,6 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls;
 
 import com.andrewreedhall.ancientscrolls.command.CommandManager;
-import com.andrewreedhall.ancientscrolls.config.MainConfig;
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
 import com.andrewreedhall.ancientscrolls.asnative.AncientScrollsNative;
 import com.andrewreedhall.ancientscrolls.item.scroll.EquippedScrollsInventoryHandler;
@@ -44,12 +43,11 @@ import java.util.function.Function;
 /**
  * Main plugin class for Ancient Scrolls.
  */
-public final class AncientScrollsPlugin extends JavaPlugin {
+public final class AncientScrollsPlugin extends JavaPlugin implements Configurable {
     private static AncientScrollsPlugin plugin = null;
 
     private Random universalRandom = null;
     private CommandManager commandManager = null;
-    private MainConfig mainConfig = null;
     private AncientScrollsRegistry<AncientScrollsItem> itemRegistry = null;
     private NPCHandler npcHandler = null;
     private AncientScrollsRegistry<AncientScrollsNPC> npcRegistry = null;
@@ -57,6 +55,25 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     private EquippedScrollsInventoryHandler equippedScrollsInventoryHandler = null;
     private MonsterPoisonSimulator monsterPoisonSimulator = null;
     private GUIInventoryHandler guiInventoryHandler = null;
+
+    // START CONFIG
+    @Meta(path = "item.scroll.max-equipped-scrolls", defaultInt = 9, fixed = true)
+    public int item_scroll_maxEquippedScrolls;
+    @Meta(path = "item.generation.enabled", defaultBoolean = true)
+    public boolean item_generation_enabled;
+    @Meta(path = "item.generation.probability-scalar", defaultDouble = 1.0)
+    public double item_generation_probabilityScalar;
+
+    @Meta(path = "npc.generation.enabled", defaultBoolean = true)
+    public boolean npc_generation_enabled;
+    @Meta(path = "npc.generation.probability-scalar", defaultDouble = 1.0)
+    public double npc_generation_probabilityScalar;
+
+    @Meta(path = "structure.generation.enabled", defaultBoolean = true)
+    public boolean structure_generation_enabled;
+    @Meta(path = "structure.generation.probability-scalar", defaultDouble = 1.0)
+    public double structure_generation_probabilityScalar;
+    // END CONFIG
 
     /**
      * Constructs the plugin.
@@ -69,16 +86,15 @@ public final class AncientScrollsPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        this.loadConfig(false);
         this.universalRandom = new Random();
         this.commandManager = new CommandManager();
-        this.mainConfig = new MainConfig();
         this.itemRegistry = new AncientScrollsRegistry<>();
         this.npcHandler = new NPCHandler();
         this.npcRegistry = new AncientScrollsRegistry<>();
         this.structureRegistry = new AncientScrollsRegistry<>();
         this.equippedScrollsInventoryHandler = new EquippedScrollsInventoryHandler();
         this.monsterPoisonSimulator = new MonsterPoisonSimulator();
-        this.mainConfig.load(false);
         this.monsterPoisonSimulator.scheduleRepeatingTask();
         this.guiInventoryHandler = new GUIInventoryHandler();
         AncientScrollsNative.registerAll();
@@ -138,14 +154,6 @@ public final class AncientScrollsPlugin extends JavaPlugin {
      */
     public Random getUniversalRandom() {
         return this.universalRandom;
-    }
-
-    /**
-     * Gets the cached config.
-     * @return default cached config
-     */
-    public MainConfig getMainConfig() {
-        return this.mainConfig;
     }
 
     /**

@@ -39,7 +39,7 @@ public final class StructureListener implements Listener {
 
     @EventHandler
     public void onChunkLoad(final ChunkLoadEvent event) {
-        if (!plugin().getMainConfig().structure_generation_enabled || !event.isNewChunk()) {
+        if (!plugin().structure_generation_enabled || !event.isNewChunk()) {
             return;
         }
         final List<AncientScrollsStructure> registeredStructures = new ArrayList<>(plugin().getStructureRegistry().getAll());
