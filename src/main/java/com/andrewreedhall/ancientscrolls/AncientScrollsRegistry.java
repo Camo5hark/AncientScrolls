@@ -130,4 +130,8 @@ public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
     public Collection<T> getAll() {
         return this.registry.values();
     }
+
+    public void loadAllConfigs(final boolean reload) {
+        this.registry.values().forEach((final AncientScrollsResource resource) -> resource.loadConfig(reload));
+    }
 }

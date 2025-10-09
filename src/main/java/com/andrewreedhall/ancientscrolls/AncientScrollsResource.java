@@ -1,17 +1,47 @@
+/*
+AncientScrolls SpigotMC plugin
+Copyright (C) 2025  Andrew Hall
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+License file: <project-root>/COPYING
+GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
+ */
+
 package com.andrewreedhall.ancientscrolls;
 
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 /**
  * Base class for registry values with a {@link NamespacedKey}.
  */
-public abstract class AncientScrollsResource {
+public abstract class AncientScrollsResource implements Configurable {
     /**
      * The unique key identifying this value.
      */
     public final NamespacedKey key;
+    private final File configFile;
+    private final YamlConfiguration config;
 
     /**
      * Constructs a new value with the given key.
@@ -20,7 +50,13 @@ public abstract class AncientScrollsResource {
      */
     public AncientScrollsResource(final NamespacedKey key) {
         this.key = key;
+        this.configFile = this.getConfigFile();
+        this.config = new YamlConfiguration();
+        this.config.addDefaults(this.getConfigDefaults());
     }
+
+    protected abstract File getConfigFile();
+    protected abstract Map<String, Object> getConfigDefaults();
 
     @Override
     public int hashCode() {
@@ -35,6 +71,40 @@ public abstract class AncientScrollsResource {
     @Override
     public String toString() {
         return this.getClass().getName() + "{key=\"" + this.key + "\"}";
+    }
+
+    @Override
+    public Configuration getConfig() {
+        return this.config;
+    }
+
+    @Override
+    public void saveDefaultConfig() {
+        if (this.configFile.exists()) {
+            return;
+        }
+        final File configFileParentDir = this.configFile.getParentFile();
+        try {
+            if ((!configFileParentDir.exists() && !configFileParentDir.mkdirs()) || !this.configFile.createNewFile()) {
+                throw new IOException("Could not create config file to save default config to at " + this.configFile.getAbsolutePath());
+            }
+            this.config.options().copyDefaults(true);
+            this.config.save(this.configFile);
+            this.config.options().copyDefaults(false);
+        } catch (final IOException e) {
+            plugin().getLogger().severe(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void reloadConfig() {
+        try {
+            this.config.load(this.configFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            plugin().getLogger().severe(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     /**

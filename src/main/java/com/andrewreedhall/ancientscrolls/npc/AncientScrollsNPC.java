@@ -36,9 +36,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import oshi.util.tuples.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.io.File;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -95,6 +94,18 @@ public abstract class AncientScrollsNPC extends AncientScrollsResource {
         this.ingredientItemStackDescriptors = new ArrayList<>(ingredientItemStackDescriptors.stream().toList());
         ITEM_STACK_DESCRIPTOR_RANDOMIZER.sort(this.ingredientItemStackDescriptors, null);
         this.merchantName = Component.text(this.name);
+    }
+
+    @Override
+    protected File getConfigFile() {
+        return new File(new File(plugin().getDataFolder(), "npc"), this.key.getKey() + ".yml");
+    }
+
+    @Override
+    protected Map<String, Object> getConfigDefaults() {
+        final Map<String, Object> configDefaults = new HashMap<>();
+        configDefaults.put("test", 1);
+        return configDefaults;
     }
 
     /**

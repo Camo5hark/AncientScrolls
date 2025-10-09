@@ -98,6 +98,9 @@ public final class AncientScrollsPlugin extends JavaPlugin implements Configurab
         this.monsterPoisonSimulator.scheduleRepeatingTask();
         this.guiInventoryHandler = new GUIInventoryHandler();
         AncientScrollsNative.registerAll();
+        this.itemRegistry.loadAllConfigs(false);
+        this.npcRegistry.loadAllConfigs(false);
+        this.structureRegistry.loadAllConfigs(false);
         this.guiInventoryHandler.createPageInventories();
     }
 

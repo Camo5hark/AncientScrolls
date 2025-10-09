@@ -32,6 +32,9 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.util.BlockTransformer;
 import org.bukkit.util.EntityTransformer;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -58,6 +61,18 @@ public abstract class AncientScrollsStructure extends AncientScrollsResource imp
     }
 
     protected abstract GenerationInfo createGenerationInfo(final World world, final int blockX, final int blockZ);
+
+    @Override
+    protected File getConfigFile() {
+        return new File(new File(plugin().getDataFolder(), "structure"), this.key.getKey() + ".yml");
+    }
+
+    @Override
+    protected Map<String, Object> getConfigDefaults() {
+        final Map<String, Object> configDefaults = new HashMap<>();
+        configDefaults.put("test", 1);
+        return configDefaults;
+    }
 
     @Override
     public AncientScrollsStructure getStructure() {

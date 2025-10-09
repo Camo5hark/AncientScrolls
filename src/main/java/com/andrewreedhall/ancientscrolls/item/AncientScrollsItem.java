@@ -33,6 +33,7 @@ import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
 import java.util.*;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
@@ -74,6 +75,18 @@ public abstract class AncientScrollsItem extends AncientScrollsResource implemen
      * @return the created item stack
      */
     public abstract ItemStack createItemStack(int amount);
+
+    @Override
+    protected File getConfigFile() {
+        return new File(new File(plugin().getDataFolder(), "item"), this.key.getKey() + ".yml");
+    }
+
+    @Override
+    protected Map<String, Object> getConfigDefaults() {
+        final Map<String, Object> configDefaults = new HashMap<>();
+        configDefaults.put("test", 1);
+        return configDefaults;
+    }
 
     /**
      * Adds a loot table generation probability for a vanilla loot table.
