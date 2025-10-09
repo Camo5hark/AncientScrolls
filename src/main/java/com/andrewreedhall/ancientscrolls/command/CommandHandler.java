@@ -22,6 +22,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.command;
 
 import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
+import com.andrewreedhall.ancientscrolls.AncientScrollsResource;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
@@ -89,7 +90,7 @@ public abstract class CommandHandler {
         this.cachedArgs.put(argIndex, key);
     }
 
-    protected <T extends AncientScrollsRegistry.Value, U extends T> void validateRegistryValueArg(
+    protected <T extends AncientScrollsResource, U extends T> void validateRegistryValueArg(
             final AncientScrollsCommand command,
             final int argIndex,
             final AncientScrollsRegistry<T> registry,

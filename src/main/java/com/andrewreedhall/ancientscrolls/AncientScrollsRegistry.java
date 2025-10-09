@@ -32,50 +32,9 @@ import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 /**
  * Generic registry for values identified by {@link NamespacedKey}.
- * @param <T> the value type extending {@link Value}
+ * @param <T> the value type extending {@link AncientScrollsResource}
  */
-public final class AncientScrollsRegistry<T extends AncientScrollsRegistry.Value> {
-    /**
-     * Base class for registry values with a {@link NamespacedKey}.
-     */
-    public static abstract class Value {
-        /**
-         * The unique key identifying this value.
-         */
-        public final NamespacedKey key;
-
-        /**
-         * Constructs a new value with the given key.
-         * @param key the key
-         */
-        public Value(final NamespacedKey key) {
-            this.key = key;
-        }
-
-        @Override
-        public int hashCode() {
-            return this.key.hashCode();
-        }
-
-        @Override
-        public boolean equals(final Object obj) {
-            return obj == this || (obj instanceof Value && obj.hashCode() == this.hashCode());
-        }
-
-        @Override
-        public String toString() {
-            return this.getClass().getName() + "{key=\"" + this.key + "\"}";
-        }
-
-        /**
-         * Creates a key using the plugin's namespace.
-         * @param id the key id
-         * @return the namespaced key
-         */
-        protected static NamespacedKey fromAncientScrollsNamespace(final String id) {
-            return NamespacedKey.fromString(id, plugin());
-        }
-    }
+public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
 
     private final Map<NamespacedKey, T> registry = new HashMap<>();
 

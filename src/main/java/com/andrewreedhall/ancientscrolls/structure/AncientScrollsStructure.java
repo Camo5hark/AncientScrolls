@@ -21,7 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.structure;
 
-import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
+import com.andrewreedhall.ancientscrolls.AncientScrollsResource;
 import com.andrewreedhall.ancientscrolls.util.Entropic;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.bukkit.Chunk;
@@ -37,7 +37,7 @@ import java.util.Set;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
-public abstract class AncientScrollsStructure extends AncientScrollsRegistry.Value implements Entropic, StructureTemplateAccess {
+public abstract class AncientScrollsStructure extends AncientScrollsResource implements Entropic, StructureTemplateAccess {
     public record GenerationInfo(double prob, int blockY) {}
 
     public final StructureTemplate structureTemplate = new StructureTemplate();

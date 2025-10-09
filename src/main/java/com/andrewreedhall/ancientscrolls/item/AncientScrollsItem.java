@@ -21,7 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.item;
 
-import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
+import com.andrewreedhall.ancientscrolls.AncientScrollsResource;
 import com.andrewreedhall.ancientscrolls.util.Entropic;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -40,7 +40,7 @@ import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 /**
  * Represents a scroll item with configurable loot generation logic.
  */
-public abstract class AncientScrollsItem extends AncientScrollsRegistry.Value implements Entropic {
+public abstract class AncientScrollsItem extends AncientScrollsResource implements Entropic {
     /**
      * Per-loot-table generation probabilities (by loot table key).
      */

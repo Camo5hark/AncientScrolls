@@ -21,7 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.npc;
 
-import com.andrewreedhall.ancientscrolls.AncientScrollsRegistry;
+import com.andrewreedhall.ancientscrolls.AncientScrollsResource;
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
 import com.andrewreedhall.ancientscrolls.util.Randomizer;
 import net.kyori.adventure.text.Component;
@@ -47,7 +47,7 @@ import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 /**
  * Defines an Ancient Scrolls NPC with custom skin, behavior, and scroll trades.
  */
-public abstract class AncientScrollsNPC extends AncientScrollsRegistry.Value {
+public abstract class AncientScrollsNPC extends AncientScrollsResource {
     private static final String PMK_ANCIENT_SCROLLS_NPC_INSTANCE = "ancient_scrolls_npc_instance";
     private static final Randomizer<Pair<Material, Integer>> ITEM_STACK_DESCRIPTOR_RANDOMIZER = new Randomizer<>();
 
