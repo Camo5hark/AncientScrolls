@@ -42,7 +42,14 @@ public final class StructureListener implements Listener {
         if (!plugin().structure_generation_enabled || !event.isNewChunk()) {
             return;
         }
-        final List<AncientScrollsStructure> registeredStructures = new ArrayList<>(plugin().getStructureRegistry().getAll());
+        final List<AncientScrollsStructure> registeredStructures = new ArrayList<>(
+                plugin()
+                        .getStructureRegistry()
+                        .getAll()
+                        .stream()
+                        .filter((final AncientScrollsStructure structure) -> structure.generation_enabled)
+                        .toList()
+        );
         STRUCTURE_RANDOMIZER.sort(registeredStructures, new Random(event.getChunk().getChunkKey()));
         for (final AncientScrollsStructure structure : registeredStructures) {
             if (structure.generate(event)) {

@@ -30,6 +30,8 @@ import java.lang.annotation.Target;
 import java.lang.reflect.AccessFlag;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -84,55 +86,75 @@ public interface Configurable {
     void saveDefaultConfig();
     void reloadConfig();
 
-    default void loadConfig(final boolean reload) {
-        this.saveDefaultConfig();
-        this.reloadConfig();
-        final Configuration config = this.getConfig();
-        Stream.of(this.getClass().getFields()).parallel().filter((final Field field) -> {
+    default Stream<Field> getConfigFields() {
+        return Stream.of(this.getClass().getFields()).filter((final Field field) -> {
             if (!field.isAnnotationPresent(Meta.class)) {
                 return false;
             }
             final Set<AccessFlag> accessFlags = field.accessFlags();
             return accessFlags.contains(AccessFlag.PUBLIC) && !accessFlags.contains(AccessFlag.STATIC);
-        }).forEach((final Field field) -> {
-            final Meta meta = field.getAnnotation(Meta.class);
-            if (reload && meta.fixed()) {
+        });
+    }
+
+    default void loadConfig(final boolean reload) {
+        this.saveDefaultConfig();
+        this.reloadConfig();
+        final Configuration config = this.getConfig();
+        this.getConfigFields().forEach((final Field configField) -> {
+            final Meta meta = configField.getAnnotation(Meta.class);
+            if (meta.fixed() && reload) {
                 return;
             }
-            Object defaultValue;
-            if (meta.isStringList()) {
-                defaultValue = new ArrayList<String>();
-            } else {
-                switch (field.getType().getSimpleName()) {
-                    case "boolean":
-                        defaultValue = meta.defaultBoolean();
-                        break;
-                    case "int":
-                        defaultValue = meta.defaultInt();
-                        break;
-                    case "long":
-                        defaultValue = meta.defaultLong();
-                        break;
-                    case "float":
-                        defaultValue = meta.defaultFloat();
-                        break;
-                    case "double":
-                        defaultValue = meta.defaultDouble();
-                        break;
-                    case "String":
-                        defaultValue = meta.defaultString();
-                        break;
-                    default:
-                        return;
-                }
-            }
-            final Object value = config.get(meta.path(), defaultValue);
+            final Object value = config.get(meta.path(), getConfigFieldDefaultValue(configField));
             try {
-                field.set(this, value);
-            } catch (IllegalAccessException e) {
-                plugin().getLogger().severe("Could not write to CachedConfig field: " + field.getName() + ", config file: " + config.getName());
+                configField.set(this, value);
+            } catch (final IllegalAccessException e) {
+                plugin().getLogger().severe("Could not write to configurable field " + configField.getName() + " in " + this.getClass().getSimpleName());
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    default void addConfigDefaultValues(final Configuration config) {
+        final Map<String, Object> configDefaults = new HashMap<>();
+        this.getConfigFields().forEach((final Field configField) ->
+                configDefaults.put(configField.getAnnotation(Meta.class).path(), Configurable.getConfigFieldDefaultValue(configField))
+        );
+        config.addDefaults(configDefaults);
+    }
+
+    static Object getConfigFieldDefaultValue(final Field configField) {
+        final Meta meta = configField.getAnnotation(Meta.class);
+        Object defaultValue;
+        if (meta.isStringList()) {
+            defaultValue = new ArrayList<String>();
+        } else {
+            final String configFieldTypeName = configField.getType().getSimpleName();
+            switch (configFieldTypeName) {
+                case "boolean":
+                    defaultValue = meta.defaultBoolean();
+                    break;
+                case "int":
+                    defaultValue = meta.defaultInt();
+                    break;
+                case "long":
+                    defaultValue = meta.defaultLong();
+                    break;
+                case "float":
+                    defaultValue = meta.defaultFloat();
+                    break;
+                case "double":
+                    defaultValue = meta.defaultDouble();
+                    break;
+                case "String":
+                    defaultValue = meta.defaultString();
+                    break;
+                default:
+                    final RuntimeException e = new RuntimeException("Could not get default value for config field of type " + configFieldTypeName);
+                    plugin().getLogger().warning(e.getMessage());
+                    throw e;
+            }
+        }
+        return defaultValue;
     }
 }

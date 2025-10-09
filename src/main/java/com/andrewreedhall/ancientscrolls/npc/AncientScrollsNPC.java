@@ -101,13 +101,6 @@ public abstract class AncientScrollsNPC extends AncientScrollsResource {
         return new File(new File(plugin().getDataFolder(), "npc"), this.key.getKey() + ".yml");
     }
 
-    @Override
-    protected Map<String, Object> getConfigDefaults() {
-        final Map<String, Object> configDefaults = new HashMap<>();
-        configDefaults.put("test", 1);
-        return configDefaults;
-    }
-
     /**
      * Spawns an NPC instance at a given location in the world.
      * @param world the world to spawn in
@@ -129,7 +122,7 @@ public abstract class AncientScrollsNPC extends AncientScrollsResource {
 
     boolean generate(final LivingEntity spawnedLivingEntity) {
         if (!this.generator.getA().test(spawnedLivingEntity) ||
-                plugin().getUniversalRandom().nextDouble() > this.generator.getB() * plugin().npc_generation_probabilityScalar
+                plugin().getUniversalRandom().nextDouble() > this.generator.getB() * plugin().npc_generation_probabilityScalar * this.generation_probabilityScalar
         ) {
             return false;
         }

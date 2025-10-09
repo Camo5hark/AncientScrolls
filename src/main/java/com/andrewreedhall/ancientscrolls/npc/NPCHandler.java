@@ -66,7 +66,14 @@ public final class NPCHandler implements Runnable, Listener {
         ) {
             return;
         }
-        final List<AncientScrollsNPC> registeredNPCs = new ArrayList<>(plugin().getNPCRegistry().getAll().stream().toList());
+        final List<AncientScrollsNPC> registeredNPCs = new ArrayList<>(
+                plugin()
+                        .getNPCRegistry()
+                        .getAll()
+                        .stream()
+                        .filter((final AncientScrollsNPC npc) -> npc.generation_enabled)
+                        .toList()
+        );
         NPC_RANDOMIZER.sort(registeredNPCs, null);
         for (final AncientScrollsNPC registeredNPC : registeredNPCs) {
             if (registeredNPC.generate(spawnedLivingEntity)) {

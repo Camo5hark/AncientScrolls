@@ -33,8 +33,6 @@ import org.bukkit.util.BlockTransformer;
 import org.bukkit.util.EntityTransformer;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -65,13 +63,6 @@ public abstract class AncientScrollsStructure extends AncientScrollsResource imp
     @Override
     protected File getConfigFile() {
         return new File(new File(plugin().getDataFolder(), "structure"), this.key.getKey() + ".yml");
-    }
-
-    @Override
-    protected Map<String, Object> getConfigDefaults() {
-        final Map<String, Object> configDefaults = new HashMap<>();
-        configDefaults.put("test", 1);
-        return configDefaults;
     }
 
     @Override

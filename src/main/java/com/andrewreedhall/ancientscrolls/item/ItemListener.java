@@ -21,10 +21,13 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.item;
 
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseLootEvent;
 import org.bukkit.event.world.LootGenerateEvent;
+
+import java.util.function.Consumer;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -33,17 +36,23 @@ public final class ItemListener implements Listener {
 
     @EventHandler
     public void onLootGenerate(final LootGenerateEvent event) {
-        if (!plugin().item_generation_enabled) {
-            return;
-        }
-        plugin().getItemRegistry().getAll().forEach((final AncientScrollsItem item) -> item.generateByLootTable(event));
+        generateItems((final AncientScrollsItem item) -> item.generateByLootTable(event));
     }
 
     @EventHandler
     public void onBlockDispenseLoot(final BlockDispenseLootEvent event) {
+        generateItems((final AncientScrollsItem item) -> item.generateByVault(event));
+    }
+
+    private static void generateItems(final Consumer<AncientScrollsItem> itemGeneratorWrapper) {
         if (!plugin().item_generation_enabled) {
             return;
         }
-        plugin().getItemRegistry().getAll().forEach((final AncientScrollsItem item) -> item.generateByVault(event));
+        plugin()
+                .getItemRegistry()
+                .getAll()
+                .stream()
+                .filter((final AncientScrollsItem item) -> item.generation_enabled)
+                .forEach(itemGeneratorWrapper);
     }
 }

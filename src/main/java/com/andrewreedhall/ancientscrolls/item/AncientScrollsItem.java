@@ -60,6 +60,11 @@ public abstract class AncientScrollsItem extends AncientScrollsResource implemen
     protected Double ominousVaultGenProb = null;
     private final long entropy;
 
+    // START CONFIG
+    @Meta(path = "manually-equipable", defaultBoolean = true)
+    public boolean manuallyEquipable;
+    // END CONFIG
+
     /**
      * Constructs a scroll item with the given key and initializes entropy.
      * @param key the unique item key
@@ -79,13 +84,6 @@ public abstract class AncientScrollsItem extends AncientScrollsResource implemen
     @Override
     protected File getConfigFile() {
         return new File(new File(plugin().getDataFolder(), "item"), this.key.getKey() + ".yml");
-    }
-
-    @Override
-    protected Map<String, Object> getConfigDefaults() {
-        final Map<String, Object> configDefaults = new HashMap<>();
-        configDefaults.put("test", 1);
-        return configDefaults;
     }
 
     /**
@@ -111,7 +109,7 @@ public abstract class AncientScrollsItem extends AncientScrollsResource implemen
         } else {
             random = plugin().getUniversalRandom();
         }
-        if (random.nextDouble() > lootTableGenProb * plugin().item_generation_probabilityScalar) {
+        if (!this.shouldGenerate(random, lootTableGenProb)) {
             return;
         }
         final List<ItemStack> generatedLoot = event.getLoot();
@@ -126,9 +124,11 @@ public abstract class AncientScrollsItem extends AncientScrollsResource implemen
     void generateByDungeonChest() {
     }
 
-    void generateByVault(final Block vault, final double genProb, final BlockDispenseLootEvent event) {
-        final Random random = this.generateRandom(this.entropy, vault.getWorld().getSeed(), vault.getX(), vault.getY(), vault.getZ());
-        if (random.nextDouble() > genProb * plugin().item_generation_probabilityScalar) {
+    private void generateByVault(final Block vault, final double genProb, final BlockDispenseLootEvent event) {
+        if (!this.shouldGenerate(
+                this.generateRandom(this.entropy, vault.getWorld().getSeed(), vault.getX(), vault.getY(), vault.getZ()),
+                genProb)
+        ) {
             return;
         }
         final List<ItemStack> dispensedLoot = event.getDispensedLoot();
@@ -145,5 +145,9 @@ public abstract class AncientScrollsItem extends AncientScrollsResource implemen
         } else if (this.ominousVaultGenProb != null) {
             this.generateByVault(dispensingVault, this.ominousVaultGenProb, event);
         }
+    }
+
+    private boolean shouldGenerate(final Random random, final double genProb) {
+        return random.nextDouble() < genProb * plugin().item_generation_probabilityScalar * this.generation_probabilityScalar;
     }
 }

@@ -28,7 +28,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -43,20 +42,25 @@ public abstract class AncientScrollsResource implements Configurable {
     private final File configFile;
     private final YamlConfiguration config;
 
+    // START CONFIG
+    @Meta(path = "generation.enabled", defaultBoolean = true)
+    public boolean generation_enabled;
+    @Meta(path = "generation.probability-scalar", defaultDouble = 1.0)
+    public double generation_probabilityScalar;
+    // END CONFIG
+
     /**
      * Constructs a new value with the given key.
-     *
      * @param key the key
      */
     public AncientScrollsResource(final NamespacedKey key) {
         this.key = key;
         this.configFile = this.getConfigFile();
         this.config = new YamlConfiguration();
-        this.config.addDefaults(this.getConfigDefaults());
+        this.addConfigDefaultValues(this.config);
     }
 
     protected abstract File getConfigFile();
-    protected abstract Map<String, Object> getConfigDefaults();
 
     @Override
     public int hashCode() {
@@ -109,7 +113,6 @@ public abstract class AncientScrollsResource implements Configurable {
 
     /**
      * Creates a key using the plugin's namespace.
-     *
      * @param id the key id
      * @return the namespaced key
      */
