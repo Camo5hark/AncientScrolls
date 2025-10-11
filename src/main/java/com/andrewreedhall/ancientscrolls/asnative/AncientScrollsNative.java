@@ -21,14 +21,12 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.asnative;
 
+import com.andrewreedhall.ancientscrolls.asnative.item.flask.*;
+import com.andrewreedhall.ancientscrolls.asnative.item.scroll.*;
 import com.andrewreedhall.ancientscrolls.asnative.npc.hunter.NPCHunter;
 import com.andrewreedhall.ancientscrolls.asnative.npc.prospectre.NPCProspectre;
-import com.andrewreedhall.ancientscrolls.asnative.structure.StructureFishermanRaft;
-import com.andrewreedhall.ancientscrolls.asnative.structure.StructureFloatingIsland;
-import com.andrewreedhall.ancientscrolls.asnative.structure.StructurePillagerShip;
+import com.andrewreedhall.ancientscrolls.asnative.structure.*;
 import com.andrewreedhall.ancientscrolls.item.ItemListener;
-import com.andrewreedhall.ancientscrolls.asnative.flask.*;
-import com.andrewreedhall.ancientscrolls.asnative.scroll.*;
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScrollListener;
 import com.andrewreedhall.ancientscrolls.structure.StructureListener;
 import org.bukkit.scheduler.BukkitScheduler;
