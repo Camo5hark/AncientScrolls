@@ -98,7 +98,7 @@ public interface StructureTemplateAccess {
                         .setLiquidSettings(LiquidSettings.APPLY_WATERLOGGING)
                         .setRandom(randomSource),
                 randomSource,
-                2
+                0b10
         );
         levelAccess.getStructureTransformer().discard();
         if (!placed) {
