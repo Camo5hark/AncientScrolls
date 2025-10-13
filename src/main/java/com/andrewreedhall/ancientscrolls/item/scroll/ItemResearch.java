@@ -44,8 +44,8 @@ public final class ItemResearch extends ItemScroll {
 
     @Override
     public ItemStack createItemStack(final int amount) {
-        Preconditions.checkNotNull(this.researchedScrolls);
-        Preconditions.checkState(!this.researchedScrolls.isEmpty());
+        Preconditions.checkNotNull(this.researchedScrolls, "Researched scrolls cannot be null when creating ItemResearch ItemStack");
+        Preconditions.checkState(!this.researchedScrolls.isEmpty(), "Researched scrolls cannot be empty when creating ItemResearch ItemStack");
         final ItemStack itemStack = super.createItemStack(amount);
         final ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
         final CustomModelDataComponent modelData = itemMeta.getCustomModelDataComponent();

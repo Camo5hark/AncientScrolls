@@ -50,7 +50,7 @@ public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
      * @return true if successful, false if duplicate
      */
     public boolean register(final T value) {
-        Preconditions.checkArgument(!this.registry.containsKey(value.key), "Duplicate registry value: " + value);
+        Preconditions.checkArgument(!this.registry.containsKey(value.key), "Cannot register duplicate resource: " + value);
         this.registry.put(value.key, value);
         if (value instanceof Listener) {
             plugin().registerListener((Listener) value);

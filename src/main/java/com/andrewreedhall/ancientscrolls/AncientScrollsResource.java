@@ -90,7 +90,7 @@ public abstract class AncientScrollsResource implements Configurable {
         final File configFileParentDir = this.configFile.getParentFile();
         try {
             if ((!configFileParentDir.exists() && !configFileParentDir.mkdirs()) || !this.configFile.createNewFile()) {
-                throw new IOException("Could not create config file to save default config to at " + this.configFile.getAbsolutePath());
+                throw new IOException("Config file creation failed: " + this.configFile.getAbsolutePath());
             }
             this.config.options().copyDefaults(true);
             this.config.save(this.configFile);

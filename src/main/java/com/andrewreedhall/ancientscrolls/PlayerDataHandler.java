@@ -148,7 +148,7 @@ public final class PlayerDataHandler {
      * @throws IndexOutOfBoundsException if index is invalid
      */
     public static void removeEquippedScroll(final Player player, final int scrollIndex) {
-        Preconditions.checkElementIndex(scrollIndex, plugin().item_scroll_maxEquippedScrolls);
+        Preconditions.checkElementIndex(scrollIndex, plugin().item_scroll_maxEquippedScrolls, "Scroll index out of bounds: " + scrollIndex);
         final ItemScroll[] equippedScrolls = getEquippedScrolls(player);
         equippedScrolls[scrollIndex] = null;
         setEquippedScrolls(player, equippedScrolls);

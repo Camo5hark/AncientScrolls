@@ -144,7 +144,7 @@ public final class AncientScrollsPlugin extends JavaPlugin implements Configurab
      */
     public int scheduleTask(final Function<BukkitScheduler, Integer> taskSchedulingFunction) {
         final int taskID = taskSchedulingFunction.apply(this.getServer().getScheduler());
-        Preconditions.checkState(taskID != -1, "Task scheduling failed");
+        Preconditions.checkState(taskID != -1, "Bukkit task scheduling failed");
         return taskID;
     }
 

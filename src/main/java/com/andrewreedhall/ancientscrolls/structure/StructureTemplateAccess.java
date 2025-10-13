@@ -101,6 +101,6 @@ public interface StructureTemplateAccess {
                 0b10
         );
         levelAccess.getStructureTransformer().discard();
-        Preconditions.checkState(placed);
+        Preconditions.checkState(placed, "Structure template placement failed: " + structure + " @ " + level + " @ " + position);
     }
 }

@@ -120,7 +120,7 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
      */
     public void open(final Player openingPlayer, final Player equippedScrollsPlayer) {
         final Inventory equippedScrollInventory = this.equippedScrollInventories.get(equippedScrollsPlayer);
-        Preconditions.checkNotNull(equippedScrollInventory);
+        Preconditions.checkNotNull(equippedScrollInventory, "Player missing equipped scrolls inventory: " + equippedScrollsPlayer.getName());
         openingPlayer.openInventory(equippedScrollInventory);
         openingPlayer.playSound(openingPlayer, Sound.BLOCK_ENDER_CHEST_OPEN, 1.0F, 1.0F);
     }
