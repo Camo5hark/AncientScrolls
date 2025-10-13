@@ -23,6 +23,7 @@ package com.andrewreedhall.ancientscrolls;
 
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScroll;
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
+import com.google.common.base.Preconditions;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -147,11 +148,7 @@ public final class PlayerDataHandler {
      * @throws IndexOutOfBoundsException if index is invalid
      */
     public static void removeEquippedScroll(final Player player, final int scrollIndex) {
-        if (scrollIndex < 0 || scrollIndex >= plugin().item_scroll_maxEquippedScrolls) {
-            final IndexOutOfBoundsException e = new IndexOutOfBoundsException("Index of scroll to remove is out of bounds: " + scrollIndex);
-            plugin().getLogger().warning(e.getMessage());
-            throw e;
-        }
+        Preconditions.checkElementIndex(scrollIndex, plugin().item_scroll_maxEquippedScrolls);
         final ItemScroll[] equippedScrolls = getEquippedScrolls(player);
         equippedScrolls[scrollIndex] = null;
         setEquippedScrolls(player, equippedScrolls);

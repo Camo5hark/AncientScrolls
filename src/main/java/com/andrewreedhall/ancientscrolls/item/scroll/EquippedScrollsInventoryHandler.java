@@ -23,6 +23,7 @@ package com.andrewreedhall.ancientscrolls.item.scroll;
 
 import com.andrewreedhall.ancientscrolls.PlayerDataHandler;
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
+import com.google.common.base.Preconditions;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -119,10 +120,7 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
      */
     public void open(final Player openingPlayer, final Player equippedScrollsPlayer) {
         final Inventory equippedScrollInventory = this.equippedScrollInventories.get(equippedScrollsPlayer);
-        if (equippedScrollInventory == null) {
-            plugin().getLogger().warning(equippedScrollsPlayer.getName() + " does not have an equipped scrolls inventory");
-            return;
-        }
+        Preconditions.checkNotNull(equippedScrollInventory);
         openingPlayer.openInventory(equippedScrollInventory);
         openingPlayer.playSound(openingPlayer, Sound.BLOCK_ENDER_CHEST_OPEN, 1.0F, 1.0F);
     }

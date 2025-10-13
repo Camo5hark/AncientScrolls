@@ -22,6 +22,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls.item.scroll;
 
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -120,10 +121,6 @@ public final class GUIInventoryHandler implements Listener {
     ) {
         final ItemStack navigationButtonItemStack = new ItemStack(Material.TIPPED_ARROW);
         final PotionMeta navigationButtonItemMeta = (PotionMeta) BukkitUtil.getItemMeta(navigationButtonItemStack);
-        if (navigationButtonItemMeta == null) {
-            plugin().getLogger().warning("ItemMeta is null for GUI navigation button ItemStack");
-            return;
-        }
         navigationButtonItemMeta.customName(Component.text(displayName, displayNameColor));
         navigationButtonItemMeta.setColor(arrowColor);
         navigationButtonItemStack.setItemMeta(navigationButtonItemMeta);

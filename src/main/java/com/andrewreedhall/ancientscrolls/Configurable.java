@@ -35,8 +35,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
-
 public interface Configurable {
     /**
      * Annotation for mapping config values to fields.
@@ -109,7 +107,6 @@ public interface Configurable {
             try {
                 configField.set(this, value);
             } catch (final IllegalAccessException e) {
-                plugin().getLogger().severe("Could not write to configurable field " + configField.getName() + " in " + this.getClass().getSimpleName());
                 throw new RuntimeException(e);
             }
         });
@@ -125,7 +122,7 @@ public interface Configurable {
 
     static Object getConfigFieldDefaultValue(final Field configField) {
         final Meta meta = configField.getAnnotation(Meta.class);
-        Object defaultValue;
+        Object defaultValue = null;
         if (meta.isStringList()) {
             defaultValue = new ArrayList<String>();
         } else {
@@ -150,9 +147,7 @@ public interface Configurable {
                     defaultValue = meta.defaultString();
                     break;
                 default:
-                    final RuntimeException e = new RuntimeException("Could not get default value for config field of type " + configFieldTypeName);
-                    plugin().getLogger().warning(e.getMessage());
-                    throw e;
+                    break;
             }
         }
         return defaultValue;

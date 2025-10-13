@@ -96,7 +96,6 @@ public abstract class AncientScrollsResource implements Configurable {
             this.config.save(this.configFile);
             this.config.options().copyDefaults(false);
         } catch (final IOException e) {
-            plugin().getLogger().severe(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -105,8 +104,7 @@ public abstract class AncientScrollsResource implements Configurable {
     public void reloadConfig() {
         try {
             this.config.load(this.configFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            plugin().getLogger().severe(e.getMessage());
+        } catch (final IOException | InvalidConfigurationException e) {
             throw new RuntimeException(e);
         }
     }

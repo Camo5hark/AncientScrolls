@@ -30,6 +30,7 @@ import com.andrewreedhall.ancientscrolls.npc.AncientScrollsNPC;
 import com.andrewreedhall.ancientscrolls.npc.NPCHandler;
 import com.andrewreedhall.ancientscrolls.structure.AncientScrollsStructure;
 import com.andrewreedhall.ancientscrolls.util.MonsterPoisonSimulator;
+import com.google.common.base.Preconditions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
@@ -143,11 +144,7 @@ public final class AncientScrollsPlugin extends JavaPlugin implements Configurab
      */
     public int scheduleTask(final Function<BukkitScheduler, Integer> taskSchedulingFunction) {
         final int taskID = taskSchedulingFunction.apply(this.getServer().getScheduler());
-        if (taskID == -1) {
-            final RuntimeException e = new RuntimeException("Failed to schedule task");
-            this.getLogger().severe(e.getMessage());
-            throw e;
-        }
+        Preconditions.checkState(taskID != -1, "Task scheduling failed");
         return taskID;
     }
 

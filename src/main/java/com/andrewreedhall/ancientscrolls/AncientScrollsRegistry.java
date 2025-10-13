@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 
@@ -49,10 +50,7 @@ public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
      * @return true if successful, false if duplicate
      */
     public boolean register(final T value) {
-        if (this.registry.containsKey(value.key)) {
-            plugin().getLogger().warning("Attempted to register duplicate value " + value.key);
-            return false;
-        }
+        Preconditions.checkArgument(!this.registry.containsKey(value.key), "Duplicate registry value: " + value);
         this.registry.put(value.key, value);
         if (value instanceof Listener) {
             plugin().registerListener((Listener) value);
@@ -72,11 +70,9 @@ public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
             try {
                 return this.register(zeroArgConstructor.newInstance());
             } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                plugin().getLogger().severe("Could not instantiate " + valueType.getName());
                 throw new RuntimeException(e);
             }
         } catch (final NoSuchMethodException e) {
-            plugin().getLogger().severe("Could not find zero argument constructor for " + valueType.getName());
             throw new RuntimeException(e);
         }
     }

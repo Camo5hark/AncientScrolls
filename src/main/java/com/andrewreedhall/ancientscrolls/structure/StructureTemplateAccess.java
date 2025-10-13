@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.structure;
 
+import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtAccounter;
@@ -43,7 +44,6 @@ import org.bukkit.util.EntityTransformer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-import java.util.logging.Level;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -61,7 +61,7 @@ public interface StructureTemplateAccess {
                     NbtIo.readCompressed(Objects.requireNonNull(structureNBTIn), NbtAccounter.unlimitedHeap())
             );
         } catch (final IOException e) {
-            plugin().getLogger().log(Level.SEVERE, "Could not get NBT input stream for structure " + structureID, e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -101,8 +101,6 @@ public interface StructureTemplateAccess {
                 0b10
         );
         levelAccess.getStructureTransformer().discard();
-        if (!placed) {
-            plugin().getLogger().warning("Failed to place structure " + structureTemplate + " in " + level + " at [" + blockX + ", " + blockY + ", " + blockZ + "]");
-        }
+        Preconditions.checkState(placed);
     }
 }
