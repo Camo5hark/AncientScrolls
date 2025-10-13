@@ -42,15 +42,15 @@ public final class ScrollScrollOfTheDead extends ItemScrollNative implements Lis
             return;
         }
         final World damagingPlayerWorld = damagingPlayer.getWorld();
-        damagingPlayerWorld.getNearbyLivingEntities(
+        for (final LivingEntity nearbyLivingEntity : damagingPlayerWorld.getNearbyLivingEntities(
                 damagingPlayer.getLocation(),
                 Math.min((damagingPlayerWorld.getSimulationDistance() - 1) << 4, 25.0),
                 (final LivingEntity nearbyLivingEntity) -> nearbyLivingEntity instanceof Monster && CommonSets.UNDEAD_MONSTERS.contains(nearbyLivingEntity.getType())
-        ).forEach((final LivingEntity nearbyLivingEntity) -> {
+        )) {
             final Monster nearbyUndeadMonster = (Monster) nearbyLivingEntity;
             nearbyUndeadMonster.setTarget(damagedLivingEntity);
             spawnParticle(nearbyUndeadMonster);
-        });
+        }
         spawnParticle(damagedLivingEntity);
     }
 

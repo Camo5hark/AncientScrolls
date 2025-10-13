@@ -43,17 +43,15 @@ public final class ScrollDexterity extends ItemScrollNative implements Listener 
             final World equippingPlayerWorld = equippingPlayer.getWorld();
             final Location equippingPlayerLocation = equippingPlayer.getLocation();
             final PlayerInventory equippingPlayerInventory = equippingPlayer.getInventory();
-            equippingPlayerWorld
-                    .getNearbyEntitiesByType(Item.class, equippingPlayerLocation, 5.0, 1.0, 5.0)
-                    .forEach((final Item nearbyItem) -> {
-                        if (nearbyItem.getLocation().distanceSquared(equippingPlayerLocation) > 25.0 ||
-                                !equippingPlayerInventory.addItem(nearbyItem.getItemStack()).isEmpty()
-                        ) {
-                            return;
-                        }
-                        nearbyItem.remove();
-                        equippingPlayerWorld.playSound(equippingPlayer, Sound.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
-                    });
+            for (final Item nearbyItem : equippingPlayerWorld.getNearbyEntitiesByType(Item.class, equippingPlayerLocation, 5.0, 1.0, 5.0)) {
+                if (nearbyItem.getLocation().distanceSquared(equippingPlayerLocation) > 25.0 ||
+                        !equippingPlayerInventory.addItem(nearbyItem.getItemStack()).isEmpty()
+                ) {
+                    continue;
+                }
+                nearbyItem.remove();
+                equippingPlayerWorld.playSound(equippingPlayer, Sound.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
+            }
         }, 60L);
     }
 

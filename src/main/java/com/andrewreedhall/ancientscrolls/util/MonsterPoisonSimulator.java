@@ -75,7 +75,7 @@ public final class MonsterPoisonSimulator {
                                 plugin(),
                                 () -> {
                                     this.monsterPoisonInstances.removeIf((final MonsterPoisonInstance monsterPoisonInstance) -> monsterPoisonInstance.ttl <= 0);
-                                    this.monsterPoisonInstances.forEach((final MonsterPoisonInstance monsterPoisonInstance) -> {
+                                    for (final MonsterPoisonInstance monsterPoisonInstance : this.monsterPoisonInstances) {
                                         monsterPoisonInstance.ttl -= 20;
                                         monsterPoisonInstance.monster.damage(1.0);
                                         monsterPoisonInstance.monster.getWorld().spawnParticle(
@@ -87,7 +87,7 @@ public final class MonsterPoisonSimulator {
                                                 0.5,
                                                 Color.fromRGB(0x87A363)
                                         );
-                                    });
+                                    }
                                 },
                                 0L,
                                 20L

@@ -53,7 +53,7 @@ public final class GUIInventoryHandler implements Listener {
     public GUIInventoryHandler() {}
 
     public void createPageInventories() {
-        Lists.partition(ItemScroll.createListOfAllRegistered(), 45).forEach((final List<ItemScroll> scrolls) -> {
+        for (final List<ItemScroll> scrolls : Lists.partition(ItemScroll.createListOfAllRegistered(), 45)) {
             final Inventory guiPageInventory = plugin().getServer().createInventory(null, 54, Component.text("Ancient Scrolls"));
             guiPageInventory.addItem(
                     scrolls
@@ -64,7 +64,7 @@ public final class GUIInventoryHandler implements Listener {
             putNavigationButtonItemStack(guiPageInventory, PREVIOUS_PAGE_BUTTON_SLOT, Color.RED, "Previous Page", NamedTextColor.RED);
             putNavigationButtonItemStack(guiPageInventory, NEXT_PAGE_BUTTON_SLOT, Color.GREEN, "Next Page", NamedTextColor.GREEN);
             this.guiPageInventories.add(guiPageInventory);
-        });
+        }
     }
 
     public void open(final Player player, final int pageIndex) {

@@ -210,30 +210,29 @@ public final class NPCInstance implements NPCPlayerAccess {
      * Updates the NPC each tick; handles rotation, TTL, and despawning.
      */
     public void tick() {
-        this.player
-                .level()
-                .getPlayers((final ServerPlayer player) -> this.player.distanceTo(player) < 10.0F)
-                .forEach((final ServerPlayer nearbyPlayer) -> {
-                    final float yRot = (float) -Math.toDegrees(Math.atan2(
-                            nearbyPlayer.getX() - this.player.getX(),
-                            nearbyPlayer.getZ() - this.player.getZ()
-                    ));
-                    nearbyPlayer.connection.send(new ClientboundTeleportEntityPacket(
-                            this.player.getId(),
-                            new PositionMoveRotation(
-                                    this.player.position(),
-                                    new Vec3(0.0, 0.0, 0.0),
-                                    yRot,
-                                    0.0F
-                            ),
-                            Set.of(),
-                            this.player.onGround()
-                    ));
-                    nearbyPlayer.connection.send(new ClientboundRotateHeadPacket(
-                            this.player,
-                            (byte) ((((yRot + 180.0F) % 360.0F) - 180.0F) * (127.0F / 180.0F))
-                    ));
-                });
+        for (final ServerPlayer nearbyPlayer : this.player.level().getPlayers(
+                (final ServerPlayer player) -> this.player.distanceTo(player) < 10.0F
+        )) {
+            final float yRot = (float) -Math.toDegrees(Math.atan2(
+                    nearbyPlayer.getX() - this.player.getX(),
+                    nearbyPlayer.getZ() - this.player.getZ()
+            ));
+            nearbyPlayer.connection.send(new ClientboundTeleportEntityPacket(
+                    this.player.getId(),
+                    new PositionMoveRotation(
+                            this.player.position(),
+                            new Vec3(0.0, 0.0, 0.0),
+                            yRot,
+                            0.0F
+                    ),
+                    Set.of(),
+                    this.player.onGround()
+            ));
+            nearbyPlayer.connection.send(new ClientboundRotateHeadPacket(
+                    this.player,
+                    (byte) ((((yRot + 180.0F) % 360.0F) - 180.0F) * (127.0F / 180.0F))
+            ));
+        }
         if (this.merchant.getRecipe(0).getUses() != 0) {
             this.ttl = 0L;
         }

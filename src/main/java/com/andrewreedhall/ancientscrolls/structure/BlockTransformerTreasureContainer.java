@@ -50,9 +50,9 @@ public record BlockTransformerTreasureContainer(
             return current;
         }
         final Inventory containerInventory = ((Container) current).getInventory();
-        this.treasureItemStackDescriptors.get().forEach((final Pair<Integer, ItemStack> treasureItemStackDescriptor) ->
-                containerInventory.setItem(treasureItemStackDescriptor.getA(), treasureItemStackDescriptor.getB())
-        );
+        for (final Pair<Integer, ItemStack> treasureItemStackDescriptor : this.treasureItemStackDescriptors.get()) {
+            containerInventory.setItem(treasureItemStackDescriptor.getA(), treasureItemStackDescriptor.getB());
+        }
         return current;
     }
 }

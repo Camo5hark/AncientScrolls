@@ -132,6 +132,8 @@ public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
     }
 
     public void loadAllConfigs(final boolean reload) {
-        this.registry.values().forEach((final AncientScrollsResource resource) -> resource.loadConfig(reload));
+        for (final AncientScrollsResource resource : this.registry.values()) {
+            resource.loadConfig(reload);
+        }
     }
 }

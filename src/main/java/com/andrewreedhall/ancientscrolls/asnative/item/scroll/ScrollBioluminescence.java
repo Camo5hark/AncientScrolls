@@ -30,16 +30,20 @@ public final class ScrollBioluminescence extends ItemScrollNative {
             final Location equippingPlayerEyeBlockLocation = equippingPlayer.getEyeLocation().getBlock().getLocation();
             final Light lightBlockData = (Light) Material.LIGHT.createBlockData();
             lightBlockData.setLevel(15);
-            nearbyPlayers.forEach((final Player nearbyPlayer) -> nearbyPlayer.sendBlockChange(equippingPlayerEyeBlockLocation, lightBlockData));
+            for (final Player nearbyPlayer : nearbyPlayers) {
+                nearbyPlayer.sendBlockChange(equippingPlayerEyeBlockLocation, lightBlockData);
+            }
             final BlockData airBlockData = Material.AIR.createBlockData();
             plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncDelayedTask(
                     plugin(),
-                    () -> nearbyPlayers.forEach((final Player nearbyPlayer) -> {
-                        if (equippingPlayer.getEyeLocation().getBlock().getLocation().equals(equippingPlayerEyeBlockLocation)) {
-                            return;
+                    () -> {
+                        for (final Player nearbyPlayer : nearbyPlayers) {
+                            if (equippingPlayer.getEyeLocation().getBlock().getLocation().equals(equippingPlayerEyeBlockLocation)) {
+                                continue;
+                            }
+                            nearbyPlayer.sendBlockChange(equippingPlayerEyeBlockLocation, airBlockData);
                         }
-                        nearbyPlayer.sendBlockChange(equippingPlayerEyeBlockLocation, airBlockData);
-                    }),
+                    },
                     4L
             ));
         }, 4L);

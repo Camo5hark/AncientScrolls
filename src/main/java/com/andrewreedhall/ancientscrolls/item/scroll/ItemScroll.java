@@ -160,33 +160,29 @@ public abstract class ItemScroll extends AncientScrollsItem {
      * @param extraTaskPerEquippingPlayer optional task per player, null for no task
      */
     protected void modifyAttributesOfEquippingPlayers(final Set<Pair<Attribute, AttributeModifier>> attributeModifierDescriptors, final Predicate<Player> condition, final Consumer<Player> extraTaskPerEquippingPlayer) {
-        plugin().scheduleTask((final BukkitScheduler scheduler) ->
-                scheduler.scheduleSyncRepeatingTask(plugin(), () ->
-                        plugin().getServer().getOnlinePlayers().forEach((final Player onlinePlayer) -> {
-                            if (this.isEquipping(onlinePlayer) && (condition != null && condition.test(onlinePlayer))) {
-                                attributeModifierDescriptors.forEach((final Pair<Attribute, AttributeModifier> attributeModifierDescriptor) -> {
-                                    final AttributeInstance attributeInstance = BukkitUtil.getAttributeInstance(
-                                            onlinePlayer,
-                                            attributeModifierDescriptor.getA()
-                                    );
-                                    final AttributeModifier attributeModifier = attributeModifierDescriptor.getB();
-                                    if (!BukkitUtil.hasAttributeModifier(attributeInstance, attributeModifier.getKey())) {
-                                        attributeInstance.addTransientModifier(attributeModifier);
-                                    }
-                                    if (extraTaskPerEquippingPlayer != null) {
-                                        extraTaskPerEquippingPlayer.accept(onlinePlayer);
-                                    }
-                                });
-                            } else {
-                                attributeModifierDescriptors.forEach((final Pair<Attribute, AttributeModifier> attributeModifierDescriptor) ->
-                                        BukkitUtil.getAttributeInstance(onlinePlayer, attributeModifierDescriptor.getA()).removeModifier(attributeModifierDescriptor.getB())
-                                );
-                            }
-                        }),
-                        0L,
-                        1L
-                )
-        );
+        plugin().scheduleTask((final BukkitScheduler scheduler) -> scheduler.scheduleSyncRepeatingTask(plugin(), () -> {
+            for (final Player onlinePlayer : plugin().getServer().getOnlinePlayers()) {
+                if (this.isEquipping(onlinePlayer) && (condition != null && condition.test(onlinePlayer))) {
+                    for (final Pair<Attribute, AttributeModifier> attributeModifierDescriptor : attributeModifierDescriptors) {
+                        final AttributeInstance attributeInstance = BukkitUtil.getAttributeInstance(
+                                onlinePlayer,
+                                attributeModifierDescriptor.getA()
+                        );
+                        final AttributeModifier attributeModifier = attributeModifierDescriptor.getB();
+                        if (!BukkitUtil.hasAttributeModifier(attributeInstance, attributeModifier.getKey())) {
+                            attributeInstance.addTransientModifier(attributeModifier);
+                        }
+                        if (extraTaskPerEquippingPlayer != null) {
+                            extraTaskPerEquippingPlayer.accept(onlinePlayer);
+                        }
+                    }
+                } else {
+                    for (final Pair<Attribute, AttributeModifier> attributeModifierDescriptor : attributeModifierDescriptors) {
+                        BukkitUtil.getAttributeInstance(onlinePlayer, attributeModifierDescriptor.getA()).removeModifier(attributeModifierDescriptor.getB());
+                    }
+                }
+            }
+        }, 0L, 1L));
     }
 
     /**

@@ -84,23 +84,23 @@ public final class ScrollScrollOfTheDragonFang extends ItemScrollNative implemen
             BukkitUtil.playBadSound(interactingPlayer);
             return;
         }
-        WEAPON_TYPES.forEach((final Material weaponType) -> interactingPlayer.setCooldown(weaponType, 100));
+        for (final Material weaponType : WEAPON_TYPES) {
+            interactingPlayer.setCooldown(weaponType, 100);
+        }
         final World interactingPlayerWorld = interactingPlayer.getWorld();
         final Location interactingPlayerLocation = interactingPlayer.getLocation();
-        interactingPlayerWorld
-                .getNearbyEntitiesByType(Monster.class, interactingPlayerLocation, 10, 5, 10)
-                .forEach((final Monster nearbyMonster) -> {
-                    interactingPlayerWorld.spawn(nearbyMonster.getLocation(), EvokerFangs.class);
-                    interactingPlayerWorld.spawnParticle(
-                            Particle.DUST,
-                            nearbyMonster.getEyeLocation(),
-                            10,
-                            0.5,
-                            0.5,
-                            0.5,
-                            new Particle.DustOptions(Color.MAROON, 1.5F)
-                    );
-                });
+        for (final Monster nearbyMonster : interactingPlayerWorld.getNearbyEntitiesByType(Monster.class, interactingPlayerLocation, 10, 5, 10)) {
+            interactingPlayerWorld.spawn(nearbyMonster.getLocation(), EvokerFangs.class);
+            interactingPlayerWorld.spawnParticle(
+                    Particle.DUST,
+                    nearbyMonster.getEyeLocation(),
+                    10,
+                    0.5,
+                    0.5,
+                    0.5,
+                    new Particle.DustOptions(Color.MAROON, 1.5F)
+            );
+        }
         interactingPlayerWorld.playSound(interactingPlayer, Sound.ENTITY_ENDER_DRAGON_AMBIENT, 0.75F, 0.75F);
         interactingPlayerWorld.spawnParticle(
                 Particle.DUST,

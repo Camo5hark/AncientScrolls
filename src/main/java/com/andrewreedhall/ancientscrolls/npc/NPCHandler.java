@@ -53,9 +53,9 @@ public final class NPCHandler implements Runnable, Listener {
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player joiningPlayer = event.getPlayer();
-        this.activeNPCInstances.forEach((final NPCInstance npcInstance) ->
-                npcInstance.addToClient(((CraftPlayer) joiningPlayer).getHandle())
-        );
+        for (final NPCInstance npcInstance : this.activeNPCInstances) {
+            npcInstance.addToClient(((CraftPlayer) joiningPlayer).getHandle());
+        }
     }
 
     @EventHandler
