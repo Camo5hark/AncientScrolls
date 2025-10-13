@@ -72,7 +72,7 @@ public abstract class ItemScroll extends AncientScrollsItem {
     protected static final PotionEffect NIGHT_VISION_POTION_EFFECT = new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, false);
 
     private final List<String> cachedKey;
-    private final List<Component> cachedLore;
+    List<Component> cachedLore = null;
     /**
      * Whether this scroll is a reward from the Ender Dragon.
      */
@@ -91,10 +91,12 @@ public abstract class ItemScroll extends AncientScrollsItem {
     public ItemScroll(final NamespacedKey key, final String name, final String[] lore) {
         super(key);
         this.cachedKey = List.of(this.key.toString());
-        this.cachedLore = new ArrayList<>(lore.length + 1);
-        this.cachedLore.add(Component.text(name, NamedTextColor.LIGHT_PURPLE));
-        for (String loreElem : lore) {
-            this.cachedLore.add(Component.text(loreElem, NamedTextColor.GRAY, TextDecoration.ITALIC));
+        if (lore != null) {
+            this.cachedLore = new ArrayList<>(lore.length + 1);
+            this.cachedLore.add(Component.text(name, NamedTextColor.LIGHT_PURPLE));
+            for (String loreElem : lore) {
+                this.cachedLore.add(Component.text(loreElem, NamedTextColor.GRAY, TextDecoration.ITALIC));
+            }
         }
     }
 
@@ -104,16 +106,18 @@ public abstract class ItemScroll extends AncientScrollsItem {
      * @return the created ItemStack
      */
     @Override
-    public ItemStack createItemStack(int amount) {
-        final ItemStack itemStack = new ItemStack(Material.PAPER, amount);
-        ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
+    public ItemStack createItemStack(final int amount) {
+        final ItemStack itemStack = new ItemStack(Material.PAPER, 1);
+        final ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
         final CustomModelDataComponent modelData = itemMeta.getCustomModelDataComponent();
         modelData.setFlags(CACHED_FLAGS);
         modelData.setStrings(this.cachedKey);
         itemMeta.setCustomModelDataComponent(modelData);
         itemMeta.setMaxStackSize(1);
         itemMeta.displayName(CACHED_DISPLAY_NAME);
-        itemMeta.lore(this.cachedLore);
+        if (this.cachedLore != null) {
+            itemMeta.lore(this.cachedLore);
+        }
         itemMeta.setEnchantmentGlintOverride(true);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
