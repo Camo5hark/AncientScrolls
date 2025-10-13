@@ -90,7 +90,7 @@ public abstract class ItemFlask extends AncientScrollsItem {
         ItemStack itemStack = new ItemStack(Material.POTION);
         ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
         PotionMeta potionMeta = (PotionMeta) itemMeta;
-        potionMeta.displayName(this.displayName);
+        potionMeta.customName(this.displayName);
         potionMeta.lore(this.cachedLore);
         potionMeta.setColor(this.color);
         potionMeta.setEnchantmentGlintOverride(true);

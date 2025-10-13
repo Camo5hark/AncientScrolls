@@ -114,7 +114,7 @@ public abstract class ItemScroll extends AncientScrollsItem {
         modelData.setStrings(this.cachedKey);
         itemMeta.setCustomModelDataComponent(modelData);
         itemMeta.setMaxStackSize(1);
-        itemMeta.displayName(CACHED_DISPLAY_NAME);
+        itemMeta.customName(CACHED_DISPLAY_NAME);
         if (this.cachedLore != null) {
             itemMeta.lore(this.cachedLore);
         }

@@ -124,7 +124,7 @@ public final class GUIInventoryHandler implements Listener {
             plugin().getLogger().warning("ItemMeta is null for GUI navigation button ItemStack");
             return;
         }
-        navigationButtonItemMeta.displayName(Component.text(displayName, displayNameColor));
+        navigationButtonItemMeta.customName(Component.text(displayName, displayNameColor));
         navigationButtonItemMeta.setColor(arrowColor);
         navigationButtonItemStack.setItemMeta(navigationButtonItemMeta);
         BukkitUtil.hidePotionContentsTooltipDisplay(navigationButtonItemStack);

@@ -64,7 +64,7 @@ public final class EquippedScrollsInventoryHandler implements Listener, Runnable
                 } else {
                     itemStack = new ItemStack(Material.BARRIER);
                     final ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
-                    itemMeta.displayName(BARRIER_DISPLAY_NAME);
+                    itemMeta.customName(BARRIER_DISPLAY_NAME);
                     itemStack.setItemMeta(itemMeta);
                 }
                 equippedScrollInventory.setItem(i, itemStack);
