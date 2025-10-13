@@ -42,7 +42,6 @@ import org.bukkit.inventory.MerchantRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -96,13 +95,12 @@ public final class ItemScrollListener implements Listener {
                 .filter((final Player player) -> !player.isDead()).forEach((final Player player) -> {
                     final Block playerRewardChestBlock = player.getEyeLocation().getBlock().getRelative(BlockFace.UP);
                     playerRewardChestBlock.setType(Material.CHEST);
-                    ((Chest) playerRewardChestBlock.getState()).getInventory().setContents(plugin()
-                            .getItemRegistry()
-                            .getAll()
-                            .stream()
-                            .filter((final AncientScrollsItem item) -> item instanceof ItemScroll scroll && scroll.enderDragonReward)
-                            .map((final AncientScrollsItem item) -> item.createItemStack(1))
-                            .toArray(ItemStack[]::new)
+                    ((Chest) playerRewardChestBlock.getState()).getInventory().setContents(
+                            plugin()
+                                    .getItemRegistry()
+                                    .getAll((final AncientScrollsItem item) -> item instanceof ItemScroll scroll && scroll.enderDragonReward, false)
+                                    .map((final AncientScrollsItem item) -> item.createItemStack(1))
+                                    .toArray(ItemStack[]::new)
                     );
                     playerRewardChestBlock.getWorld().spawnParticle(
                             Particle.DUST,

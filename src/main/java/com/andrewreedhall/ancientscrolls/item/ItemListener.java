@@ -21,7 +21,6 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.item;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseLootEvent;
@@ -48,11 +47,6 @@ public final class ItemListener implements Listener {
         if (!plugin().item_generation_enabled) {
             return;
         }
-        plugin()
-                .getItemRegistry()
-                .getAll()
-                .stream()
-                .filter((final AncientScrollsItem item) -> item.generation_enabled)
-                .forEach(itemGeneratorWrapper);
+        plugin().getItemRegistry().getAll((final AncientScrollsItem item) -> item.generation_enabled, false).forEach(itemGeneratorWrapper);
     }
 }

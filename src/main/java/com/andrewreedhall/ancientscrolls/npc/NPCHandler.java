@@ -69,9 +69,7 @@ public final class NPCHandler implements Runnable, Listener {
         final List<AncientScrollsNPC> registeredNPCs = new ArrayList<>(
                 plugin()
                         .getNPCRegistry()
-                        .getAll()
-                        .stream()
-                        .filter((final AncientScrollsNPC npc) -> npc.generation_enabled)
+                        .getAll((final AncientScrollsNPC npc) -> npc.generation_enabled, false)
                         .toList()
         );
         NPC_RANDOMIZER.sort(registeredNPCs, null);

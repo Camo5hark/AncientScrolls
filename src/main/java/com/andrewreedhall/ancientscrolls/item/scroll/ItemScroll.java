@@ -361,9 +361,7 @@ public abstract class ItemScroll extends AncientScrollsItem {
     public static List<ItemScroll> createListOfAllRegistered() {
         return plugin()
                 .getItemRegistry()
-                .getAll()
-                .parallelStream()
-                .filter((final AncientScrollsItem item) -> item instanceof ItemScroll)
+                .getAll((final AncientScrollsItem item) -> item instanceof ItemScroll, true)
                 .map((final AncientScrollsItem item) -> (ItemScroll) item)
                 .toList();
     }

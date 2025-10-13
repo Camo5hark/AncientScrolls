@@ -45,9 +45,7 @@ public final class StructureListener implements Listener {
         final List<AncientScrollsStructure> registeredStructures = new ArrayList<>(
                 plugin()
                         .getStructureRegistry()
-                        .getAll()
-                        .stream()
-                        .filter((final AncientScrollsStructure structure) -> structure.generation_enabled)
+                        .getAll((final AncientScrollsStructure structure) -> structure.generation_enabled, false)
                         .toList()
         );
         STRUCTURE_RANDOMIZER.sort(registeredStructures, new Random(event.getChunk().getChunkKey()));

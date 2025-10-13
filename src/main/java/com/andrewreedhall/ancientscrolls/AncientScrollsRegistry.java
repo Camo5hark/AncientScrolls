@@ -22,12 +22,14 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 package com.andrewreedhall.ancientscrolls;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -123,8 +125,12 @@ public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
      * Returns all registered values.
      * @return collection of all registered values
      */
-    public Collection<T> getAll() {
-        return this.registry.values();
+    public Stream<T> getAll(final Predicate<T> filter, final boolean parallel) {
+        Stream<T> all = parallel ? this.registry.values().parallelStream() : this.registry.values().stream();
+        if (filter != null) {
+            all = all.filter(filter);
+        }
+        return all;
     }
 
     public void loadAllConfigs(final boolean reload) {
