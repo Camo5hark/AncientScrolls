@@ -31,6 +31,8 @@ import com.andrewreedhall.ancientscrolls.npc.NPCHandler;
 import com.andrewreedhall.ancientscrolls.structure.AncientScrollsStructure;
 import com.andrewreedhall.ancientscrolls.util.MonsterPoisonSimulator;
 import com.google.common.base.Preconditions;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
@@ -103,6 +105,7 @@ public final class AncientScrollsPlugin extends JavaPlugin implements Configurab
         this.npcRegistry.loadAllConfigs(false);
         this.structureRegistry.loadAllConfigs(false);
         this.guiInventoryHandler.createPageInventories();
+        this.getComponentLogger().info(Component.text("Enabled successfully", NamedTextColor.GREEN));
     }
 
     /**

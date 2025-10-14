@@ -27,7 +27,6 @@ import com.andrewreedhall.ancientscrolls.asnative.npc.hunter.NPCHunter;
 import com.andrewreedhall.ancientscrolls.asnative.npc.prospectre.NPCProspectre;
 import com.andrewreedhall.ancientscrolls.asnative.structure.*;
 import com.andrewreedhall.ancientscrolls.item.ItemListener;
-import com.andrewreedhall.ancientscrolls.item.scroll.ItemResearch;
 import com.andrewreedhall.ancientscrolls.item.scroll.ItemScrollListener;
 import com.andrewreedhall.ancientscrolls.structure.StructureListener;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -66,8 +65,6 @@ public final class AncientScrollsNative {
     private static void registerItems() {
         plugin().getLogger().info("Registering native items");
         plugin().getItemRegistry().registerAll(
-                ItemResearch.class,
-
                 // consumption reducers
                 ScrollLandscaping.class,
                 ScrollCarpentry.class,

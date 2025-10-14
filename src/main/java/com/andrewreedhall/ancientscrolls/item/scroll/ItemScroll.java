@@ -107,7 +107,7 @@ public abstract class ItemScroll extends AncientScrollsItem {
      */
     @Override
     public ItemStack createItemStack(final int amount) {
-        final ItemStack itemStack = new ItemStack(Material.PAPER, 1);
+        final ItemStack itemStack = new ItemStack(Material.PAPER, amount);
         final ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
         final CustomModelDataComponent modelData = itemMeta.getCustomModelDataComponent();
         modelData.setFlags(CACHED_FLAGS);
