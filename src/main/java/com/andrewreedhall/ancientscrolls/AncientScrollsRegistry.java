@@ -23,6 +23,7 @@ package com.andrewreedhall.ancientscrolls;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 
@@ -34,12 +35,12 @@ import java.util.stream.Stream;
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 /**
- * Generic registry for values identified by {@link NamespacedKey}.
- * @param <T> the value type extending {@link AncientScrollsResource}
+ * Generic registry for resources identified by {@link NamespacedKey}.
+ * @param <T> the resource type extending {@link AncientScrollsResource}
  */
 public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
 
-    private final Map<NamespacedKey, T> registry = new HashMap<>();
+    private final Map<Integer, T> registry = new Int2ObjectOpenHashMap<>();
 
     /**
      * Creates an empty registry.
@@ -47,30 +48,30 @@ public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
     public AncientScrollsRegistry() {}
 
     /**
-     * Registers a value instance.
-     * @param value the value to register
+     * Registers a resource instance.
+     * @param resource the resource to register
      * @return true if successful, false if duplicate
      */
-    public boolean register(final T value) {
-        Preconditions.checkArgument(!this.registry.containsKey(value.key), "Cannot register duplicate resource: " + value);
-        this.registry.put(value.key, value);
-        if (value instanceof Listener) {
-            plugin().registerListener((Listener) value);
+    public boolean register(final T resource) {
+        Preconditions.checkArgument(!this.registry.containsKey(resource.keyHash), "Cannot register duplicate resource: " + resource);
+        this.registry.put(resource.keyHash, resource);
+        if (resource instanceof Listener) {
+            plugin().registerListener((Listener) resource);
         }
         return true;
     }
 
     /**
      * Registers a value using its zero-argument constructor.
-     * @param valueType the class to register
+     * @param resourceType the class to register
      * @return true if successful, false on error or duplicate
      * @throws RuntimeException if instantiation fails
      */
-    public boolean register(final Class<? extends T> valueType) {
+    public boolean register(final Class<? extends T> resourceType) {
         try {
-            final Constructor<? extends T> zeroArgConstructor = valueType.getConstructor();
+            final Constructor<? extends T> resourceConstructor = resourceType.getConstructor();
             try {
-                return this.register(zeroArgConstructor.newInstance());
+                return this.register(resourceConstructor.newInstance());
             } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
@@ -81,13 +82,13 @@ public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
 
     /**
      * Registers multiple value instances.
-     * @param values the values to register
+     * @param resources the resources to register
      * @return true if all were registered, false otherwise
      */
     @SafeVarargs
-    public final boolean registerAll(final T... values) {
+    public final boolean registerAll(final T... resources) {
         boolean registeredAll = true;
-        for (final T value : values) {
+        for (final T value : resources) {
             if (!this.register(value)) {
                 registeredAll = false;
             }
@@ -97,14 +98,13 @@ public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
 
     /**
      * Registers multiple value classes.
-     *
-     * @param valueTypes the classes to register
+     * @param resourceTypes the classes to register
      * @return true if all were registered, false otherwise
      */
     @SafeVarargs
-    public final boolean registerAll(final Class<? extends T>... valueTypes) {
+    public final boolean registerAll(final Class<? extends T>... resourceTypes) {
         boolean registeredAll = true;
-        for (final Class<? extends T> valueType : valueTypes) {
+        for (final Class<? extends T> valueType : resourceTypes) {
             if (!this.register(valueType)) {
                 registeredAll = false;
             }
@@ -118,19 +118,15 @@ public final class AncientScrollsRegistry<T extends AncientScrollsResource> {
      * @return the registered value, or null if not found
      */
     public T get(final NamespacedKey key) {
-        return this.registry.get(key);
+        return this.registry.get(key.hashCode());
     }
 
-    /**
-     * Returns all registered values.
-     * @return collection of all registered values
-     */
     public Stream<T> getAll(final Predicate<T> filter, final boolean parallel) {
-        Stream<T> all = parallel ? this.registry.values().parallelStream() : this.registry.values().stream();
+        Stream<T> resources = parallel ? this.registry.values().parallelStream() : this.registry.values().stream();
         if (filter != null) {
-            all = all.filter(filter);
+            resources = resources.filter(filter);
         }
-        return all;
+        return resources;
     }
 
     public void loadAllConfigs(final boolean reload) {

@@ -21,10 +21,13 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls;
 
+import net.kyori.adventure.key.Key;
+import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,11 +37,12 @@ import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 /**
  * Base class for registry values with a {@link NamespacedKey}.
  */
-public abstract class AncientScrollsResource implements Configurable {
+public abstract class AncientScrollsResource implements Keyed, Configurable {
     /**
      * The unique key identifying this value.
      */
     public final NamespacedKey key;
+    public final int keyHash;
     private final File configFile;
     private final YamlConfiguration config;
 
@@ -55,6 +59,7 @@ public abstract class AncientScrollsResource implements Configurable {
      */
     public AncientScrollsResource(final NamespacedKey key) {
         this.key = key;
+        this.keyHash = this.key.hashCode();
         this.configFile = this.getConfigFile();
         this.config = new YamlConfiguration();
         this.addConfigDefaultValues(this.config);
@@ -64,17 +69,27 @@ public abstract class AncientScrollsResource implements Configurable {
 
     @Override
     public int hashCode() {
-        return this.key.hashCode();
+        return this.keyHash;
     }
 
     @Override
     public boolean equals(final Object obj) {
-        return obj == this || (obj instanceof AncientScrollsResource && obj.hashCode() == this.hashCode());
+        return obj == this || (obj instanceof AncientScrollsResource && obj.hashCode() == this.keyHash);
     }
 
     @Override
     public String toString() {
         return this.getClass().getName() + "{key=\"" + this.key + "\"}";
+    }
+
+    @Override
+    public @NotNull NamespacedKey getKey() {
+        return this.key;
+    }
+
+    @Override
+    public @NotNull Key key() {
+        return this.key;
     }
 
     @Override
