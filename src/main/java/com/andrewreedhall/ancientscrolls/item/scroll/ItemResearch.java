@@ -25,13 +25,17 @@ import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
 import com.google.common.base.Preconditions;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
 public final class ItemResearch extends ItemScroll {
     private static final Component CACHED_DISPLAY_NAME = Component.text("Ancient Research", NamedTextColor.RED);
@@ -40,6 +44,7 @@ public final class ItemResearch extends ItemScroll {
 
     public ItemResearch() {
         super(fromAncientScrollsNamespace("research"), "research", null);
+        this.special = true;
     }
 
     @Override
@@ -62,5 +67,14 @@ public final class ItemResearch extends ItemScroll {
         itemMeta.lore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
+    }
+
+    public static Set<ItemScroll> getScrolls(final ItemStack researchItemStack) {
+        final List<String> researchModelDataStrings = BukkitUtil.getItemMeta(researchItemStack).getCustomModelDataComponent().getStrings();
+        final Set<ItemScroll> scrolls = new HashSet<>();
+        for (int i = 1; i < researchModelDataStrings.size(); ++i) {
+            scrolls.add((ItemScroll) plugin().getItemRegistry().get(NamespacedKey.fromString(researchModelDataStrings.get(i))));
+        }
+        return scrolls;
     }
 }
