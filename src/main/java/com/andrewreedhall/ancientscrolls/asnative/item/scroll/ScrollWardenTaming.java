@@ -1,5 +1,6 @@
 package com.andrewreedhall.ancientscrolls.asnative.item.scroll;
 
+import com.google.common.base.Preconditions;
 import io.papermc.paper.event.entity.WardenAngerChangeEvent;
 import org.bukkit.Color;
 import org.bukkit.Particle;
@@ -19,7 +20,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
 
@@ -117,6 +117,6 @@ public final class ScrollWardenTaming extends ItemScrollNative implements Listen
         if (deadWardenPetWardenOwner.isEmpty()) {
             return;
         }
-        ((Player) Objects.requireNonNull(deadWardenPetWardenOwner.getFirst().value())).removeMetadata(PMK_PET_WARDEN, plugin());
+        ((Player) Preconditions.checkNotNull(deadWardenPetWardenOwner.getFirst().value())).removeMetadata(PMK_PET_WARDEN, plugin());
     }
 }

@@ -58,7 +58,7 @@ public interface StructureTemplateAccess {
         try (final InputStream structureNBTIn = resourceLoader.getResourceAsStream("ancientscrolls/structures/" + structureID + ".nbt")) {
             this.getStructure().structureTemplate.load(
                     ((CraftServer) plugin().getServer()).getServer().registryAccess().lookup(Registries.BLOCK).get(),
-                    NbtIo.readCompressed(Objects.requireNonNull(structureNBTIn), NbtAccounter.unlimitedHeap())
+                    NbtIo.readCompressed(Preconditions.checkNotNull(structureNBTIn), NbtAccounter.unlimitedHeap())
             );
         } catch (final IOException e) {
             throw new RuntimeException(e);

@@ -24,6 +24,7 @@ package com.andrewreedhall.ancientscrolls.item.scroll;
 import com.andrewreedhall.ancientscrolls.PlayerDataHandler;
 import com.andrewreedhall.ancientscrolls.item.AncientScrollsItem;
 import com.andrewreedhall.ancientscrolls.util.BukkitUtil;
+import com.google.common.base.Preconditions;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -53,7 +54,6 @@ import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -275,7 +275,7 @@ public abstract class ItemScroll extends AncientScrollsItem {
     public ItemStack createItemStackWithGenerationInfo(final int amount) {
         final ItemStack itemStack = this.createItemStack(amount);
         final ItemMeta itemMeta = BukkitUtil.getItemMeta(itemStack);
-        final List<Component> lore = itemMeta.hasLore() ? new ArrayList<>(Objects.requireNonNull(itemMeta.lore())) : new ArrayList<>();
+        final List<Component> lore = itemMeta.hasLore() ? new ArrayList<>(Preconditions.checkNotNull(itemMeta.lore())) : new ArrayList<>();
         if (this.enderDragonReward) {
             lore.add(Component.text("Ender Dragon reward", NamedTextColor.DARK_PURPLE));
         }

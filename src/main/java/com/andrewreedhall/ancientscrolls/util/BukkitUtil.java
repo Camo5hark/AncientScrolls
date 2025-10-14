@@ -21,6 +21,7 @@ GitHub repo URL: www.github.com/Camo5hark/AncientScrolls
 
 package com.andrewreedhall.ancientscrolls.util;
 
+import com.google.common.base.Preconditions;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import org.bukkit.NamespacedKey;
@@ -38,6 +39,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Objects;
 
+import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
+
 /**
  * Utility methods for Bukkit-related operations.
  */
@@ -45,6 +48,10 @@ public final class BukkitUtil {
     private static final TooltipDisplay.Builder HIDE_POTION_CONTENTS_TOOLTIP_DISPLAY_BUILDER = TooltipDisplay
             .tooltipDisplay()
             .addHiddenComponents(DataComponentTypes.POTION_CONTENTS);
+
+    public static NamespacedKey createPluginKey(final String id) {
+        return Preconditions.checkNotNull(NamespacedKey.fromString(id, plugin()), "Invalid key ID: " + id);
+    }
 
     /**
      * Plays a negative feedback sound to a player.
@@ -103,7 +110,7 @@ public final class BukkitUtil {
      * @throws NullPointerException if not applicable
      */
     public static AttributeInstance getAttributeInstance(final LivingEntity livingEntity, final Attribute attribute) {
-        return Objects.requireNonNull(livingEntity.getAttribute(attribute), "Attribute " + attribute + " is not applicable for living entity " + livingEntity);
+        return Preconditions.checkNotNull(livingEntity.getAttribute(attribute), "Attribute " + attribute + " is not applicable for LivingEntity: " + livingEntity);
     }
 
     /**
@@ -135,7 +142,7 @@ public final class BukkitUtil {
      * @throws NullPointerException if meta is null
      */
     public static ItemMeta getItemMeta(final ItemStack itemStack) {
-        return Objects.requireNonNull(itemStack.getItemMeta(), "ItemMeta is null for ItemStack " + itemStack);
+        return Preconditions.checkNotNull(itemStack.getItemMeta(), "ItemMeta is null for ItemStack: " + itemStack);
     }
 
     /**

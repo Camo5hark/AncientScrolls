@@ -32,7 +32,6 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -42,7 +41,7 @@ import static com.andrewreedhall.ancientscrolls.AncientScrollsPlugin.plugin;
  * Handles equipped scroll data for players using persistent storage.
  */
 public final class PlayerDataHandler {
-    private static final NamespacedKey PDK_EQUIPPED_SCROLL_KEY_STRINGS = NamespacedKey.fromString("equipped_scroll_key_strings", plugin());
+    private static final NamespacedKey PDK_EQUIPPED_SCROLL_KEY_STRINGS = BukkitUtil.createPluginKey("equipped_scroll_key_strings");
     private static final String EQUIPPED_SCROLL_KEY_STRING_NULL = "*";
     private static final Function<String, ItemScroll> STRING_TO_SCROLL = (final String string) -> {
         if (string.equals(EQUIPPED_SCROLL_KEY_STRING_NULL)) {
@@ -62,7 +61,7 @@ public final class PlayerDataHandler {
         return player
                 .getPersistentDataContainer()
                 .getOrDefault(
-                        Objects.requireNonNull(PDK_EQUIPPED_SCROLL_KEY_STRINGS),
+                        PDK_EQUIPPED_SCROLL_KEY_STRINGS,
                         PersistentDataType.LIST.strings(),
                         new ArrayList<>(Arrays.asList(defaultEquippedScrollKeyStrings))
                 )
@@ -92,7 +91,7 @@ public final class PlayerDataHandler {
         player
                 .getPersistentDataContainer()
                 .set(
-                        Objects.requireNonNull(PDK_EQUIPPED_SCROLL_KEY_STRINGS),
+                        PDK_EQUIPPED_SCROLL_KEY_STRINGS,
                         PersistentDataType.LIST.strings(),
                         Arrays.stream(scrolls)
                                 .limit(plugin().item_scroll_maxEquippedScrolls)
